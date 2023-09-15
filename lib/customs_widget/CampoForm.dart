@@ -27,7 +27,7 @@ class CampoForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        style: const TextStyle(fontSize: 25, color: Colors.black),
+        style: const TextStyle(fontSize: 22, color: Colors.black),
         validator: validator,
         controller: controller,
         obscureText: password,
@@ -36,7 +36,7 @@ class CampoForm extends StatelessWidget {
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
             labelText: label,
             hintText: hint,
-            hintStyle: const TextStyle(color: Colors.green, fontSize: 10),
+            hintStyle: const TextStyle(color: Colors.blueAccent, fontSize: 14),
             labelStyle: const TextStyle(color: Colors.grey, fontSize: 20)));
   }
 }
