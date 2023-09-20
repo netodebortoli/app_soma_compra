@@ -10,7 +10,8 @@ class TelaCadastro extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        foregroundColor: Colors.blueAccent,
+        backgroundColor: Colors.blueAccent,
+        foregroundColor: Colors.white,
         title: const Text("Cadastro de Usuário"),
       ),
       body: _body(),
@@ -26,26 +27,29 @@ class TelaCadastro extends StatelessWidget {
     return Container(
       color: Colors.white,
       margin: const EdgeInsets.all(20),
-      child: ListView(
-        children: [
-          CampoForm("E-mail", controleUsuario,
-              hint: "Digite seu email de login",
-              typeInput: TextInputType.emailAddress),
-          const SizedBox(height: 17),
-          CampoForm("Senha", controleSenha1,
-              hint: "Sua senha deve ter no mínimo 6 dígitos", password: true),
-          const SizedBox(height: 17),
-          CampoForm("Repita a Senha", controleSenha2, password: true),
-          const SizedBox(height: 50),
-          Botao("Cadastrar", validateForm: () {
-            if (!formKey.currentState!.validate()) {
-              Text("Preencha os campos obrigatórios");
-            }
-            if (controleSenha1 != controleSenha2) {
-              Text("As senhas não são iguais");
-            }
-          })
-        ],
+      child: Form(
+        key: formKey,
+        child: ListView(
+          children: [
+            CampoForm("E-mail", controleUsuario,
+                hint: "Digite seu email de login",
+                typeInput: TextInputType.emailAddress),
+            const SizedBox(height: 17),
+            CampoForm("Senha", controleSenha1,
+                hint: "Sua senha deve ter no mínimo 6 dígitos", password: true),
+            const SizedBox(height: 17),
+            CampoForm("Repita a Senha", controleSenha2, password: true),
+            const SizedBox(height: 50),
+            Botao("Cadastrar", validateForm: () {
+              if (!formKey.currentState!.validate()) {
+                print("Preencha os campos obrigatórios");
+              }
+              if (controleSenha1 != controleSenha2) {
+                print("As senhas não são iguais");
+              }
+            })
+          ],
+        ),
       ),
     );
   }
