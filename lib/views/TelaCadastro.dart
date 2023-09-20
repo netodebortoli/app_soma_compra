@@ -1,4 +1,4 @@
-import 'package:app_soma_conta/controller/ControllerFormCadastro.dart';
+import 'package:app_soma_conta/views/interaction_controller/ControllerFormCadastro.dart';
 import 'package:app_soma_conta/customs_widget/Botao.dart';
 import 'package:flutter/material.dart';
 
@@ -14,39 +14,32 @@ class TelaCadastro extends StatelessWidget {
         foregroundColor: Colors.white,
         title: const Text("Cadastro de Usuário"),
       ),
-      body: _body(),
+      body: _body(context),
     );
   }
 
-  final formKey = GlobalKey<FormState>();
-  final controleUsuario = TextEditingController();
-  final controleSenha1 = TextEditingController();
-  final controleSenha2 = TextEditingController();
+  final ControllerFormCadastro controllerForm = ControllerFormCadastro();
 
-  _body() {
+  _body(BuildContext context) {
     return Container(
       color: Colors.white,
       margin: const EdgeInsets.all(20),
       child: Form(
-        key: formKey,
+        key: controllerForm.formkey,
         child: ListView(
           children: [
-            CampoForm("E-mail", controleUsuario,
-                hint: "Digite seu email de login",
+            CampoForm("Login", controllerForm.controleUsuario,
+                hint: "Insira seu login de usuário",
                 typeInput: TextInputType.emailAddress),
             const SizedBox(height: 17),
-            CampoForm("Senha", controleSenha1,
+            CampoForm("Senha", controllerForm.controleSenha1,
                 hint: "Sua senha deve ter no mínimo 6 dígitos", password: true),
             const SizedBox(height: 17),
-            CampoForm("Repita a Senha", controleSenha2, password: true),
+            CampoForm("Repita a Senha", controllerForm.controleSenha2,
+                password: true),
             const SizedBox(height: 50),
-            Botao("Cadastrar", validateForm: () {
-              if (!formKey.currentState!.validate()) {
-                print("Preencha os campos obrigatórios");
-              }
-              if (controleSenha1 != controleSenha2) {
-                print("As senhas não são iguais");
-              }
+            Botao("Cadastrar", onClick: () {
+              controllerForm.validateForm(context);
             })
           ],
         ),

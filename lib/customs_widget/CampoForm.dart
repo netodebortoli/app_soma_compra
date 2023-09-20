@@ -36,7 +36,7 @@ class CampoForm extends StatelessWidget {
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
             labelText: label,
             hintText: hint,
-            hintStyle: const TextStyle(color: Colors.blueAccent, fontSize: 14),
+            hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
             labelStyle: const TextStyle(color: Colors.grey, fontSize: 20)));
   }
 }
