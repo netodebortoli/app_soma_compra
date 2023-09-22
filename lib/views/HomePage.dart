@@ -1,3 +1,4 @@
+import 'package:app_soma_conta/customs_widget/BarraDeNavegacao.dart';
 import 'package:flutter/material.dart';
 
 class Destination {
@@ -29,11 +30,11 @@ class HomePage extends StatelessWidget {
                 },
                 icon: Icon(Icons.logout_outlined))
           ]),
-      drawer: Drawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: Icon(Icons.add),
       ),
+      bottomNavigationBar: BarraDeNavegacao(),
       body: Container(),
     );
   }
