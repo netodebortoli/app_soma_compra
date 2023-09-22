@@ -1,4 +1,6 @@
+import 'package:app_soma_conta/views/HomePage.dart';
 import 'package:app_soma_conta/views/TelaCadastro.dart';
+import 'package:app_soma_conta/views/TelaLogin.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,6 +19,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const MyHomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -35,6 +38,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _body() {
-    return TelaCadastro();
+    return TelaLogin();
   }
 }
