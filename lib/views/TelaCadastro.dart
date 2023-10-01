@@ -1,4 +1,4 @@
-import 'package:app_soma_conta/views/interaction_controller/ControllerFormCadastro.dart';
+import 'package:app_soma_conta/views/interaction_controller/ControllerFormNewUser.dart';
 import 'package:app_soma_conta/customs_widget/Botao.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +28,7 @@ class TelaCadastro extends StatelessWidget {
         key: controllerForm.formkey,
         child: ListView(
           children: [
-            CampoForm("Login", controllerForm.controleUsuario,
+            CampoForm("Login", controllerForm.controleLogin,
                 hint: "Insira seu login de usuário",
                 typeInput: TextInputType.emailAddress),
             const SizedBox(height: 17),
@@ -39,7 +39,7 @@ class TelaCadastro extends StatelessWidget {
                 password: true),
             const SizedBox(height: 50),
             Botao("Cadastrar", onClick: () {
-              controllerForm.validateForm(context);
+              controllerForm.signUp(context);
             })
           ],
         ),
