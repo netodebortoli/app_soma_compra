@@ -10,18 +10,17 @@ class ControllerLogin {
   final controleSenha = TextEditingController();
 
   void signIn(BuildContext context) {
-    if (!formKey.currentState!.validate()) {
-      ToastErro("Preencha todos os campos obrigatórios");
+    if (formKey.currentState!.validate()) {
+      // VERIFICAR SE FOI POSSÍVEL REALIZAR A AUTENTICAÇÃO
+      //   if ( autenticado ) {
+      //     redirecionaTelaInicial
+      //   } else {
+      //     ToastErro("Os dados informados são inválidos.");
+      //     }
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => HomePage()),
+      );
     }
-
-    // else {
-    //   // VERIFICAR SE FOI POSSÍVEL REALIZAR A AUTENTICAÇÃO
-    //   if ( autenticado ) {
-    //     redirecionaTelaInicial
-    //   } else {
-    //     ToastErro("Os dados informados são inválidos.");
-    //     }
-    // }
   }
 
   void signUp(BuildContext context) {

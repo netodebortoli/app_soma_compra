@@ -51,7 +51,8 @@ class TelaLogin extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 14,
-                      color: Colors.black
+                      color: Colors.blueGrey,
+                      fontWeight: FontWeight.bold
                     ),
                   ),
                 ),
