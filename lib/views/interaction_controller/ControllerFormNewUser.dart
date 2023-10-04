@@ -1,3 +1,5 @@
+import 'package:app_soma_conta/customs_widget/ToastErro.dart';
+import 'package:app_soma_conta/customs_widget/ToastSucesso.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -12,16 +14,11 @@ class ControllerFormCadastro {
   void signUp(BuildContext context) {
     if (formkey.currentState!.validate()) {
       if (controleSenha1.value != controleSenha2.value) {
-        Fluttertoast.showToast(
-            msg: "As senhas não são iguais.",
-            gravity: ToastGravity.CENTER_RIGHT,
-            backgroundColor: Colors.red,
-            textColor: Colors.red,
-            fontSize: 20.0,
-        );
+        ToastErro("As senhas não são iguais.");
       } else {
-        // adicionar no banco de dados posteriormente
-        Fluttertoast.showToast(msg: "Cadastro realizado com sucesso!");
+        ToastSucesso("Cadastro realizado com sucesso.");
+        // INSERIR POSTERIOMENTE NO BANCO DE DADOS
+        // REDIRECIONAR PARA A TELA DE LOGIN
       }
     }
   }
