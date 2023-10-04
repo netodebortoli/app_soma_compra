@@ -31,15 +31,31 @@ class TelaLogin extends StatelessWidget {
             children: [
               CampoForm('Usuário', controllerLogin.controleUsuario),
               const SizedBox(height: 17),
-              CampoForm('Senha', controllerLogin.controleSenha, password: true,),
+              CampoForm(
+                'Senha',
+                controllerLogin.controleSenha,
+                password: true,
+              ),
               const SizedBox(height: 50),
               Botao("Entrar", onClick: () {
-                if (controllerLogin.validateForm(context)) {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => HomePage()),
-                  );
-                }
+                controllerLogin.signIn(context);
               }),
+              SizedBox(height: 25),
+              Container(
+                child: InkWell(
+                  onTap: (){
+                    controllerLogin.signUp(context);
+                  },
+                  child: const Text(
+                    "Novo usuário? Cadastre-se",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
