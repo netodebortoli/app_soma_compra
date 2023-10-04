@@ -6,10 +6,12 @@ class Botao extends StatelessWidget {
   final String label;
   final double fontSize;
   final Color fontColor;
+  final Color backgroundColor;
 
   Botao(this.label,
       {this.fontSize = 18,
       this.fontColor = Colors.white,
+      this.backgroundColor = Colors.blueAccent,
       required this.onClick});
 
   @override
@@ -17,7 +19,7 @@ class Botao extends StatelessWidget {
     return ElevatedButton(
         onPressed: onClick,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue,
+          backgroundColor: backgroundColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         ),
