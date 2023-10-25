@@ -28,15 +28,15 @@ class TelaCadastro extends StatelessWidget {
         key: controllerForm.formkey,
         child: ListView(
           children: [
-            CampoForm("Login", controllerForm.controleLogin,
+            CampoForm("Login", controllerForm.controleLogin, minLength: 4,
                 hint: "Insira seu login de usuário",
                 typeInput: TextInputType.emailAddress),
             const SizedBox(height: 17),
             CampoForm("Senha", controllerForm.controleSenha1,
-                hint: "Sua senha deve ter no mínimo 6 dígitos", password: true),
+                hint: "Sua senha deve ter no mínimo 6 dígitos", password: true, minLength: 6),
             const SizedBox(height: 17),
             CampoForm("Repita a Senha", controllerForm.controleSenha2,
-                password: true),
+                password: true, minLength: 6),
             const SizedBox(height: 50),
             Botao("Cadastrar", onClick: () {
               controllerForm.signUp(context);

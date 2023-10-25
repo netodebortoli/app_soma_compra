@@ -8,20 +8,30 @@ class CampoForm extends StatelessWidget {
   TextInputType typeInput;
   TextEditingController? controller;
   FormFieldValidator<String>? validator;
+  num minLength;
+  num maxLength;
 
   String? validarCampoEdicao(String? text) {
     if ((text == null) || (text.isEmpty)) {
       return "O campo '$label' é obrigatório";
+    }
+    if (text.length < minLength ) {
+      return "Quantidade mínima é $minLength de caracteres";
+    }
+    if (text.length > maxLength ) {
+      return "Quantidade máxima é $maxLength de caracteres";
     }
     return null;
   }
 
   CampoForm(this.label, this.controller,
       {this.hint = "",
+      this.minLength = 0,
+      this.maxLength = 100,
       this.password = false,
       this.typeInput = TextInputType.text,
       this.validator}) {
-    validator ??= validarCampoEdicao;
+    validator = validarCampoEdicao;
   }
 
   @override
