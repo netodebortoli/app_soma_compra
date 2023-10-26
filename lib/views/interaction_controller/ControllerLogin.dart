@@ -1,4 +1,3 @@
-import 'package:app_soma_conta/customs_widget/ToastErro.dart';
 import 'package:app_soma_conta/views/TelaCadastro.dart';
 import 'package:flutter/material.dart';
 

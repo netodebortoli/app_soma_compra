@@ -1,4 +1,5 @@
 import 'package:app_soma_conta/customs_widget/BarraDeNavegacao.dart';
+import 'package:app_soma_conta/views/interaction_controller/ControllerHomePage.dart';
 import 'package:flutter/material.dart';
 
 class Destination {
@@ -17,6 +18,8 @@ class HomePage extends StatelessWidget {
         'contas', Icon(Icons.text_snippet_outlined), Icon(Icons.text_snippet)),
   ];
 
+  ControllerHomePage controllerHomePage = ControllerHomePage();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +34,9 @@ class HomePage extends StatelessWidget {
                 icon: Icon(Icons.logout_outlined))
           ]),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          this.controllerHomePage.cadastrarCompras(context);
+        },
         child: Icon(Icons.add),
       ),
       bottomNavigationBar: BarraDeNavegacao(),
