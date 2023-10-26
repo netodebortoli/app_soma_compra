@@ -1,9 +1,9 @@
-class ItemCompra {
-  late double valor;
-  late String descricao;
-  DateTime? dataCompra;
-  String? tipoCompra; //enum do tipo, exemplo: tipoCompra.serviço, tipoCompra.alimentação, etc...
-  //atributo que será a imagem
+import 'package:app_soma_conta/domain/Objeto.dart';
 
-  ItemCompra(this.descricao, this.valor, {this.dataCompra, this.tipoCompra});
+class ItemCompra extends Objeto {
+  double valor;
+  String descricao;
+  int quantidade;
+
+  ItemCompra(this.valor, this.descricao, this.quantidade);
 }
