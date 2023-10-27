@@ -44,7 +44,7 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra> {
                       initialDate: DateTime.now(),
                       firstDate: DateTime(2000),
                       lastDate: DateTime(2099),
-                    locale: Locale(_BR)
+                    locale: const Locale("pt", "BR")
                   );
 
                   if (pickerDate != null) {
