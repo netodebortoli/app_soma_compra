@@ -43,7 +43,6 @@ class CampoForm extends StatelessWidget {
         obscureText: password,
         keyboardType: typeInput,
         decoration: InputDecoration(
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
             labelText: label,
             hintText: hint,
             hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),

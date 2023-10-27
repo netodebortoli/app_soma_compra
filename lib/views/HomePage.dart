@@ -1,9 +1,10 @@
 import 'package:app_soma_conta/views/TelaCadastroGrupo.dart';
 import 'package:app_soma_conta/views/TelaDeGraficos.dart';
-import 'package:app_soma_conta/views/TelaListagemDeCompras.dart';
-import 'package:app_soma_conta/views/TelaListagemDeGrupos.dart';
 import 'package:app_soma_conta/views/interaction_controller/ControllerHomePage.dart';
 import 'package:flutter/material.dart';
+
+import 'TelaListagemDeCompras.dart';
+import 'TelaListagemDeGrupos.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -24,7 +25,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
         foregroundColor: Colors.white,
-        title: Text('Soma Compra'),
+        title: const Text('Soma Compra'),
         actions: [
           PopupMenuButton<PopupMenuPages>(
               tooltip: 'Menu de ações',
@@ -41,7 +42,7 @@ class _HomePageState extends State<HomePage> {
               },
               itemBuilder: (BuildContext context) {
                 return <PopupMenuItem<PopupMenuPages>>[
-                  PopupMenuItem(
+                  const PopupMenuItem(
                       value: PopupMenuPages.grupos,
                       child: Text('Criar novo grupo'))
                 ];
@@ -83,7 +84,7 @@ class _HomePageState extends State<HomePage> {
           this.controllerHomePage.cadastrarCompras(context);
         },
         tooltip: 'Cadastrar nova compra',
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: indiceDaPagina,
@@ -92,7 +93,7 @@ class _HomePageState extends State<HomePage> {
             indiceDaPagina = index;
           });
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
               label: "Gráficos", icon: Icon(Icons.bar_chart)),
           BottomNavigationBarItem(
@@ -103,7 +104,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: IndexedStack(
         index: indiceDaPagina,
-        children: [
+        children: const [
           TelaDeGraficos(),
           ListagemDeGrupos(),
           ListagemDeCompras(),
