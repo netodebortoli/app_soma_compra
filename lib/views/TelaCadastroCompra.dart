@@ -1,8 +1,14 @@
-import 'package:app_soma_conta/controller/ControllerCadastroCompra.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:app_soma_conta/customs_widget/CampoForm.dart';
+import 'package:app_soma_conta/views/interaction_controller/ControllerCadastroCompra.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class TelaCadastroCompra extends StatelessWidget {
+class TelaCadastroCompra extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _TelaCadastroCompra();
+}
+
+class _TelaCadastroCompra extends State<TelaCadastroCompra> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,6 +25,43 @@ class TelaCadastroCompra extends StatelessWidget {
   final ControllerCadastroCompra controllerForm = ControllerCadastroCompra();
 
   _body(BuildContext context) {
-    return Container();
+    return Container(
+      color: Colors.white,
+      margin: EdgeInsets.all(20),
+      child: Form(
+        key: controllerForm.formkey,
+        child: ListView(
+          children: [
+            CampoForm("Descricao", controllerForm.controleDescricao,
+                hint: "Descrição da compra"),
+            const SizedBox(height: 17),
+            TextFormField(
+                controller: controllerForm.controleData,
+                keyboardType: TextInputType.datetime,
+                onTap: () async {
+                  DateTime? pickerDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2099),
+                    locale: Locale(_BR)
+                  );
+
+                  if (pickerDate != null) {
+                    setState(() {
+              controllerForm.controleData.text = DateFormat('dd/MM/yyyy').format(pickerDate);
+                    });
+                  }
+                },
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    icon: Icon(Icons.calendar_today_sharp),
+                    labelText: "Data da compra")),
+            const SizedBox(height: 17),
+          ],
+        ),
+      ),
+    );
   }
 }

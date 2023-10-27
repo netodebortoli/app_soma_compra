@@ -30,7 +30,7 @@ class TelaCadastro extends StatelessWidget {
           children: [
             CampoForm("Login", controllerForm.controleLogin, minLength: 4,
                 hint: "Insira seu login de usuário",
-                typeInput: TextInputType.emailAddress),
+                typeInput: TextInputType.text),
             const SizedBox(height: 17),
             CampoForm("Senha", controllerForm.controleSenha1,
                 hint: "Sua senha deve ter no mínimo 6 dígitos", password: true, minLength: 6),
