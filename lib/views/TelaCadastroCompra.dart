@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TelaCadastroCompra extends StatefulWidget {
+
+  static final String routeName = '/compras/novo';
+
   @override
   State<StatefulWidget> createState() => _TelaCadastroCompra();
 }
 
 class _TelaCadastroCompra extends State<TelaCadastroCompra> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,3 +1,4 @@
+import 'package:app_soma_conta/views/TelaCadastroGrupo.dart';
 import 'package:app_soma_conta/views/TelaDeGraficos.dart';
 import 'package:app_soma_conta/views/TelaListagemDeCompras.dart';
 import 'package:app_soma_conta/views/TelaListagemDeGrupos.dart';
@@ -30,10 +31,11 @@ class _HomePageState extends State<HomePage> {
               onSelected: (PopupMenuPages valueSelected) {
                 switch (valueSelected) {
                   case PopupMenuPages.grupos:
-                  //TO-DO: direcionar para criação de novo grupo
+                    Navigator.of(context)
+                        .pushNamed(TelaCadastroGrupo.routeName);
                     break;
                   case PopupMenuPages.compras:
-                  //TO-DO: direcionar para cadastro de nova compra
+                    //TO-DO: direcionar para cadastro de nova compra
                     break;
                 }
               },
@@ -47,36 +49,32 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: const <Widget>[
-            DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-
-                ),
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text('Nome de usuário aqui', style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  )),
-                )
-            ),
-            ListTile(
-              leading: Icon(Icons.account_circle),
-              title: Text('Minha conta'),
-            ),
-            ListTile(
-              leading: Icon(Icons.help),
-              title: Text('Ajuda'),
-            ),
-            ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: Text('Sair'),
-            ),
-          ]
-        ),
+        child: ListView(padding: EdgeInsets.zero, children: const <Widget>[
+          DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Text('Nome de usuário aqui',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                    )),
+              )),
+          ListTile(
+            leading: Icon(Icons.account_circle),
+            title: Text('Minha conta'),
+          ),
+          ListTile(
+            leading: Icon(Icons.help),
+            title: Text('Ajuda'),
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Sair'),
+          ),
+        ]),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
