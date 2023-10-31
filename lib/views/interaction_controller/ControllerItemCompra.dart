@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ControllerItemCompra {
   final formKey = GlobalKey<FormState>();
-  final controleDescricao = TextEditingController();
-  final controleQuantidade = TextEditingController();
-  final controleValor = TextEditingController();
+  final List<TextEditingController> itens = [];
+  final List<TextEditingController> quantidade = [];
+  final List<TextEditingController> preco = [];
 }
