@@ -151,6 +151,18 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra>
     );
   }
 
+  _calcularPrecoTotal() {
+    double total = 0;
+    for (int i = 0; i < controllerItemCompra.quantidade.length; i++) {
+      if (controllerItemCompra.preco[i].value != null && controllerItemCompra.preco[i].value.text.isNotEmpty) {
+        total += double.parse(controllerItemCompra.preco[i].text);
+      }
+    }
+    setState(() {
+      // como setar o valor total no form field de "valor total"
+    });
+  }
+
   final ControllerItemCompra controllerItemCompra = ControllerItemCompra();
 
   @override
@@ -167,6 +179,7 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra>
       controllerItemCompra.preco.add(TextEditingController());
       controllerItemCompra.quantidade.add(TextEditingController());
     });
+    _calcularPrecoTotal();
   }
 
   _removeItem(i) {
@@ -175,6 +188,7 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra>
       controllerItemCompra.preco.removeAt(i);
       controllerItemCompra.quantidade.removeAt(i);
     });
+    _calcularPrecoTotal();
   }
 
   _formItensCompras() {
