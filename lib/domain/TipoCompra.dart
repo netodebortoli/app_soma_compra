@@ -1,6 +1,6 @@
 enum TipoCompra {
-  Servicos('Serviços'),
   Supermercado('Supermercado'),
+  Servicos('Serviços'),
   Saude('Saúde'),
   Lazer('Lazer'),
   Urgencia('Urgência'),

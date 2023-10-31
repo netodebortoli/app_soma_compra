@@ -10,7 +10,7 @@ class Compra extends Objeto {
   double valorTotal = 0;
   String descricao;
   DateTime dataCompra;
-  Grupo? grupo;
+  List<Grupo>? grupo;
   TipoPagamento tipoPagamento;
   TipoCompra tipoCompra;
 

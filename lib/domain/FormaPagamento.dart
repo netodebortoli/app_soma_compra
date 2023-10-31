@@ -1,8 +1,8 @@
 enum TipoPagamento {
+  Dinheiro('Dinheiro'),
   Credito('Crédito'),
   Debito('Débito'),
   Pix('Pix'),
-  Dinheiro('Dinheiro'),
   Outros('Outros');
 
   final String valor;
