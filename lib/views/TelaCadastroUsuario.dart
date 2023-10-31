@@ -1,4 +1,4 @@
-import 'package:app_soma_conta/views/interaction_controller/ControllerFormNewUser.dart';
+import 'package:app_soma_conta/views/interaction_controller/ControllerCadastroUsuario.dart';
 import 'package:app_soma_conta/customs_widget/Botao.dart';
 import 'package:flutter/material.dart';
 

@@ -1,4 +1,4 @@
-import 'package:app_soma_conta/views/TelaCadastro.dart';
+import 'package:app_soma_conta/views/TelaCadastroUsuario.dart';
 import 'package:flutter/material.dart';
 
 import '../HomePage.dart';

@@ -1,10 +1,9 @@
 import 'package:app_soma_conta/customs_widget/Botao.dart';
 import 'package:app_soma_conta/customs_widget/CampoForm.dart';
-import 'package:app_soma_conta/customs_widget/ToastErro.dart';
-import 'package:app_soma_conta/customs_widget/ToastSucesso.dart';
 import 'package:app_soma_conta/domain/FormaPagamento.dart';
 import 'package:app_soma_conta/domain/TipoCompra.dart';
 import 'package:app_soma_conta/views/interaction_controller/ControllerCadastroCompra.dart';
+import 'package:app_soma_conta/views/interaction_controller/ControllerItemCompra.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -16,43 +15,59 @@ class TelaCadastroCompra extends StatefulWidget {
   State<StatefulWidget> createState() => _TelaCadastroCompra();
 }
 
-class _TelaCadastroCompra extends State<TelaCadastroCompra> {
+final ControllerCadastroCompra controllerCompra = ControllerCadastroCompra();
+final ControllerItemCompra controllerItemCompra = ControllerItemCompra();
+
+final mask = MaskTextInputFormatter(mask: '##/##/####');
+
+const List<TipoCompra> tiposCompras = TipoCompra.values;
+const List<TipoPagamento> tiposPagamento = TipoPagamento.values;
+TipoCompra dropdownValueTipoCompra = tiposCompras.first;
+TipoPagamento dropdownValueTipoPagamento = tiposPagamento.first;
+
+class _TelaCadastroCompra extends State<TelaCadastroCompra>
+    with SingleTickerProviderStateMixin<TelaCadastroCompra> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.blueAccent,
-        foregroundColor: Colors.white,
-        title: const Text("Cadastro de Compras"),
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+            appBar: AppBar(
+              bottom: const TabBar(tabs: [
+                Tab(icon: Icon(Icons.shopping_cart_rounded)),
+                Tab(icon: Icon(Icons.add_shopping_cart))
+              ]),
+              title: const Text("Gerenciar Compras"),
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+            ),
+            body: Builder(builder: (context) {
+              return TabBarView(
+                children: <Widget>[
+                  _formCompras(),
+                  _formItensCompras()
+                ],
+              );
+            })),
       ),
-      body: _tabFormCompra(context),
     );
   }
 
-  final ControllerCadastroCompra controllerForm = ControllerCadastroCompra();
-
-  final mask = MaskTextInputFormatter(mask: '##/##/####');
-  static const List<TipoCompra> tiposCompras = TipoCompra.values;
-  static const List<TipoPagamento> tiposPagamento = TipoPagamento.values;
-
-  TipoCompra dropdownValueTipoCompra = tiposCompras.first;
-  TipoPagamento dropdownValueTipoPagamento = tiposPagamento.first;
-
-  _tabFormCompra(BuildContext context) {
+  _formCompras() {
     return Container(
       color: Colors.white,
       margin: EdgeInsets.all(20),
       child: Form(
-        key: controllerForm.formkey,
+        key: controllerCompra.formkey,
         child: ListView(
           children: [
-            CampoForm("Descrição", controllerForm.controleDescricao,
+            CampoForm("Descrição", controllerCompra.controleDescricao,
                 hint: "Descrição da compra"),
             const SizedBox(height: 17),
             TextFormField(
               inputFormatters: [mask],
-              controller: controllerForm.controleData,
+              controller: controllerCompra.controleData,
               validator: (String? text) {
                 if (text != null && text.isEmpty) {
                   return "O campo \"Data da Compra\" é obrigatório.";
@@ -69,7 +84,7 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra> {
 
                 if (pickerDate != null) {
                   setState(() {
-                    controllerForm.controleData.text =
+                    controllerCompra.controleData.text =
                         DateFormat('dd/MM/yyyy').format(pickerDate);
                   });
                 }
@@ -122,17 +137,17 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra> {
                 );
               }).toList(),
             ),
-            CampoForm("Valor Total", controllerForm.controleValorTotal,
+            CampoForm("Valor Total", controllerCompra.controleValorTotal,
                 isFormRequired: false,
                 typeInput: TextInputType.number,
                 formEnable: false),
-            const SizedBox(height: 25),
+            const SizedBox(height: 20),
             Botao("Salvar", onClick: () {
-              controllerForm.cadastrarCompra(context);
+              controllerCompra.cadastrarCompra(context);
             }),
             const SizedBox(height: 17),
             Botao("Cancelar", onClick: () {
-              controllerForm.cancelarCompra(context);
+              controllerCompra.cancelarCompra(context);
             })
           ],
         ),
@@ -140,7 +155,16 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra> {
     );
   }
 
-  _tabItensCompra() {
+  _formItensCompras() {
+    return Container(
+      color: Colors.white,
+      margin: EdgeInsets.all(20),
+      child: Form(
+        key: controllerItemCompra.formKey,
+        child: ListView(
 
+        ),
+      ),
+    );
   }
 }
