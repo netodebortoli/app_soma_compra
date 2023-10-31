@@ -1,10 +1,7 @@
 import 'package:app_soma_conta/views/TelaCadastroCompra.dart';
-import 'package:app_soma_conta/views/TelaCadastroGrupo.dart';
 import 'package:app_soma_conta/views/TelaLogin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
-import 'HomePage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,20 +18,19 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate
       ],
-      supportedLocales: [
-        Locale('en', ''),
-        Locale('br', ''),
+      supportedLocales: const [
+        Locale('en', 'US'),
+        Locale('pt', 'BR'),
       ],
+      home: const MyHomePage(),
+      debugShowCheckedModeBanner: false,
       routes: {
         TelaCadastroCompra.routeName: (_) => TelaCadastroCompra(),
-        TelaCadastroGrupo.routeName: (_) => TelaCadastroGrupo()
       },
     );
   }
