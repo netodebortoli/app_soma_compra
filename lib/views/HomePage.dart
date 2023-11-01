@@ -1,14 +1,12 @@
-import 'package:app_soma_conta/customs_widget/Botao.dart';
 import 'package:app_soma_conta/customs_widget/DialogFormGrupo.dart';
 import 'package:app_soma_conta/views/TelaDeGraficos.dart';
 import 'package:app_soma_conta/views/interaction_controller/ControllerHomePage.dart';
 import 'package:flutter/material.dart';
 import 'TelaListagemDeCompras.dart';
 import 'TelaListagemDeGrupos.dart';
-import 'interaction_controller/ControllerCadastroGrupo.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -18,8 +16,6 @@ enum PopupMenuPages { grupos }
 
 class _HomePageState extends State<HomePage> {
   ControllerHomePage controllerHomePage = ControllerHomePage();
-  final ControllerCadastroGrupo controllerCadastroGrupo =
-      ControllerCadastroGrupo();
   int indiceDaPagina = 1;
 
   @override
@@ -35,7 +31,7 @@ class _HomePageState extends State<HomePage> {
               onSelected: (PopupMenuPages valueSelected) {
                 switch (valueSelected) {
                   case PopupMenuPages.grupos:
-                    showDialog(context: context, builder: (BuildContext context) => DialogFormGrupo());
+                    showDialog(context: context, builder: (BuildContext context) => DialogFormGrupo(null));
                     break;
                 }
               },
@@ -77,11 +73,11 @@ class _HomePageState extends State<HomePage> {
         ]),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        label: Text("Nova compra"),
+        label: const Text("Nova compra"),
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
         onPressed: () {
-          this.controllerHomePage.cadastrarCompras(context);
+          controllerHomePage.cadastrarCompras(context);
         },
         tooltip: 'Cadastrar nova compra',
         icon: const Icon(Icons.add),

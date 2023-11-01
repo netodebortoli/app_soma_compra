@@ -62,7 +62,7 @@ class CardGrupo extends StatelessWidget {
                         )),
                     MenuAcoes(
                       onEdit: () {
-                        controller.irTelaEdicaoGrupo(context);
+                        controller.irTelaEdicaoGrupo(context, index);
                       },
                       onDelete: () {
                         controller.removerGrupo(index);
