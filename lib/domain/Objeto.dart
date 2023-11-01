@@ -3,7 +3,7 @@ abstract class Objeto {
 
   Objeto();
 
-  Objeto.fromMap(Map<String, dynamic> map) {
+  Objeto.fromMapToEntity(Map<String, dynamic> map) {
     id = map["id"];
   }
 }

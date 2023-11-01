@@ -6,7 +6,7 @@ abstract class BaseDAO<T> {
   String get nomeTabela;
 
   // Obriga a definir um fromMap para o objeto específico
-  T fromMap(Map<String, dynamic> map);
+  T fromMapToEntity(Map<String, dynamic> map);
 
   Future<Database?> get db => ConexaoBanco().db;
 
@@ -33,7 +33,7 @@ abstract class BaseDAO<T> {
   void atualizarBase(
       {required List<String> colunas,
       required List<String> nomesFiltros,
-      List? valores}) async {
+      required List? valores}) async {
 
     var dbClient = await db;
     String sql = 'UPDATE $nomeTabela SET ';
@@ -78,7 +78,7 @@ abstract class BaseDAO<T> {
     return id;
   }
 
-  Future<Future<List<T>?>> obterListaBase(
+  Future<List<T>?> obterListaBase(
       {List<String>? nomesFiltros, List? valores}) async {
 
     String sql;
@@ -101,7 +101,7 @@ abstract class BaseDAO<T> {
   Future<List<T>?> obterListaQueryBase(String sql, [List<dynamic>? arguments]) async {
     var dbClient = await db;
     final list = await dbClient?.rawQuery(sql, arguments);
-    final List<T>? listEntity = list?.map<T>((map) => fromMap(map)).toList();
+    final List<T>? listEntity = list?.map<T>((map) => fromMapToEntity(map)).toList();
     return listEntity;
   }
 
