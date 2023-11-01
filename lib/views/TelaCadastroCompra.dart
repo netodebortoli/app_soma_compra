@@ -17,15 +17,14 @@ class TelaCadastroCompra extends StatefulWidget {
 
 final ControllerCadastroCompra controllerCompra = ControllerCadastroCompra();
 
-final mask = MaskTextInputFormatter(mask: '##/##/####');
+final dateMask = MaskTextInputFormatter(mask: '##/##/####');
 
 const List<TipoCompra> tiposCompras = TipoCompra.values;
 const List<TipoPagamento> tiposPagamento = TipoPagamento.values;
 TipoCompra dropdownValueTipoCompra = tiposCompras.first;
 TipoPagamento dropdownValueTipoPagamento = tiposPagamento.first;
 
-class _TelaCadastroCompra extends State<TelaCadastroCompra>
-    with SingleTickerProviderStateMixin<TelaCadastroCompra> {
+class _TelaCadastroCompra extends State<TelaCadastroCompra> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -62,7 +61,7 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra>
                 hint: "Descrição da compra"),
             const SizedBox(height: 17),
             TextFormField(
-              inputFormatters: [mask],
+              inputFormatters: [dateMask],
               controller: controllerCompra.controleData,
               validator: (String? text) {
                 if (text != null && text.isEmpty) {
@@ -89,7 +88,7 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra>
                   labelText: "Data da compra",
                   icon: Icon(Icons.calendar_today_sharp)),
             ),
-            SizedBox(height: 17),
+            const SizedBox(height: 17),
             DropdownButtonFormField(
               value: dropdownValueTipoCompra,
               validator: (value) =>
@@ -154,7 +153,7 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra>
   _calcularPrecoTotal() {
     double total = 0;
     for (int i = 0; i < controllerItemCompra.quantidade.length; i++) {
-      if (controllerItemCompra.preco[i].value != null && controllerItemCompra.preco[i].value.text.isNotEmpty) {
+      if (controllerItemCompra.preco[i].value.text.isNotEmpty) {
         total += double.parse(controllerItemCompra.preco[i].text);
       }
     }
