@@ -9,7 +9,7 @@ class GrupoDAO extends BaseDAO<Grupo> implements BaseDaoImpl<Grupo> {
   }
 
   @override
-  String get nomeTabela => "grupo";
+  String get nomeTabela => "grupos";
 
   @override
   Future<List<Grupo>?> listarTodos() async {

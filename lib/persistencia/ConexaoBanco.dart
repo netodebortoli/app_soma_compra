@@ -37,12 +37,12 @@ class ConexaoBanco {
     await db.execute(
         'CREATE TABLE compras (id	INTEGER PRIMARY KEY, valorTotal	REAL, descricao	VARCHAR(200) NOT NULL, forma_pagamento VARCHAR(50) NOT NULL, data_compra CHAR(10) NOT NULL, tipo_compra VARCHAR(50) NOT NULL)');
     await db.execute(
-        'CREATE TABLE itens_compra (id	INTEGER PRIMARY KEY, valor	REAL NOT NULL, descricao VARCHAR(50) NOT NULL, quantidade INTEGER NOT NULL, id_compra INTEGER NOT NULL FOREIGN KEY REFERENCES compras(id))');
+        'CREATE TABLE itens_compra (id	INTEGER PRIMARY KEY, valor	REAL NOT NULL, descricao VARCHAR(50) NOT NULL, quantidade INTEGER NOT NULL, id_compra INTEGER NOT NULL, FOREIGN KEY(id_compra) REFERENCES compras(id))');
     await db.execute(
-        'CREATE TABLE grupos_compras (id_grupo INTEGER NOT NULL, id_compra INTEGER NOT NULL, FOREIGN KEY(id_grupo) REFERENCES grupo(id),FOREIGN KEY(id_compra) REFERENCES compras(id),PRIMARY KEY (id_grupo, id_compra))');
+        'CREATE TABLE grupos_compras (id_grupo INTEGER, id_compra INTEGER, FOREIGN KEY(id_grupo) REFERENCES grupo(id),FOREIGN KEY(id_compra) REFERENCES compras(id),PRIMARY KEY (id_grupo, id_compra))');
 
     await db.transaction((txn) async {
-      int id3 = await txn.rawInsert('INSERT INTO grupo(descricao, valorTotal) '
+      int id3 = await txn.rawInsert('INSERT INTO grupos(descricao, valorTotal) '
           'VALUES("Outubro/2023", 50)');
       print('inserted3: $id3');
 
@@ -57,7 +57,7 @@ class ConexaoBanco {
       print('inserted1: $id1');
 
       int id0 =
-          await txn.rawInsert('INSERT INTO grupo_compras(id_grupo, id_compra) '
+          await txn.rawInsert('INSERT INTO grupos_compras(id_grupo, id_compra) '
               'VALUES(1,1)');
       print('inserted0: $id0');
     });

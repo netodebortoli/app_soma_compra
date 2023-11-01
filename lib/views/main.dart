@@ -23,15 +23,13 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate
       ],
+      locale: const Locale('pt', 'BR'),
       supportedLocales: const [
         Locale('en', 'US'),
         Locale('pt', 'BR'),
       ],
       home: const MyHomePage(),
-      debugShowCheckedModeBanner: false,
-      routes: {
-        TelaCadastroCompra.routeName: (_) => TelaCadastroCompra(),
-      },
+      debugShowCheckedModeBanner: false
     );
   }
 }
