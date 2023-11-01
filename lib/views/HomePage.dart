@@ -1,9 +1,8 @@
 import 'package:app_soma_conta/customs_widget/Botao.dart';
+import 'package:app_soma_conta/customs_widget/DialogFormGrupo.dart';
 import 'package:app_soma_conta/views/TelaDeGraficos.dart';
 import 'package:app_soma_conta/views/interaction_controller/ControllerHomePage.dart';
 import 'package:flutter/material.dart';
-
-import '../customs_widget/CampoForm.dart';
 import 'TelaListagemDeCompras.dart';
 import 'TelaListagemDeGrupos.dart';
 import 'interaction_controller/ControllerCadastroGrupo.dart';
@@ -15,7 +14,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-enum PopupMenuPages { grupos, compras }
+enum PopupMenuPages { grupos }
 
 class _HomePageState extends State<HomePage> {
   ControllerHomePage controllerHomePage = ControllerHomePage();
@@ -36,35 +35,7 @@ class _HomePageState extends State<HomePage> {
               onSelected: (PopupMenuPages valueSelected) {
                 switch (valueSelected) {
                   case PopupMenuPages.grupos:
-                    showDialog<void>(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                              title: Text("Cadastro de novo grupo"),
-                              content: Form(
-                                key: controllerCadastroGrupo.formkey,
-                                child: CampoForm("Nome",
-                                    controllerCadastroGrupo.controleDescricao,
-                                    typeInput: TextInputType.text),
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    controllerCadastroGrupo.cancelar(context);
-                                  },
-                                  child: const Text('Cancelar'),
-                                ),
-                                Botao(
-                                  "Salvar",
-                                  onClick: () {
-                                    controllerCadastroGrupo
-                                        .cadastrarGrupo(context);
-                                  },
-                                ),
-                              ],
-                            ));
-                    break;
-                  case PopupMenuPages.compras:
-                    //TO-DO: direcionar para cadastro de nova compra
+                    showDialog(context: context, builder: (BuildContext context) => DialogFormGrupo());
                     break;
                 }
               },
