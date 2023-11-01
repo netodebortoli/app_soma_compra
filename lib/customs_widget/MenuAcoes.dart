@@ -15,10 +15,10 @@ class MenuAcoes extends StatelessWidget {
         onSelected: (MenuGrupo valueSelected) {
           switch (valueSelected) {
             case MenuGrupo.editar:
-              onEdit;
+              onEdit!();
               break;
             case MenuGrupo.excluir:
-              onDelete;
+              onDelete!();
               break;
           }
         },
