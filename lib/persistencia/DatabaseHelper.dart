@@ -5,22 +5,22 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
   // Para garantir apenas uma instância (Singleton) de DatabaseHelper
-  static final DatabaseHelper _instance = DatabaseHelper.getInstance();
+  static final DatabaseHelper _instance = DatabaseHelper._getInstance();
 
   // Esse é um named contructor (que chama o construtor padrão alocando o objeto)
-  DatabaseHelper.getInstance();
+  DatabaseHelper._getInstance();
 
   // Se o usuário usar DatabaseHelper() é a mesma coisa de fazer DatabaseHelper.getInstance()
   factory DatabaseHelper() => _instance;
 
-  static Database? _db;
+  static Database? _db = null;
 
   Future<Database?> get db async {
     if (_db != null) {
-      return _db;
+      return _db!;
     }
     _db = await _initDb();
-    return _db;
+    return _db!;
   }
 
   Future _initDb() async {

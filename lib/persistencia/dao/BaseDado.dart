@@ -8,10 +8,11 @@ abstract class BaseDAO<T> {
   // Obriga a definir um fromMap para o objeto específico
   T fromMap(Map<String, dynamic> map);
 
-  Future<Database?> get db => DatabaseHelper.getInstance().db;
+  Future<Database?> get db => DatabaseHelper().db;
 
   Future<int?> obterQuantidadeBase(
       {List<String>? nomesFiltros, List? valores}) async {
+
     final dbClient = await db;
 
     String sql;
@@ -30,20 +31,20 @@ abstract class BaseDAO<T> {
   }
 
   void atualizarBase(
-      {required List<String>? colunas,
-      required List<String>? nomesFiltros,
+      {required List<String> colunas,
+      required List<String> nomesFiltros,
       List? valores}) async {
 
     var dbClient = await db;
     String sql = 'UPDATE $nomeTabela SET ';
 
-    int? qtColunas = colunas?.length;
+    int qtColunas = colunas.length;
 
     for (int i = 0; i < (qtColunas! - 1); i++) {
-      sql += ' ${colunas?[i]} = ?, ';
+      sql += ' ${colunas[i]} = ?, ';
     }
 
-    if (nomesFiltros != null && nomesFiltros.isNotEmpty) {
+    if (nomesFiltros.isNotEmpty) {
       sql += ' ${colunas?[qtColunas - 1]} = ?';
       sql += ' WHERE ';
       int qtFiltros = nomesFiltros.length;
