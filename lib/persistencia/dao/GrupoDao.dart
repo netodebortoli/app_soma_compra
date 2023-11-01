@@ -23,7 +23,7 @@ class GrupoDAO extends BaseDAO<Grupo> implements BaseDaoImpl<Grupo> {
 
   @override
   Future<int?> criar(Grupo model) async {
-    return inserirBase(
+    return await inserirBase(
         colunas: ["valorTotal", "descricao"],
         valores: [model.valorTotal, model.descricao]
     );
@@ -31,7 +31,7 @@ class GrupoDAO extends BaseDAO<Grupo> implements BaseDaoImpl<Grupo> {
 
   @override
   void atualizar(Grupo model) async {
-    atualizarBase(
+     atualizarBase (
         colunas: ["valorTotal", "descricao"],
         nomesFiltros: ["id"],
         valores: [model.valorTotal, model.descricao, model.id]
