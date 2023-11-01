@@ -1,5 +1,5 @@
 import 'package:sqflite/sqflite.dart';
-import '../DatabaseHelper.dart';
+import '../ConexaoBanco.dart';
 
 abstract class BaseDAO<T> {
   // Vai criar um get abstrato, ou seja, irá forçar os descendentes a atribuí-lo
@@ -8,7 +8,7 @@ abstract class BaseDAO<T> {
   // Obriga a definir um fromMap para o objeto específico
   T fromMap(Map<String, dynamic> map);
 
-  Future<Database?> get db => DatabaseHelper().db;
+  Future<Database?> get db => ConexaoBanco().db;
 
   Future<int?> obterQuantidadeBase(
       {List<String>? nomesFiltros, List? valores}) async {

@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class DatabaseHelper {
+class ConexaoBanco {
   // Para garantir apenas uma instância (Singleton) de DatabaseHelper
-  static final DatabaseHelper _instance = DatabaseHelper._getInstance();
+  static final ConexaoBanco _instance = ConexaoBanco._getInstance();
 
   // Esse é um named contructor (que chama o construtor padrão alocando o objeto)
-  DatabaseHelper._getInstance();
+  ConexaoBanco._getInstance();
 
   // Se o usuário usar DatabaseHelper() é a mesma coisa de fazer DatabaseHelper.getInstance()
-  factory DatabaseHelper() => _instance;
+  factory ConexaoBanco() => _instance;
 
   static Database? _db = null;
 
@@ -35,7 +35,7 @@ class DatabaseHelper {
     await db.execute(
         'CREATE TABLE grupos (id	INTEGER PRIMARY KEY, descricao TEXT NOT NULL, valorTotal	REAL)');
     await db.execute(
-        'CREATE TABLE compras (id	INTEGER PRIMARY KEY, valorTotal	REAL, descricao	VARCHAR(200) NOT NULL, forma_pagamento VARCHAR(50) NOT NULL, data_compra DATE NOT NULL, tipo_compra VARCHAR(50) NOT NULL)');
+        'CREATE TABLE compras (id	INTEGER PRIMARY KEY, valorTotal	REAL, descricao	VARCHAR(200) NOT NULL, forma_pagamento VARCHAR(50) NOT NULL, data_compra CHAR(10) NOT NULL, tipo_compra VARCHAR(50) NOT NULL)');
     await db.execute(
         'CREATE TABLE itens_compra (id	INTEGER PRIMARY KEY, valor	REAL NOT NULL, descricao VARCHAR(50) NOT NULL, quantidade INTEGER NOT NULL, id_compra INTEGER NOT NULL FOREIGN KEY REFERENCES compras(id))');
     await db.execute(
@@ -43,7 +43,7 @@ class DatabaseHelper {
 
     await db.transaction((txn) async {
       int id3 = await txn.rawInsert('INSERT INTO grupo(descricao, valorTotal) '
-          'VALUES("Outubro/2023", 0)');
+          'VALUES("Outubro/2023", 50)');
       print('inserted3: $id3');
 
       int id2 = await txn.rawInsert(

@@ -1,18 +1,28 @@
-import 'package:intl/intl.dart';
-
-String formatarDateTimeToString(DateTime datetime) {
-  // return DateFormat('dd/MM/yyyy').format(data);
+String formatarDateTimeToString(DateTime datatime) {
   String mes;
-  if (datetime.month >= 10)
-    mes = datetime.month.toString();
-  else
-    mes = "0${datetime.month.toString()}";
+  mes = datatime.month >= 10
+      ? datatime.month.toString()
+      : "0${datatime.month.toString()}";
   String dia;
-  if (datetime.day >= 10)
-    dia = datetime.day.toString();
-  else
-    dia = "0${datetime.day.toString()}";
-  String ano = datetime.year.toString();
-  String data = "$dia/$mes/$ano";
-  return data;
+  dia = datatime.day >= 10
+      ? datatime.day.toString()
+      : "0${datatime.day.toString()}";
+  String ano = datatime.year.toString();
+  return "$dia/$mes/$ano";
+}
+
+DateTime? gerarDateTimeFromString(String data) {
+  try {
+    if (data.length != 10) {
+      // dd/mm/aaaa
+      return null;
+    }
+    String dia = data.substring(0, 2);
+    String mes = data.substring(3, 5);
+    String ano = data.substring(6);
+    String dataFormatada = "$ano-$mes-$dia";
+    return DateTime.parse(dataFormatada);
+  } on Exception {
+    return null;
+  }
 }
