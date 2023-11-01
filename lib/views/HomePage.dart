@@ -1,10 +1,12 @@
-import 'package:app_soma_conta/views/TelaCadastroGrupo.dart';
+import 'package:app_soma_conta/customs_widget/Botao.dart';
 import 'package:app_soma_conta/views/TelaDeGraficos.dart';
 import 'package:app_soma_conta/views/interaction_controller/ControllerHomePage.dart';
 import 'package:flutter/material.dart';
 
+import '../customs_widget/CampoForm.dart';
 import 'TelaListagemDeCompras.dart';
 import 'TelaListagemDeGrupos.dart';
+import 'interaction_controller/ControllerCadastroGrupo.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -17,6 +19,8 @@ enum PopupMenuPages { grupos, compras }
 
 class _HomePageState extends State<HomePage> {
   ControllerHomePage controllerHomePage = ControllerHomePage();
+  final ControllerCadastroGrupo controllerCadastroGrupo =
+      ControllerCadastroGrupo();
   int indiceDaPagina = 1;
 
   @override
@@ -32,8 +36,32 @@ class _HomePageState extends State<HomePage> {
               onSelected: (PopupMenuPages valueSelected) {
                 switch (valueSelected) {
                   case PopupMenuPages.grupos:
-                    Navigator.of(context)
-                        .pushNamed(TelaCadastroGrupo.routeName);
+                    showDialog<void>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                              title: Text("Cadastro de novo grupo"),
+                              content: Form(
+                                key: controllerCadastroGrupo.formkey,
+                                child: CampoForm("Nome",
+                                    controllerCadastroGrupo.controleDescricao,
+                                    typeInput: TextInputType.text),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    controllerCadastroGrupo.cancelar(context);
+                                  },
+                                  child: const Text('Cancelar'),
+                                ),
+                                Botao(
+                                  "Salvar",
+                                  onClick: () {
+                                    controllerCadastroGrupo
+                                        .cadastrarGrupo(context);
+                                  },
+                                ),
+                              ],
+                            ));
                     break;
                   case PopupMenuPages.compras:
                     //TO-DO: direcionar para cadastro de nova compra
@@ -77,14 +105,15 @@ class _HomePageState extends State<HomePage> {
           ),
         ]),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
+        label: Text("Nova compra"),
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
         onPressed: () {
           this.controllerHomePage.cadastrarCompras(context);
         },
         tooltip: 'Cadastrar nova compra',
-        child: const Icon(Icons.add),
+        icon: const Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: indiceDaPagina,

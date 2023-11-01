@@ -7,7 +7,7 @@ import 'TipoCompra.dart';
 
 class Compra extends Objeto {
   List<ItemCompra>? itens;
-  double valorTotal = 0;
+  late double valorTotal;
   String descricao;
   DateTime dataCompra;
   List<Grupo>? grupo;
@@ -18,6 +18,15 @@ class Compra extends Objeto {
       {required this.descricao,
       required this.tipoPagamento,
       required this.tipoCompra,
+      this.itens,
+      required this.dataCompra,
+      this.grupo});
+
+  Compra.mock(
+      {required this.descricao,
+      required this.tipoPagamento,
+      required this.tipoCompra,
+      required this.valorTotal,
       this.itens,
       required this.dataCompra,
       this.grupo});
