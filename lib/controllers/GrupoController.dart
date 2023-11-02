@@ -4,7 +4,7 @@ import '../domain/Grupo.dart';
 
 class GrupoController {
 
-  GrupoDAO _dao = GrupoDAO();
+  final GrupoDAO _dao = GrupoDAO();
 
   Future<List<Grupo>> listarTodos() async {
     List<Grupo>? dados = await _dao.listarTodos();
