@@ -5,4 +5,8 @@ class ControllerItemCompra {
   final List<TextEditingController> itens = [];
   final List<TextEditingController> quantidade = [];
   final List<TextEditingController> preco = [];
+
+  bool validarFormItem(BuildContext context) {
+    return formKey.currentState!.validate() ? true : false;
+  }
 }

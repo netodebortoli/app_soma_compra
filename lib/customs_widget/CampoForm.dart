@@ -36,7 +36,7 @@ class CampoForm extends StatelessWidget {
       this.isFormRequired = true,
       this.typeInput = TextInputType.text,
       this.validator}) {
-    validator = validarCampoEdicao;
+    validator ??= validarCampoEdicao;
   }
 
   @override

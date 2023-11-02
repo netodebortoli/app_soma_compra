@@ -9,8 +9,6 @@ import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class TelaCadastroCompra extends StatefulWidget {
-  static final String routeName = '/compras/novo';
-
   @override
   State<StatefulWidget> createState() => _TelaCadastroCompra();
 }
@@ -52,13 +50,13 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra> {
   _formCompras() {
     return Container(
       color: Colors.white,
-      margin: EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
       child: Form(
         key: controllerCompra.formkey,
         child: ListView(
           children: [
             CampoForm("Descrição", controllerCompra.controleDescricao,
-                hint: "Descrição da compra"),
+                hint: "Descrição da compra", maxLength: 200),
             const SizedBox(height: 17),
             TextFormField(
               inputFormatters: [dateMask],
@@ -100,8 +98,7 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra> {
               },
               decoration: const InputDecoration(
                   labelText: "Tipo da Compra",
-                  labelStyle:
-                      const TextStyle(color: Colors.grey, fontSize: 20)),
+                  labelStyle: TextStyle(color: Colors.grey, fontSize: 20)),
               items: tiposCompras
                   .map<DropdownMenuItem<TipoCompra>>((TipoCompra value) {
                 return DropdownMenuItem<TipoCompra>(
@@ -122,8 +119,7 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra> {
               },
               decoration: const InputDecoration(
                   labelText: "Tipo do Pagamento",
-                  labelStyle:
-                      const TextStyle(color: Colors.grey, fontSize: 20)),
+                  labelStyle: TextStyle(color: Colors.grey, fontSize: 20)),
               items: tiposPagamento
                   .map<DropdownMenuItem<TipoPagamento>>((TipoPagamento value) {
                 return DropdownMenuItem<TipoPagamento>(
@@ -154,31 +150,26 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra> {
     double total = 0;
     for (int i = 0; i < controllerItemCompra.quantidade.length; i++) {
       if (controllerItemCompra.preco[i].value.text.isNotEmpty) {
-        total += double.parse(controllerItemCompra.preco[i].text);
+        total += double.parse(controllerItemCompra.preco[i].text) *
+            double.parse(controllerItemCompra.quantidade[i].text);
       }
     }
     setState(() {
-      // como setar o valor total no form field de "valor total"
+
     });
   }
 
   final ControllerItemCompra controllerItemCompra = ControllerItemCompra();
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _addItem();
-    });
-  }
-
   _addItem() {
-    setState(() {
-      controllerItemCompra.itens.add(TextEditingController());
-      controllerItemCompra.preco.add(TextEditingController());
-      controllerItemCompra.quantidade.add(TextEditingController());
-    });
-    _calcularPrecoTotal();
+    if (controllerItemCompra.validarFormItem(context)) {
+      setState(() {
+        controllerItemCompra.itens.add(TextEditingController());
+        controllerItemCompra.preco.add(TextEditingController());
+        controllerItemCompra.quantidade.add(TextEditingController());
+      });
+      _calcularPrecoTotal();
+    }
   }
 
   _removeItem(i) {
@@ -229,7 +220,15 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra> {
                             child: Padding(
                               padding: const EdgeInsets.all(5),
                               child: CampoForm(
-                                  "Descrição", controllerItemCompra.itens[i]),
+                                  "Descrição", controllerItemCompra.itens[i],
+                                  validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Obrigatório!';
+                                }
+                                if (value.length > 50) {
+                                  return 'Campo inválido!';
+                                }
+                              }),
                             ),
                           ),
                           Expanded(
@@ -238,7 +237,15 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra> {
                               padding: const EdgeInsets.all(5),
                               child: CampoForm(
                                   "Qtd", controllerItemCompra.quantidade[i],
-                                  typeInput: TextInputType.number),
+                                  typeInput: TextInputType.number,
+                                  validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Obrigatório!';
+                                }
+                                if (value != null && double.parse(value) <= 0) {
+                                  return 'Valor inválido';
+                                }
+                              }),
                             ),
                           ),
                           Expanded(
@@ -247,7 +254,14 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra> {
                               padding: const EdgeInsets.all(5),
                               child: CampoForm(
                                   "Preço", controllerItemCompra.preco[i],
-                                  typeInput: TextInputType.number),
+                                  validator: (value) {
+                                if (value != null && value.isEmpty) {
+                                  return 'Obrigatório!';
+                                }
+                                if (value != null && double.parse(value) < 0) {
+                                  return 'Preço inválido!';
+                                }
+                              }, typeInput: TextInputType.number),
                             ),
                           ),
                           Row(
