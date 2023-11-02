@@ -1,17 +1,20 @@
-import 'package:app_soma_conta/customs_widget/CardCompra.dart';
-import 'package:app_soma_conta/views/interaction_controller/ControllerListagemCompras.dart';
 import 'package:flutter/material.dart';
 
+import '../customs_widget/CardCompra.dart';
 import '../domain/Compra.dart';
+import '../domain/Grupo.dart';
+import 'interaction_controller/ControllerListagemCompras.dart';
 
-class ListagemDeCompras extends StatefulWidget {
-  const ListagemDeCompras({super.key});
+class ComprasPorGrupo extends StatefulWidget {
+  Grupo grupo;
+
+  ComprasPorGrupo(this.grupo, {super.key});
 
   @override
-  State<ListagemDeCompras> createState() => _ListagemDeComprasState();
+  State<ComprasPorGrupo> createState() => _ComprasPorGrupoState();
 }
 
-class _ListagemDeComprasState extends State<ListagemDeCompras> {
+class _ComprasPorGrupoState extends State<ComprasPorGrupo> {
   late ControllerListagemCompras _controllerListagemCompras;
 
   @override
@@ -29,8 +32,14 @@ class _ListagemDeComprasState extends State<ListagemDeCompras> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Compras de ${widget.grupo.descricao}"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+      ),
+      body: Column(
         children: [
           Expanded(
             flex: 10,

@@ -1,4 +1,6 @@
 import 'package:app_soma_conta/customs_widget/MenuAcoes.dart';
+import 'package:app_soma_conta/utils/Navegacao.dart';
+import 'package:app_soma_conta/views/TelaListagemComprasPorGrupo.dart';
 import 'package:app_soma_conta/views/interaction_controller/ControllerListagemGrupos.dart';
 import 'package:flutter/material.dart';
 import '../domain/Grupo.dart';
@@ -21,7 +23,7 @@ class CardGrupo extends StatelessWidget {
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
-            //IR PARA LISTAGEM SÓ DE COMPRAS DO GRUPO
+            push(context, ComprasPorGrupo(grupo));
           },
           child: SizedBox(
             width: mediaQ.size.width * 0.95,
@@ -50,7 +52,7 @@ class CardGrupo extends StatelessWidget {
                                   style: TextStyle(fontSize: 15),
                                 ),
                                 Text(
-                                  "R\$ ${grupo.valorTotal}",
+                                  "R\$ ${grupo.valor_total}",
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       color: Colors.blue.shade800,
