@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:app_soma_conta/controllers/GrupoController.dart';
 import 'package:app_soma_conta/customs_widget/DialogFormGrupo.dart';
-import 'package:app_soma_conta/persistencia/dao/GrupoDao.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/Grupo.dart';
@@ -13,11 +12,10 @@ class ControllerListagemGrupos {
 
   ControllerListagemGrupos();
 
-  GrupoDAO dao = GrupoDAO();
   GrupoController controller = GrupoController();
 
   Future<List<Grupo>?> buscarGrupos() async {
-    grupos = await dao.listarTodos();
+    grupos = await controller.listarTodos();
     streamController.add(grupos!);
     return grupos;
   }
