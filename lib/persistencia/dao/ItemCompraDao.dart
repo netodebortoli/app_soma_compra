@@ -1,5 +1,5 @@
 import 'package:app_soma_conta/domain/ItemCompra.dart';
-import 'package:app_soma_conta/persistencia/dao/BaseDado.dart';
+import 'package:app_soma_conta/persistencia/dao/BaseDao.dart';
 
 class ItemCompraDAO extends BaseDAO<ItemCompra> {
 

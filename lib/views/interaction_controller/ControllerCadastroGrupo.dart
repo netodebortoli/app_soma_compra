@@ -33,7 +33,7 @@ class ControllerCadastroGrupo {
       grupo!.descricao = controleDescricao.text;
       controller.atualizarGrupo(grupo!);
     } else {
-      grupo = Grupo(descricao: controleDescricao.text, valorTotal: 0.0);
+      grupo = Grupo(descricao: controleDescricao.text, valor_total: 0.0);
       controller.inserirGrupo(grupo!);
     }
 

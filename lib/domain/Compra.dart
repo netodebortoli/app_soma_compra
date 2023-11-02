@@ -9,42 +9,42 @@ import 'TipoCompra.dart';
 
 class Compra extends Objeto {
   late List<ItemCompra>? itens;
-  late double valorTotal;
+  late double valor_total;
   late String descricao;
-  late DateTime dataCompra;
+  late DateTime data_compra;
   late List<Grupo>? grupos;
-  late TipoPagamento tipoPagamento;
-  late TipoCompra tipoCompra;
+  late TipoPagamento tipo_pagamento;
+  late TipoCompra tipo_compra;
 
   Compra(
       {required this.descricao,
-      required this.tipoPagamento,
-      required this.tipoCompra,
+      required this.tipo_pagamento,
+      required this.tipo_compra,
       this.itens,
-      required this.dataCompra,
+      required this.data_compra,
       this.grupos});
 
   Compra.mock(
       {required this.descricao,
-      required this.tipoPagamento,
-      required this.tipoCompra,
-      required this.valorTotal,
+      required this.tipo_pagamento,
+      required this.tipo_compra,
+      required this.valor_total,
       this.itens,
-      required this.dataCompra,
+      required this.data_compra,
       this.grupos});
 
   Compra.fromMapToEntity(Map<String, dynamic> map)
       : super.fromMapToEntity(map) {
     // grupo
-    valorTotal = map["valorTotal"];
+    valor_total = map["valor_total"];
     descricao = map["descricao"];
-    dataCompra = gerarDateTimeFromString(map["dataCompra"])!;
+    data_compra = gerarDateTimeFromString(map["data_compra"])!;
     // itens
-    tipoPagamento = map["tipoPagamento"];
-    tipoCompra = map["tipoCompra"];
+    tipo_pagamento = map["tipo_pagamento"];
+    tipo_compra = map["tipo_compra"];
   }
 
   String getDataFormatada() {
-    return formatarDateTimeToString(dataCompra);
+    return formatarDateTimeToString(data_compra);
   }
 }

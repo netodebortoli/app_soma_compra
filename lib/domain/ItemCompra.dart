@@ -18,6 +18,5 @@ class ItemCompra extends Objeto {
     valor = map["valor"];
     descricao = map["descricao"];
     quantidade = map["quantidade"];
-    compra = map["compra"];
   }
 }

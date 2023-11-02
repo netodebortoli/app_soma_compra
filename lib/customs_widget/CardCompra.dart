@@ -48,8 +48,8 @@ class CardCompra extends StatelessWidget {
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
                               Text("Data: ${compra.getDataFormatada()}"),
-                              Text("Tipo: ${compra.tipoCompra.valor}"),
-                              Text("Pagamento: ${compra.tipoPagamento.valor}"),
+                              Text("Tipo: ${compra.tipo_compra.valor}"),
+                              Text("Pagamento: ${compra.tipo_pagamento.valor}"),
                             ],
                           ),
                         )),
@@ -59,7 +59,7 @@ class CardCompra extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            "R\$ ${compra.valorTotal.toStringAsFixed(2)}",
+                            "R\$ ${compra.valor_total.toStringAsFixed(2)}",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,

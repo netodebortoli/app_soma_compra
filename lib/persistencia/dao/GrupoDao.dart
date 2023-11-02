@@ -1,5 +1,5 @@
 import 'package:app_soma_conta/domain/Grupo.dart';
-import 'package:app_soma_conta/persistencia/dao/BaseDado.dart';
+import 'package:app_soma_conta/persistencia/dao/BaseDao.dart';
 
 class GrupoDAO extends BaseDAO<Grupo> {
 
@@ -24,7 +24,7 @@ class GrupoDAO extends BaseDAO<Grupo> {
   Future<int?> criar(Grupo model) async {
     return await inserirBase(
         colunas: ["valor_total", "descricao"],
-        valores: [model.valorTotal, model.descricao]
+        valores: [model.valor_total, model.descricao]
     );
   }
 
@@ -32,7 +32,7 @@ class GrupoDAO extends BaseDAO<Grupo> {
      atualizarBase (
         colunas: ["valor_total", "descricao"],
         nomesFiltros: ["id"],
-        valores: [model.valorTotal, model.descricao, model.id]
+        valores: [model.valor_total, model.descricao, model.id]
     );
   }
 
