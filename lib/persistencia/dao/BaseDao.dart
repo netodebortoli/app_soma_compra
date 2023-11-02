@@ -78,7 +78,7 @@ abstract class BaseDAO<T> {
     return id;
   }
 
-  Future<List<T>?> obterListaBase(
+  Future<List<T>> obterListaBase(
       {List<String>? nomesFiltros, List? valores}) async {
 
     String sql;
@@ -98,10 +98,10 @@ abstract class BaseDAO<T> {
     return obterListaQueryBase(sql, valores);
   }
 
-  Future<List<T>?> obterListaQueryBase(String sql, [List<dynamic>? arguments]) async {
+  Future<List<T>> obterListaQueryBase(String sql, [List<dynamic>? arguments]) async {
     var dbClient = await db;
-    final list = await dbClient?.rawQuery(sql, arguments);
-    final List<T>? listEntity = list?.map<T>((map) => fromMapToEntity(map)).toList();
+    final list = await dbClient!.rawQuery(sql, arguments);
+    final List<T> listEntity = list.map<T>((map) => fromMapToEntity(map)).toList();
     return listEntity;
   }
 

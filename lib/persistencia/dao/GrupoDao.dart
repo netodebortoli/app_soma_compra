@@ -11,7 +11,7 @@ class GrupoDAO extends BaseDAO<Grupo> {
     return Grupo.fromMapToEntity(map);
   }
 
-  Future<List<Grupo>?> listarTodos() async {
+  Future<List<Grupo>> listarTodos() async {
     return await obterListaBase();
   }
 

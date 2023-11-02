@@ -7,13 +7,7 @@ class GrupoController {
   final GrupoDAO _dao = GrupoDAO();
 
   Future<List<Grupo>> listarTodos() async {
-    List<Grupo>? dados = await _dao.listarTodos();
-    List<Grupo> grupos = <Grupo>[];
-    if(dados == null){
-      return grupos;
-    }
-    grupos.addAll(dados);
-    return grupos;
+    return await _dao.listarTodos();
   }
 
   void inserirGrupo(Grupo grupo) {

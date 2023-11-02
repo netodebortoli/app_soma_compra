@@ -1,5 +1,4 @@
 import 'package:app_soma_conta/domain/Objeto.dart';
-import 'package:flutter/foundation.dart';
 
 import '../utils/Formatacao.dart';
 import 'FormaPagamento.dart';
@@ -33,8 +32,7 @@ class Compra extends Objeto {
       required this.data_compra,
       this.grupos});
 
-  Compra.fromMapToEntity(Map<String, dynamic> map)
-      : super.fromMapToEntity(map) {
+  Compra.fromMapToEntity(Map<String, dynamic> map) : super.fromMapToEntity(map) {
     // grupo
     valor_total = map["valor_total"];
     descricao = map["descricao"];

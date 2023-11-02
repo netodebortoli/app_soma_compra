@@ -23,10 +23,13 @@ class ConexaoBanco {
     return _db!;
   }
 
+  Future<void> deleteDatabase(String path) => databaseFactory.deleteDatabase(path);
+
   Future _initDb() async {
     String databasesPath = await getDatabasesPath();
     String path = join(databasesPath, 'soma_compra.db');
 
+//    deleteDatabase(path);
     var db = await openDatabase(path, version: 1, onConfigure: onConfigure, onCreate: _onCreate);
     return db;
   }
