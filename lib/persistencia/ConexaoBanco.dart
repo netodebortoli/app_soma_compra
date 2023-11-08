@@ -29,7 +29,7 @@ class ConexaoBanco {
     String databasesPath = await getDatabasesPath();
     String path = join(databasesPath, 'soma_compra.db');
 
-//    deleteDatabase(path);
+    // deleteDatabase(path);
     var db = await openDatabase(path, version: 1, onConfigure: onConfigure, onCreate: _onCreate);
     return db;
   }
@@ -42,7 +42,7 @@ class ConexaoBanco {
     await db.execute(
         'CREATE TABLE grupo (id	INTEGER PRIMARY KEY, descricao TEXT NOT NULL, valor_total	REAL)');
     await db.execute(
-        'CREATE TABLE compra (id	INTEGER PRIMARY KEY, valor_total	REAL, descricao	VARCHAR(200) NOT NULL, forma_pagamento VARCHAR(50) NOT NULL, data_compra CHAR(10) NOT NULL, tipo_compra VARCHAR(50) NOT NULL)');
+        'CREATE TABLE compra (id	INTEGER PRIMARY KEY, valor_total	REAL, descricao	VARCHAR(200) NOT NULL, tipo_pagamento VARCHAR(50) NOT NULL, data_compra CHAR(10) NOT NULL, tipo_compra VARCHAR(50) NOT NULL)');
     await db.execute(
         'CREATE TABLE item_compra (id	INTEGER PRIMARY KEY, valor	REAL NOT NULL, descricao VARCHAR(50) NOT NULL, quantidade INTEGER NOT NULL, id_compra INTEGER NOT NULL, FOREIGN KEY(id_compra) REFERENCES compra(id) ON DELETE CASCADE)');
     await db.execute(
@@ -54,8 +54,8 @@ class ConexaoBanco {
       print('inserted3: $id3');
 
       int id2 = await txn.rawInsert(
-          'INSERT INTO compra(valor_total, descricao, forma_pagamento, data_compra, tipo_compra) '
-          'VALUES(50, "Compra no mercadinho", "Dinheiro", "2023-10-31" ,"Mercado")');
+          'INSERT INTO compra(valor_total, descricao, tipo_pagamento, data_compra, tipo_compra) '
+          'VALUES(50, "Compra no mercadinho", "Dinheiro", "2023-10-31" , "Mercado")');
       print('inserted2: $id2');
 
       int id1 = await txn
