@@ -1,6 +1,7 @@
 import 'package:app_soma_conta/domain/Compra.dart';
 import 'package:app_soma_conta/domain/Grupo.dart';
 import 'package:app_soma_conta/persistencia/dao/BaseDao.dart';
+import 'package:app_soma_conta/utils/Formatacao.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../domain/ItemCompra.dart';
@@ -38,17 +39,19 @@ class CompraDAO extends BaseDAO<Compra> {
     final dbClient = await db;
     dbClient?.transaction((txn) async {
       await txn.rawUpdate(
-        "UPDATE compra SET descricao=?, tipo_pagamento=?, tipo_compra=?, valor_total=?, data_compra=? WHERE id = ?",
-        [model.descricao, model.tipo_pagamento, model.tipo_compra, model.valor_total, model.data_compra, model.id]
-      );
+          "UPDATE compra SET descricao=?, tipo_pagamento=?, tipo_compra=?, valor_total=?, data_compra=? WHERE id = ?",
+          [
+            model.descricao,
+            model.tipo_pagamento,
+            model.tipo_compra,
+            model.valor_total,
+            formatarDateTimeToISOString(model.data_compra),
+            model.id
+          ]);
       await txn.rawDelete(
-          "DELETE FROM grupo_compra WHERE id_compra = ?",
-          [model.id]
-      );
-      await txn.rawDelete(
-        "DELETE FROM item_compra WHERE id_compra = ?",
-        [model.id]
-      );
+          "DELETE FROM grupo_compra WHERE id_compra = ?", [model.id]);
+      await txn
+          .rawDelete("DELETE FROM item_compra WHERE id_compra = ?", [model.id]);
       _criarGrupoCompra(model, model.id, txn);
       _criarItemCompra(model, model.id, txn);
     });
@@ -59,8 +62,13 @@ class CompraDAO extends BaseDAO<Compra> {
     dbClient?.transaction((txn) async {
       int idCompra = await txn.rawInsert(
           "INSERT INTO compra(descricao, tipo_pagamento, tipo_compra, valor_total, data_compra) VALUES (?,?,?,?,?)",
-          [model.descricao, model.tipo_pagamento, model.tipo_compra, model.valor_total, model.data_compra]
-      );
+          [
+            model.descricao,
+            model.tipo_pagamento,
+            model.tipo_compra,
+            model.valor_total,
+            formatarDateTimeToISOString(model.data_compra)
+          ]);
       _criarGrupoCompra(model, idCompra, txn);
       _criarItemCompra(model, idCompra, txn);
       return idCompra;
@@ -74,7 +82,7 @@ class CompraDAO extends BaseDAO<Compra> {
     });
   }
 
-  Future<List<Compra>?> listarTodos() async {
+  Future<List<Compra>> listarTodos() async {
     return await obterListaBase();
   }
 

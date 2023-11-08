@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../../controllers/CompraController.dart';
 import '../../domain/Compra.dart';
+import '../../domain/Grupo.dart';
 
 class ControllerListagemCompras {
   final streamController = StreamController<List<Compra>>();
@@ -21,6 +22,21 @@ class ControllerListagemCompras {
     compras = await controller.listarTodos();
     streamController.add(compras!);
     return compras;
+  }
+
+  Future<List<Compra>?> buscarComprasPorGrupo(int idGrupo) async {
+    compras = await controller.listarComprasPorGrupo(idGrupo);
+    streamController.add(compras!);
+    return compras;
+  }
+
+  void cadastrarComprasEmGrupoEspecifico(BuildContext context, Grupo grupo) async {
+    //TO-DO: MODIFICAR TELA CADASTRO PARA RECEBER GRUPO NA HORA DE CRIAR A COMPRA
+    String s = await push(context, TelaCadastroCompra());
+    if (s == "Salvou") {
+      compras = await controller.listarTodos();
+      streamController.add(compras!);
+    }
   }
 
   void irTelaEdicaoCompra(BuildContext context) async {

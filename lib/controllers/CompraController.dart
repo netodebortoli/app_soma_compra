@@ -7,12 +7,15 @@ class CompraController {
   final CompraDAO _dao = CompraDAO();
 
   Future<List<Compra>> listarTodos() async {
-    List<Compra>? dados = await _dao.listarTodos();
-    List<Compra> compras = <Compra>[];
-    if(dados == null){
-      return compras;
+    return await _dao.listarTodos();
+  }
+
+  Future<List<Compra>> listarComprasPorGrupo(int idGrupo) async {
+    List<Compra>? dados = await _dao.listarTodasComprasGrupo(idGrupo);
+    List<Compra> compras = [];
+    if(dados != null){
+      compras.addAll(dados);
     }
-    compras.addAll(dados);
     return compras;
   }
 

@@ -21,7 +21,7 @@ class _ComprasPorGrupoState extends State<ComprasPorGrupo> {
   void initState() {
     super.initState();
     _controllerListagemCompras = ControllerListagemCompras();
-    _controllerListagemCompras.buscarCompras();
+    _controllerListagemCompras.buscarComprasPorGrupo(widget.grupo.id);
   }
 
   @override
@@ -34,10 +34,20 @@ class _ComprasPorGrupoState extends State<ComprasPorGrupo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blueAccent,
+        foregroundColor: Colors.white,
         title: Text("Compras de ${widget.grupo.descricao}"),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+      floatingActionButton: FloatingActionButton.extended(
+        label: const Text("Nova compra neste grupo"),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        onPressed: () {
+          _controllerListagemCompras.cadastrarComprasEmGrupoEspecifico(
+              context, widget.grupo);
+        },
+        tooltip: 'Cadastrar nova compra',
+        icon: const Icon(Icons.add),
       ),
       body: Column(
         children: [
@@ -45,7 +55,8 @@ class _ComprasPorGrupoState extends State<ComprasPorGrupo> {
             flex: 10,
             child: RefreshIndicator(
               onRefresh: () {
-                return _controllerListagemCompras.buscarCompras();
+                return _controllerListagemCompras
+                    .buscarComprasPorGrupo(widget.grupo.id);
               },
               child: _streamBuilder(),
             ),
@@ -73,6 +84,18 @@ class _ComprasPorGrupoState extends State<ComprasPorGrupo> {
   }
 
   ListView _listView() {
+    if (_controllerListagemCompras.compras == null ||
+        _controllerListagemCompras.compras!.isEmpty) {
+      return ListView(
+        children: [
+          Center(
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 0),
+            child: const Text("Grupo vazio."),
+          ))
+        ],
+      );
+    }
     return ListView.builder(
       itemCount: _controllerListagemCompras.compras != null
           ? _controllerListagemCompras.compras!.length
