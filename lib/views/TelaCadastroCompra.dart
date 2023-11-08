@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
+import '../utils/Formatacao.dart';
+
 class TelaCadastroCompra extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _TelaCadastroCompra();
@@ -64,6 +66,17 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra> {
               validator: (String? text) {
                 if (text != null && text.isEmpty) {
                   return "O campo \"Data da Compra\" é obrigatório.";
+                }
+                if ((text!.length > 0 && text.length < 10) ||
+                    int.parse(text!.substring(3, 5)) <= 0) {
+                  return "Formato inválido.";
+                }
+                if (text?.length == 10 &&
+                    int.parse(text!.substring(3, 5)) > 12) {
+                  return "Mês inválido.";
+                }
+                if (gerarDateTimeFromString(text)!.compareTo(DateTime.now()) > 0) {
+                  return "Data inválida.";
                 }
               },
               keyboardType: TextInputType.datetime,
@@ -154,9 +167,7 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra> {
             double.parse(controllerItemCompra.quantidade[i].text);
       }
     }
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   final ControllerItemCompra controllerItemCompra = ControllerItemCompra();
