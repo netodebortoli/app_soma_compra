@@ -1,3 +1,5 @@
+import 'package:app_soma_conta/customs_widget/ToastErro.dart';
+
 String formatarDateTimeToString(DateTime datatime) {
   String mes;
   mes = datatime.month >= 10
@@ -9,6 +11,14 @@ String formatarDateTimeToString(DateTime datatime) {
       : "0${datatime.day.toString()}";
   String ano = datatime.year.toString();
   return "$dia/$mes/$ano";
+}
+
+String formatarDateTimeToISOString(DateTime datatime) {
+  return datatime.toIso8601String();
+}
+
+DateTime gerarDateTimeFromISOString(String data) {
+    return DateTime.parse(data);
 }
 
 DateTime? gerarDateTimeFromString(String data) {

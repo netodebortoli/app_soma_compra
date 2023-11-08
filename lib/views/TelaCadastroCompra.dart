@@ -1,6 +1,6 @@
 import 'package:app_soma_conta/customs_widget/Botao.dart';
 import 'package:app_soma_conta/customs_widget/CampoForm.dart';
-import 'package:app_soma_conta/domain/FormaPagamento.dart';
+import 'package:app_soma_conta/domain/TipoPagamento.dart';
 import 'package:app_soma_conta/domain/TipoCompra.dart';
 import 'package:app_soma_conta/views/interaction_controller/ControllerCadastroCompra.dart';
 import 'package:app_soma_conta/views/interaction_controller/ControllerItemCompra.dart';
