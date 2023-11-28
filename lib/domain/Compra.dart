@@ -2,10 +2,8 @@ import 'package:app_soma_conta/domain/Objeto.dart';
 
 import '../customs_widget/ToastErro.dart';
 import '../utils/Formatacao.dart';
-import 'TipoPagamento.dart';
 import 'Grupo.dart';
 import 'ItemCompra.dart';
-import 'TipoCompra.dart';
 
 class Compra extends Objeto {
   late List<ItemCompra>? itens;
