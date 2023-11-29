@@ -59,7 +59,7 @@ class CardCompra extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            "R\$ ${compra.valor_total.toStringAsFixed(2)}",
+                            "R\$ ${compra.valor_total?.toStringAsFixed(2)}",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,

@@ -1,26 +1,25 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import '../customs_widget/Botao.dart';
 import '../customs_widget/CampoForm.dart';
+import '../utils/Currency.dart';
 import '../utils/Formatacao.dart';
-import 'TelaCadastroCompra.dart';
 import 'interaction_controller/ControllerCadastroCompra.dart';
 
 class TabFormCompra extends StatefulWidget {
-
   BuildContext buildContext;
+  ControllerCadastroCompra controllerCompra;
 
-  TabFormCompra(this.buildContext, {super.key});
+  TabFormCompra(this.buildContext, this.controllerCompra, {super.key});
 
   @override
   State<TabFormCompra> createState() => _TabFormCompraState();
 }
-
-final ControllerCadastroCompra controllerCompra = ControllerCadastroCompra();
 
 final dateMask = MaskTextInputFormatter(mask: '##/##/####');
 
@@ -56,23 +55,24 @@ class _TabFormCompraState extends State<TabFormCompra> {
       color: Colors.white,
       margin: const EdgeInsets.all(20),
       child: Form(
-        key: controllerCompra.formkey,
+        key: widget.controllerCompra.formkey,
         child: ListView(
           children: [
-            CampoForm("Descrição", controllerCompra.controleDescricao,
+            CampoForm("Descrição", widget.controllerCompra.controleDescricao,
                 hint: "Descrição da compra", maxLength: 200),
             const SizedBox(height: 17),
             TextFormField(
               inputFormatters: [dateMask],
-              controller: controllerCompra.controleData,
+              controller: widget.controllerCompra.controleData,
               validator: (String? text) {
                 if (text != null && text.isEmpty) {
                   return "O campo \"Data da Compra\" é obrigatório.";
                 }
-                if ((text!.length > 0 && text.length < 10) || int.parse(text!.substring(3, 5)) <= 0) {
+                if ((text!.length > 0 && text.length < 10) ||
+                    int.parse(text.substring(3, 5)) <= 0) {
                   return "Formato inválido.";
                 }
-                if (text?.length == 10 && int.parse(text!.substring(3, 5)) > 12) {
+                if (text.length == 10 && int.parse(text.substring(3, 5)) > 12) {
                   return "Mês inválido.";
                 }
                 if (gerarDateTimeFromString(text)!.compareTo(DateTime.now()) > 0) {
@@ -90,7 +90,7 @@ class _TabFormCompraState extends State<TabFormCompra> {
 
                 if (pickerDate != null) {
                   setState(() {
-                    controllerCompra.controleData.text =
+                    widget.controllerCompra.controleData.text =
                         DateFormat('dd/MM/yyyy').format(pickerDate);
                   });
                 }
@@ -140,17 +140,20 @@ class _TabFormCompraState extends State<TabFormCompra> {
                 );
               }).toList(),
             ),
-            CampoForm("Valor Total", controllerCompra.controleValorTotal,
-                isFormRequired: false,
-                typeInput: TextInputType.number,
-                formEnable: false),
+            TextFormField(
+              controller: widget.controllerCompra.controleValorTotal,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                  labelText: "Valor Total", prefix: Text("R\$ ")),
+              enabled: false,
+            ),
             const SizedBox(height: 20),
             Botao("Salvar", onClick: () {
-              controllerCompra.cadastrarCompra(widget.buildContext);
+              widget.controllerCompra.cadastrarCompra(widget.buildContext);
             }),
             const SizedBox(height: 17),
             Botao("Cancelar", onClick: () {
-              controllerCompra.cancelarCompra(widget.buildContext);
+              widget.controllerCompra.cancelarCompra(widget.buildContext);
             })
           ],
         ),

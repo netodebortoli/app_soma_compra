@@ -1,25 +1,28 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import '../customs_widget/CampoForm.dart';
-import 'interaction_controller/ControllerItemCompra.dart';
+import '../utils/Currency.dart';
+import 'interaction_controller/ControllerCadastroCompra.dart';
 
 class TabCadastroItemCompra extends StatefulWidget {
   BuildContext buildContext;
+  ControllerCadastroCompra controllerCompra;
 
-  TabCadastroItemCompra(this.buildContext, {super.key});
+  TabCadastroItemCompra(this.buildContext, this.controllerCompra, {super.key});
 
   @override
   State<TabCadastroItemCompra> createState() => _TabCadastroItemCompraState();
 }
+
+final currencyMask = MaskTextInputFormatter(mask: ',##');
 
 class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
   @override
   Widget build(BuildContext context) {
     return _formItensCompras();
   }
-
-  final ControllerItemCompra controllerItemCompra = ControllerItemCompra();
 
   _formItensCompras() {
     return Container(
@@ -46,10 +49,10 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
             ],
           ),
           Form(
-            key: controllerItemCompra.formKey,
+            key: widget.controllerCompra.formkeyItem,
             child: Column(
               children: [
-                for (int i = 0; i < controllerItemCompra.itens.length; i++)
+                for (int i = 0; i < widget.controllerCompra.itens.length; i++)
                   Column(
                     children: [
                       Row(
@@ -59,8 +62,8 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
                             flex: 3,
                             child: Padding(
                               padding: const EdgeInsets.all(5),
-                              child: CampoForm(
-                                  "Descrição", controllerItemCompra.itens[i],
+                              child: CampoForm("Descrição",
+                                  widget.controllerCompra.itens[i]['descricao'],
                                   validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Obrigatório!';
@@ -75,8 +78,8 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
                             flex: 2,
                             child: Padding(
                               padding: const EdgeInsets.all(5),
-                              child: CampoForm(
-                                  "Qtd", controllerItemCompra.quantidade[i],
+                              child: CampoForm("Qtd",
+                                  widget.controllerCompra.itens[i]['qtd'],
                                   typeInput: TextInputType.number,
                                   validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -94,21 +97,32 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
                           Expanded(
                             flex: 2,
                             child: Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: CampoForm(
-                                  "Preço", controllerItemCompra.preco[i],
-                                  validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Obrigatório!';
-                                }
-                                if (num.tryParse(value) == null) {
-                                  return 'Inválido!';
-                                }
-                                if (double.parse(value) <= 0) {
-                                  return 'Preço inválido!';
-                                }
-                              }, typeInput: TextInputType.number),
-                            ),
+                                padding: const EdgeInsets.all(5),
+                                child: TextFormField(
+                                    keyboardType: TextInputType.number,
+                                    controller: widget.controllerCompra.itens[i]['preco'],
+                                    validator: (value) {
+                                      value = value?.replaceAll(',',".");
+                                      if (value == null || value.isEmpty) {
+                                        return 'Obrigatório!';
+                                      }
+                                      if (num.tryParse(value) == null) {
+                                        return 'Inválido!';
+                                      }
+                                      if (double.parse(value) <= 0) {
+                                        return 'Preço inválido!';
+                                      }
+                                    },
+                                    style: const TextStyle(
+                                        fontSize: 15, color: Colors.black),
+                                    decoration: const InputDecoration(
+                                        labelText: "Preço",
+                                        prefix: Text("R\$ "),
+                                        hintStyle: TextStyle(
+                                            color: Colors.grey, fontSize: 15),
+                                        labelStyle: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 20)))),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -120,7 +134,7 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
                                   child: const Icon(
                                       Icons.remove_circle_outlined,
                                       color: Colors.red,
-                                      size: 30))
+                                      size: 30)),
                             ],
                           ),
                         ],
@@ -135,34 +149,21 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
     );
   }
 
-  _calcularPrecoTotal() {
-    double total = 0;
-    for (int i = 0; i < controllerItemCompra.quantidade.length; i++) {
-      if (controllerItemCompra.preco[i].value.text.isNotEmpty) {
-        total += double.parse(controllerItemCompra.preco[i].text) *
-            double.parse(controllerItemCompra.quantidade[i].text);
-      }
-    }
-    setState(() {});
-  }
-
   _addItem() {
-    if (controllerItemCompra.validarFormItem(context)) {
+    if (widget.controllerCompra.validarFormItem(context)) {
       setState(() {
-        controllerItemCompra.itens.add(TextEditingController());
-        controllerItemCompra.preco.add(TextEditingController());
-        controllerItemCompra.quantidade.add(TextEditingController());
+        widget.controllerCompra.itens.add({
+          'descricao': TextEditingController(),
+          'qtd': TextEditingController(),
+          'preco': TextEditingController(),
+        });
       });
-      _calcularPrecoTotal();
     }
   }
 
   _removeItem(i) {
     setState(() {
-      controllerItemCompra.itens.removeAt(i);
-      controllerItemCompra.preco.removeAt(i);
-      controllerItemCompra.quantidade.removeAt(i);
+      widget.controllerCompra.itens.removeAt(i);
     });
-    _calcularPrecoTotal();
   }
 }

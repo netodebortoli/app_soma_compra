@@ -11,8 +11,7 @@ class ItemCompra extends Objeto {
   ItemCompra(
       {required this.valor,
       required this.descricao,
-      required this.quantidade,
-      required this.compra});
+      required this.quantidade});
 
   ItemCompra.fromMapToEntity(Map<String, dynamic> map) : super.fromMapToEntity(map) {
     valor = map["valor"];
