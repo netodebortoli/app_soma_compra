@@ -29,7 +29,7 @@ class ConexaoBanco {
     String databasesPath = await getDatabasesPath();
     String path = join(databasesPath, 'soma_compra.db');
 
-    // deleteDatabase(path);
+    //deleteDatabase(path);
     var db = await openDatabase(path, version: 1, onConfigure: onConfigure, onCreate: _onCreate);
     return db;
   }
@@ -55,7 +55,7 @@ class ConexaoBanco {
 
       int id2 = await txn.rawInsert(
           'INSERT INTO compra(valor_total, descricao, tipo_pagamento, data_compra, tipo_compra) '
-          'VALUES(50, "Compra no mercadinho", "Dinheiro", "2023-10-31" , "Mercado")');
+          'VALUES(50, "Compra no mercadinho", "Dinheiro", "2023-11-25" , "Mercado")');
       print('inserted2: $id2');
 
       int id1 = await txn
@@ -67,6 +67,32 @@ class ConexaoBanco {
           await txn.rawInsert('INSERT INTO grupo_compra(id_grupo, id_compra) '
               'VALUES(1,1)');
       print('inserted0: $id0');
+
+      int id4 = await txn.rawInsert(
+          'INSERT INTO compra(valor_total, descricao, tipo_pagamento, data_compra, tipo_compra) '
+              'VALUES(73, "Compra no mercadinho", "Pix", "2023-10-22" , "Mercado")');
+      print('inserted4: $id4');
+
+      int id5 = await txn.rawInsert(
+          'INSERT INTO compra(valor_total, descricao, tipo_pagamento, data_compra, tipo_compra) '
+              'VALUES(60, "Lanche", "Crédito", "2023-10-10" , "Lazer")');
+      print('inserted5: $id5');
+
+      int id6 = await txn.rawInsert(
+          'INSERT INTO compra(valor_total, descricao, tipo_pagamento, data_compra, tipo_compra) '
+              'VALUES(15, "Café da cantina", "Pix", "2023-09-10" , "Lazer")');
+      print('inserted6: $id6');
+
+      int id7 = await txn.rawInsert(
+          'INSERT INTO compra(valor_total, descricao, tipo_pagamento, data_compra, tipo_compra) '
+              'VALUES(300, "Pneu", "Débito", "2023-12-20" , "Serviços")');
+      print('inserted7: $id7');
+
+      int id8 = await txn.rawInsert(
+          'INSERT INTO compra(valor_total, descricao, tipo_pagamento, data_compra, tipo_compra) '
+              'VALUES(250, "Presente", "Pix", "2023-03-01" , "Lazer")');
+      print('inserted8: $id8');
+
     });
   }
 

@@ -36,3 +36,21 @@ DateTime? gerarDateTimeFromString(String data) {
     return null;
   }
 }
+
+String getMonthByNumber(int number){
+  switch(number){
+    case 1 || 01: return 'Jan';
+    case 2 || 02: return 'Fev';
+    case 3 || 03: return 'Mar';
+    case 4 || 04: return 'Abr';
+    case 5 || 05: return 'Mai';
+    case 6 || 06: return 'Jun';
+    case 7 || 07: return 'Jul';
+    case 8 || 08: return 'Ago';
+    case 9 || 09: return 'Set';
+    case 10: return 'Out';
+    case 11: return 'Nov';
+    case 12: return 'Dez';
+    default: return '';
+  }
+}

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:app_soma_conta/persistencia/dao/CompraDao.dart';
 import 'package:app_soma_conta/utils/Navegacao.dart';
 import 'package:app_soma_conta/views/TelaCadastroCompra.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,6 @@ class ControllerListagemCompras {
   final streamController = StreamController<List<Compra>>();
   List<Compra>? compras;
 
-  CompraDAO dao = CompraDAO();
   CompraController controller = CompraController();
 
   ControllerListagemCompras();

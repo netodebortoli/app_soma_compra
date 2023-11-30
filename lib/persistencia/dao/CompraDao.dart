@@ -1,5 +1,7 @@
 import 'package:app_soma_conta/domain/Compra.dart';
 import 'package:app_soma_conta/domain/Grupo.dart';
+import 'package:app_soma_conta/domain/dto/dto_numerico.dart';
+import 'package:app_soma_conta/domain/dto/dto_ordinal.dart';
 import 'package:app_soma_conta/persistencia/dao/BaseDao.dart';
 import 'package:app_soma_conta/utils/Formatacao.dart';
 import 'package:sqflite/sqflite.dart';
@@ -13,6 +15,14 @@ class CompraDAO extends BaseDAO<Compra> {
   @override
   Compra fromMapToEntity(Map<String, dynamic> map) {
     return Compra.fromMapToEntity(map);
+  }
+
+  DtoNumerico fromMapToDtoNumerico(Map<String, dynamic> map) {
+    return DtoNumerico.fromMapToDtoNumerico(map);
+  }
+
+  DtoOrdinal fromMapToDtoOrdinal(Map<String, dynamic> map) {
+    return DtoOrdinal.fromMapToDtoOrdinal(map);
   }
 
   _criarGrupoCompra(Compra model, int idCompra, Transaction txn) async {
@@ -95,5 +105,37 @@ class CompraDAO extends BaseDAO<Compra> {
         [idGrupo]);
 
     return list?.map((map) => fromMapToEntity(map)).toList();
+  }
+
+  Future<List<DtoNumerico>?> getValorTotalPorMes(String ano) async {
+    final dbClient = await db;
+
+    List<Map<String, dynamic>>? list = await dbClient?.rawQuery(
+        "SELECT strftime('%m',c.data_compra) as chave, SUM(c.valor_total) AS valor FROM $nomeTabela as c WHERE strftime('%Y',c.data_compra) = ? group by strftime('%m',c.data_compra)",
+        [ano]);
+
+    return list?.map((map) => fromMapToDtoNumerico(map)).toList();
+  }
+
+  Future<List<DtoOrdinal>?> getValorTotalPorTipoCompra(String ano) async {
+    final dbClient = await db;
+
+    List<Map<String, dynamic>>? list = await dbClient?.rawQuery(
+        "SELECT tipo_compra as chave, SUM(valor_total) AS valor FROM $nomeTabela "
+            " WHERE strftime('%Y',data_compra) = ? group by chave",
+        [ano]);
+
+    return list?.map((map) => fromMapToDtoOrdinal(map)).toList();
+  }
+
+  Future<List<DtoOrdinal>?> getValorTotalPorTipoPagamento(String ano) async {
+    final dbClient = await db;
+
+    List<Map<String, dynamic>>? list = await dbClient?.rawQuery(
+        "SELECT tipo_pagamento as chave, SUM(valor_total) AS valor FROM $nomeTabela "
+            " WHERE strftime('%Y',data_compra) = ? group by chave",
+        [ano]);
+
+    return list?.map((map) => fromMapToDtoOrdinal(map)).toList();
   }
 }
