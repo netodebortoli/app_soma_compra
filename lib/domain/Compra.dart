@@ -35,11 +35,9 @@ class Compra extends Objeto {
   Compra.fromMapToEntity(Map<String, dynamic> map)
       : super.fromMapToEntity(map) {
     try {
-      // grupo
       valor_total = map["valor_total"];
       descricao = map["descricao"];
       data_compra = gerarDateTimeFromISOString(map["data_compra"])!;
-      // itens
       tipo_pagamento = map["tipo_pagamento"];
       tipo_compra = map["tipo_compra"];
     } on Exception {

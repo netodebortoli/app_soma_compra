@@ -70,7 +70,7 @@ class CardCompra extends StatelessWidget {
                     ),
                     MenuAcoes(
                       onEdit: () async {
-                        controller.irTelaEdicaoCompra(context);
+                        controller.irTelaEdicaoCompra(context, compra);
                       },
                       onDelete: () async {
                         controller.removerCompra(index);

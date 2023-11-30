@@ -1,4 +1,6 @@
 import 'package:app_soma_conta/controllers/CompraController.dart';
+import 'package:app_soma_conta/controllers/GrupoController.dart';
+import 'package:app_soma_conta/controllers/ItemController.dart';
 import 'package:app_soma_conta/customs_widget/ToastSucesso.dart';
 import 'package:app_soma_conta/domain/Grupo.dart';
 import 'package:app_soma_conta/views/TabFormCompra.dart';
@@ -7,13 +9,18 @@ import 'package:flutter/material.dart';
 import '../../domain/Compra.dart';
 import '../../domain/ItemCompra.dart';
 import '../../utils/Formatacao.dart';
+import '../../utils/Navegacao.dart';
 
 class ControllerCadastroCompra {
+  ControllerCadastroCompra(this.compra);
+
   Compra? compra;
   List<ItemCompra>? itensCompra = [];
   List<Grupo>? grupos = [];
 
   CompraController controller = CompraController();
+  ItemController itemController = ItemController();
+  GrupoController grupoController = GrupoController();
 
   // Controladora da compra
   final formkey = GlobalKey<FormState>();
@@ -24,22 +31,20 @@ class ControllerCadastroCompra {
 
   // Controlador dos item de compra
   final formkeyItem = GlobalKey<FormState>();
-  late final List<Map<String, TextEditingController>> itens = [];
+  late final List<Map<String, TextEditingController>> controleItens = [];
 
   void cadastrarCompra(BuildContext context) {
     if (formkey.currentState!.validate()) {
       ToastSucesso("Operação   realizada com sucesso!");
       _salvarCompra();
       _clearCamposCompra();
-      // TODO: CHAMAR CRUD PARA CADASTRAR/ATUALIZAR COMPRA
+      pop(context, mensagem: "Salvo com sucesso");
     }
   }
 
   void _definirDados(Compra compra) {
     if (controleValorTotal.text.isNotEmpty) {
       compra.valor_total = double.parse(controleValorTotal.text);
-    } else {
-      compra.valor_total = 0;
     }
     compra.itens = [];
     compra.grupos = [];
@@ -74,7 +79,7 @@ class ControllerCadastroCompra {
 
   void cancelarCompra(BuildContext context) {
     _clearCamposCompra();
-    Navigator.pop(context);
+    Navigator.pop(context, "");
   }
 
   bool validarFormItem(BuildContext context) {
@@ -83,9 +88,10 @@ class ControllerCadastroCompra {
 
   void _addItemCompra(index) {
     ItemCompra item = ItemCompra(
-        valor: double.parse(itens[index]['preco']!.text.replaceAll(",", ".")),
-        descricao: itens[index]['descricao']!.text,
-        quantidade: int.parse(itens[index]['qtd']!.text));
+        valor: double.parse(
+            controleItens[index]['preco']!.text.replaceAll(",", ".")),
+        descricao: controleItens[index]['descricao']!.text,
+        quantidade: int.parse(controleItens[index]['qtd']!.text));
     itensCompra?.add(item);
   }
 
@@ -103,7 +109,7 @@ class ControllerCadastroCompra {
   }
 
   void _clearCamposItem() {
-    itens.clear();
+    controleItens.clear();
   }
 
   void _clearCamposCompra() {
@@ -118,10 +124,48 @@ class ControllerCadastroCompra {
   void calcularTotal() {
     if (formkeyItem.currentState!.validate()) {
       itensCompra?.clear();
-      for (int i = 0; i < itens.length; i++) {
+      for (int i = 0; i < controleItens.length; i++) {
         _addItemCompra(i);
       }
       _calcularPrecoTotal();
+    }
+  }
+
+  void inicializarCampos() {
+    // TODO: popular grupos
+    Future<List<Grupo>> gruposFromDB = grupoController.listarTodos();
+    gruposFromDB.then((value) {
+      grupos = value;
+      for (int i = 0; i < grupos!.length; i++) {
+        controleGrupos.add(TextEditingController(text: grupos![i].descricao));
+      }
+    });
+    if (compra == null) {
+      controleDescricao.text = "";
+      controleData.text = formatarDateTimeToString(DateTime.now());
+      controleValorTotal.text = "0.0";
+      dropdownValueTipoCompra = tiposCompras.first;
+      dropdownValueTipoPagamento = tiposPagamentos.first;
+      //TODO -> PRE SELECIONAR SE GRUPO != NULL
+    } else {
+      controleDescricao.text = compra!.descricao;
+      controleData.text = formatarDateTimeToString(compra!.data_compra);
+      controleValorTotal.text = compra!.valor_total.toString();
+      dropdownValueTipoCompra = compra!.tipo_compra;
+      dropdownValueTipoPagamento = compra!.tipo_pagamento;
+      controleValorTotal.text = compra!.valor_total.toString();
+      //TODO -> selecionar o grupo se tiver
+      Future<List<ItemCompra>> itensFromDB = itemController.listarItensPorCompra(compra!.id);
+      itensFromDB.then((value) {
+        itensCompra = value;
+        for (int i = 0; i < itensCompra!.length; i++) {
+          controleItens.add({
+            'descricao': TextEditingController(text: itensCompra![i].descricao),
+            'preco': TextEditingController(text: itensCompra![i].valor.toString().replaceAll(".", ",")),
+            'qtd': TextEditingController(text: itensCompra![i].quantidade.toString())
+          });
+        }
+      });
     }
   }
 }

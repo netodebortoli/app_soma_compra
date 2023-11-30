@@ -3,20 +3,31 @@ import 'package:app_soma_conta/views/TabFormCompra.dart';
 import 'package:app_soma_conta/views/interaction_controller/ControllerCadastroCompra.dart';
 import 'package:flutter/material.dart';
 
+import '../domain/Compra.dart';
+import '../domain/Grupo.dart';
+
 class TelaCadastroCompra extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _TelaCadastroCompra();
+
+  Compra? compra;
+  Grupo? grupo;
+
+  TelaCadastroCompra({this.compra, this.grupo});
 }
 
 class _TelaCadastroCompra extends State<TelaCadastroCompra>
     with SingleTickerProviderStateMixin {
-  ControllerCadastroCompra controladora = ControllerCadastroCompra();
+  late ControllerCadastroCompra controladora;
+
   late TabController tabController;
   int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
+    controladora = ControllerCadastroCompra(widget.compra);
+    controladora.inicializarCampos();
     tabController = TabController(length: 2, vsync: this);
 
     tabController.addListener(() {

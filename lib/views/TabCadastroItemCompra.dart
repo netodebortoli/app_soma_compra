@@ -52,7 +52,7 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
             key: widget.controllerCompra.formkeyItem,
             child: Column(
               children: [
-                for (int i = 0; i < widget.controllerCompra.itens.length; i++)
+                for (int i = 0; i < widget.controllerCompra.controleItens.length; i++)
                   Column(
                     children: [
                       Row(
@@ -63,7 +63,7 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
                             child: Padding(
                               padding: const EdgeInsets.all(5),
                               child: CampoForm("Descrição",
-                                  widget.controllerCompra.itens[i]['descricao'],
+                                  widget.controllerCompra.controleItens[i]['descricao'],
                                   validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Obrigatório!';
@@ -79,7 +79,7 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
                             child: Padding(
                               padding: const EdgeInsets.all(5),
                               child: CampoForm("Qtd",
-                                  widget.controllerCompra.itens[i]['qtd'],
+                                  widget.controllerCompra.controleItens[i]['qtd'],
                                   typeInput: TextInputType.number,
                                   validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -100,7 +100,7 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
                                 padding: const EdgeInsets.all(5),
                                 child: TextFormField(
                                     keyboardType: TextInputType.number,
-                                    controller: widget.controllerCompra.itens[i]['preco'],
+                                    controller: widget.controllerCompra.controleItens[i]['preco'],
                                     validator: (value) {
                                       value = value?.replaceAll(',',".");
                                       if (value == null || value.isEmpty) {
@@ -152,7 +152,7 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
   _addItem() {
     if (widget.controllerCompra.validarFormItem(context)) {
       setState(() {
-        widget.controllerCompra.itens.add({
+        widget.controllerCompra.controleItens.add({
           'descricao': TextEditingController(),
           'qtd': TextEditingController(),
           'preco': TextEditingController(),
@@ -163,7 +163,7 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
 
   _removeItem(i) {
     setState(() {
-      widget.controllerCompra.itens.removeAt(i);
+      widget.controllerCompra.controleItens.removeAt(i);
     });
   }
 }

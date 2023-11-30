@@ -45,6 +45,7 @@ String dropdownValueTipoCompra = tiposCompras.first;
 String dropdownValueTipoPagamento = tiposPagamentos.first;
 
 class _TabFormCompraState extends State<TabFormCompra> {
+
   @override
   Widget build(BuildContext context) {
     return _formCompras();
@@ -147,7 +148,7 @@ class _TabFormCompraState extends State<TabFormCompra> {
                   labelText: "Valor Total", prefix: Text("R\$ ")),
               enabled: false,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 25),
             Botao("Salvar", onClick: () {
               widget.controllerCompra.cadastrarCompra(widget.buildContext);
             }),
