@@ -13,7 +13,7 @@ class TelaCadastroCompra extends StatefulWidget {
   Compra? compra;
   Grupo? grupo;
 
-  TelaCadastroCompra({this.compra, this.grupo});
+  TelaCadastroCompra({super.key, this.compra, this.grupo});
 }
 
 class _TelaCadastroCompra extends State<TelaCadastroCompra>
@@ -26,10 +26,9 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra>
   @override
   void initState() {
     super.initState();
-    controladora = ControllerCadastroCompra(widget.compra);
+    controladora = ControllerCadastroCompra(widget.compra, widget.grupo);
     controladora.inicializarCampos();
     tabController = TabController(length: 2, vsync: this);
-
     tabController.addListener(() {
       setState(() {
         _selectedIndex = tabController.index;

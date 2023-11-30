@@ -33,7 +33,7 @@ class ControllerListagemCompras {
   void cadastrarComprasEmGrupoEspecifico(BuildContext context, Grupo grupo) async {
     //TODO: MODIFICAR TELA CADASTRO PARA RECEBER GRUPO NA HORA DE CRIAR A COMPRA
     String s = await push(context, TelaCadastroCompra(grupo: grupo));
-    if (s == "Salvou") {
+    if (s == "Salvo com sucesso") {
       compras = await controller.listarTodos();
       streamController.add(compras!);
     }

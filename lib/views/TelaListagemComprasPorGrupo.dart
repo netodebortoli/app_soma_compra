@@ -43,8 +43,7 @@ class _ComprasPorGrupoState extends State<ComprasPorGrupo> {
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
         onPressed: () {
-          _controllerListagemCompras.cadastrarComprasEmGrupoEspecifico(
-              context, widget.grupo);
+          _controllerListagemCompras.cadastrarComprasEmGrupoEspecifico(context, widget.grupo);
         },
         tooltip: 'Cadastrar nova compra',
         icon: const Icon(Icons.add),

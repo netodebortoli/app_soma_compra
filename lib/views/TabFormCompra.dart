@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import '../customs_widget/Botao.dart';
 import '../customs_widget/CampoForm.dart';
-import '../utils/Currency.dart';
+import '../domain/Grupo.dart';
 import '../utils/Formatacao.dart';
 import 'interaction_controller/ControllerCadastroCompra.dart';
 
@@ -41,11 +43,11 @@ const List<String> tiposPagamentos = <String>[
   "Outros"
 ];
 
-String dropdownValueTipoCompra = tiposCompras.first;
-String dropdownValueTipoPagamento = tiposPagamentos.first;
+List<Grupo>? gruposSelecionados;
+String tipoCompraSelecionado = tiposCompras.first;
+String tipoPagamentoSelecionado = tiposPagamentos.first;
 
 class _TabFormCompraState extends State<TabFormCompra> {
-
   @override
   Widget build(BuildContext context) {
     return _formCompras();
@@ -59,9 +61,30 @@ class _TabFormCompraState extends State<TabFormCompra> {
         key: widget.controllerCompra.formkey,
         child: ListView(
           children: [
+            MultiSelectDialogField(
+                title: const Text("Grupos"),
+              dialogHeight: MediaQuery.of(context).size.height * 0.5,
+              dialogWidth: MediaQuery.of(context).size.width * 0.5,
+              buttonText: const Text("Selecione os grupos desta compra",
+                    style: TextStyle(fontSize: 16)),
+                buttonIcon:
+                    const Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
+                cancelText: const Text("Cancelar"),
+                searchable: true,
+                searchHint: "Pesquise pelo nome",
+                searchTextStyle: const TextStyle(color: Colors.black),
+                initialValue: gruposSelecionados!,
+                items: widget.controllerCompra.gruposCompra!
+                    .map((grupo) =>
+                        MultiSelectItem<Grupo>(grupo, grupo.descricao))
+                    .toList(),
+                onConfirm: (value) {
+                  gruposSelecionados = value;
+                },
+            ),
             CampoForm("Descrição", widget.controllerCompra.controleDescricao,
-                hint: "Descrição da compra", maxLength: 200),
-            const SizedBox(height: 17),
+                maxLength: 200),
+            const SizedBox(height: 15),
             TextFormField(
               inputFormatters: [dateMask],
               controller: widget.controllerCompra.controleData,
@@ -69,14 +92,15 @@ class _TabFormCompraState extends State<TabFormCompra> {
                 if (text != null && text.isEmpty) {
                   return "O campo \"Data da Compra\" é obrigatório.";
                 }
-                if ((text!.length > 0 && text.length < 10) ||
+                if ((text!.isNotEmpty && text.length < 10) ||
                     int.parse(text.substring(3, 5)) <= 0) {
                   return "Formato inválido.";
                 }
                 if (text.length == 10 && int.parse(text.substring(3, 5)) > 12) {
                   return "Mês inválido.";
                 }
-                if (gerarDateTimeFromString(text)!.compareTo(DateTime.now()) > 0) {
+                if (gerarDateTimeFromString(text)!.compareTo(DateTime.now()) >
+                    0) {
                   return "Data inválida.";
                 }
               },
@@ -100,18 +124,19 @@ class _TabFormCompraState extends State<TabFormCompra> {
                   labelText: "Data da compra",
                   icon: Icon(Icons.calendar_today_sharp)),
             ),
-            const SizedBox(height: 17),
+            const SizedBox(height: 15),
             DropdownButtonFormField(
-              value: dropdownValueTipoCompra,
+              value: tipoCompraSelecionado,
+              icon: const Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
               validator: (value) =>
                   value == null ? 'O campo é obrigatório' : null,
               onChanged: (value) {
                 setState(() {
-                  dropdownValueTipoCompra = value!;
+                  tipoCompraSelecionado = value!;
                 });
               },
               decoration: const InputDecoration(
-                  labelText: "Tipo da Compra",
+                  labelText: "Tipo de compra",
                   labelStyle: TextStyle(color: Colors.grey, fontSize: 20)),
               items:
                   tiposCompras.map<DropdownMenuItem<String>>((String? value) {
@@ -121,18 +146,19 @@ class _TabFormCompraState extends State<TabFormCompra> {
                 );
               }).toList(),
             ),
-            const SizedBox(height: 17),
+            const SizedBox(height: 15),
             DropdownButtonFormField(
-              value: dropdownValueTipoPagamento,
+              value: tipoPagamentoSelecionado,
+              icon: const Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
               validator: (value) =>
                   value == null ? 'O campo é obrigatório' : null,
               onChanged: (value) {
                 setState(() {
-                  dropdownValueTipoPagamento = value!;
+                  tipoPagamentoSelecionado = value!;
                 });
               },
               decoration: const InputDecoration(
-                  labelText: "Tipo do Pagamento",
+                  labelText: "Forma do pagamento",
                   labelStyle: TextStyle(color: Colors.grey, fontSize: 20)),
               items: tiposPagamentos.map<DropdownMenuItem<String>>((value) {
                 return DropdownMenuItem<String>(
@@ -148,14 +174,14 @@ class _TabFormCompraState extends State<TabFormCompra> {
                   labelText: "Valor Total", prefix: Text("R\$ ")),
               enabled: false,
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 20),
             Botao("Salvar", onClick: () {
               widget.controllerCompra.cadastrarCompra(widget.buildContext);
             }),
-            const SizedBox(height: 17),
+            const SizedBox(height: 15),
             Botao("Cancelar", onClick: () {
               widget.controllerCompra.cancelarCompra(widget.buildContext);
-            })
+            }, backgroundColor: Colors.red)
           ],
         ),
       ),

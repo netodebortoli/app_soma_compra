@@ -12,24 +12,26 @@ import '../../utils/Formatacao.dart';
 import '../../utils/Navegacao.dart';
 
 class ControllerCadastroCompra {
-  ControllerCadastroCompra(this.compra);
+  ControllerCadastroCompra(this.compra, this.grupo);
 
+  Grupo? grupo;
   Compra? compra;
+
   List<ItemCompra>? itensCompra = [];
   List<Grupo>? gruposCompra = [];
 
-  CompraController controller = CompraController();
+  //TODO -> renomear os controlers de acesso ao DAO para servicos
+  CompraController compraController = CompraController();
   ItemController itemController = ItemController();
   GrupoController grupoController = GrupoController();
 
-  // Controladora da compra
+  // TextEditingController da compra
   final formkey = GlobalKey<FormState>();
+  final controleDescricao = TextEditingController();
   final controleData = TextEditingController();
   late TextEditingController controleValorTotal = TextEditingController();
-  final controleDescricao = TextEditingController();
-  final List<TextEditingController> controleGrupos = [];
 
-  // Controlador dos item de compra
+  // TextEditingController dos item de compra
   final formkeyItem = GlobalKey<FormState>();
   late final List<Map<String, TextEditingController>> controleItens = [];
 
@@ -53,7 +55,11 @@ class ControllerCadastroCompra {
         compra.itens?.add(i);
       }
     }
-    // TODO: SETAR OS GRUPOS SELECIONADOS \\
+    if (gruposSelecionados!.isNotEmpty) {
+      for (Grupo g in gruposSelecionados!) {
+        compra.grupos?.add(g);
+      }
+    }
   }
 
   void _salvarCompra() {
@@ -61,19 +67,19 @@ class ControllerCadastroCompra {
     if (compra == null) {
       compra = Compra(
           descricao: controleDescricao.text,
-          tipo_pagamento: dropdownValueTipoPagamento,
-          tipo_compra: dropdownValueTipoCompra,
+          tipo_pagamento: tipoPagamentoSelecionado,
+          tipo_compra: tipoCompraSelecionado,
           data_compra: gerarDateTimeFromString(controleData.text)!);
       _definirItensGrupoValorTotal(compra!);
-      controller.inserirCompra(compra!);
+      compraController.inserirCompra(compra!);
     } else {
       // atualização
       compra!.descricao = controleDescricao.text;
       compra!.data_compra = gerarDateTimeFromString(controleData.text)!;
-      compra!.tipo_compra = dropdownValueTipoCompra;
-      compra!.tipo_pagamento = dropdownValueTipoPagamento;
+      compra!.tipo_compra = tipoCompraSelecionado;
+      compra!.tipo_pagamento = tipoPagamentoSelecionado;
       _definirItensGrupoValorTotal(compra!);
-      controller.atualizarCompra(compra!);
+      compraController.atualizarCompra(compra!);
     }
   }
 
@@ -108,17 +114,13 @@ class ControllerCadastroCompra {
     controleValorTotal.text = valor.toString();
   }
 
-  void _clearCamposItem() {
-    controleItens.clear();
-  }
-
   void _clearCamposCompra() {
     controleData.clear();
     controleValorTotal.clear();
     controleDescricao.clear();
-    dropdownValueTipoCompra = tiposCompras.first;
-    dropdownValueTipoPagamento = tiposPagamentos.first;
-    _clearCamposItem();
+    tipoCompraSelecionado = tiposCompras.first;
+    tipoPagamentoSelecionado = tiposPagamentos.first;
+    controleItens.clear();
   }
 
   void calcularTotal() {
@@ -131,30 +133,27 @@ class ControllerCadastroCompra {
     }
   }
 
-  void inicializarCampos() {
-    // TODO: popular grupos
-    Future<List<Grupo>> gruposFromDB = grupoController.listarTodos();
-    gruposFromDB.then((value) {
-      gruposCompra = value;
-      for (int i = 0; i < gruposCompra!.length; i++) {
-        controleGrupos.add(TextEditingController(text: gruposCompra![i].descricao));
-      }
-    });
+  void inicializarCampos() async {
+    gruposCompra = await grupoController.listarTodos();
     if (compra == null) {
       controleDescricao.text = "";
       controleData.text = formatarDateTimeToString(DateTime.now());
       controleValorTotal.text = "0.0";
-      dropdownValueTipoCompra = tiposCompras.first;
-      dropdownValueTipoPagamento = tiposPagamentos.first;
-      //TODO -> PRE SELECIONAR SE GRUPO != NULL
+      tipoCompraSelecionado = tiposCompras.first;
+      tipoPagamentoSelecionado = tiposPagamentos.first;
+      gruposSelecionados = [];
+      // TODO se o grupo for diferente de null, setar, mas nao ta funcionandoo
+      if (grupo != null) {
+        gruposSelecionados?.add(grupo!);
+      }
     } else {
       controleDescricao.text = compra!.descricao;
       controleData.text = formatarDateTimeToString(compra!.data_compra);
       controleValorTotal.text = compra!.valor_total.toString();
-      dropdownValueTipoCompra = compra!.tipo_compra;
-      dropdownValueTipoPagamento = compra!.tipo_pagamento;
+      tipoCompraSelecionado = compra!.tipo_compra;
+      tipoPagamentoSelecionado = compra!.tipo_pagamento;
       controleValorTotal.text = compra!.valor_total.toString();
-      //TODO -> selecionar o grupo se tiver
+      // TODO --> buscar todos os grupos de uma compra
       Future<List<ItemCompra>> itensFromDB = itemController.listarItensPorCompra(compra!.id);
       itensFromDB.then((value) {
         itensCompra = value;
