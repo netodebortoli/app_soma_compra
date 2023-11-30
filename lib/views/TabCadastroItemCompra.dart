@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import '../customs_widget/CampoForm.dart';
-import '../utils/Currency.dart';
 import 'interaction_controller/ControllerCadastroCompra.dart';
 
 class TabCadastroItemCompra extends StatefulWidget {
@@ -15,8 +13,6 @@ class TabCadastroItemCompra extends StatefulWidget {
   @override
   State<TabCadastroItemCompra> createState() => _TabCadastroItemCompraState();
 }
-
-final currencyMask = MaskTextInputFormatter(mask: ',##');
 
 class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
   @override
@@ -102,7 +98,7 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
                                     keyboardType: TextInputType.number,
                                     controller: widget.controllerCompra.controleItens[i]['preco'],
                                     validator: (value) {
-                                      value = value?.replaceAll(',',".");
+                                      value = value?.replaceAll(',', ".");
                                       if (value == null || value.isEmpty) {
                                         return 'Obrigatório!';
                                       }
@@ -163,7 +159,7 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
 
   _removeItem(i) {
     setState(() {
-      widget.controllerCompra.controleItens.removeAt(i);
+      widget.controllerCompra.removerItemCompra(i);
     });
   }
 }

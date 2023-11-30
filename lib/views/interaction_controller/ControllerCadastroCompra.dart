@@ -16,7 +16,7 @@ class ControllerCadastroCompra {
 
   Compra? compra;
   List<ItemCompra>? itensCompra = [];
-  List<Grupo>? grupos = [];
+  List<Grupo>? gruposCompra = [];
 
   CompraController controller = CompraController();
   ItemController itemController = ItemController();
@@ -35,14 +35,14 @@ class ControllerCadastroCompra {
 
   void cadastrarCompra(BuildContext context) {
     if (formkey.currentState!.validate()) {
-      ToastSucesso("Operação   realizada com sucesso!");
+      ToastSucesso("Operação realizada com sucesso!");
       _salvarCompra();
       _clearCamposCompra();
       pop(context, mensagem: "Salvo com sucesso");
     }
   }
 
-  void _definirDados(Compra compra) {
+  void _definirItensGrupoValorTotal(Compra compra) {
     if (controleValorTotal.text.isNotEmpty) {
       compra.valor_total = double.parse(controleValorTotal.text);
     }
@@ -53,7 +53,7 @@ class ControllerCadastroCompra {
         compra.itens?.add(i);
       }
     }
-    // TODO: SETAR OS GRUPOS \\
+    // TODO: SETAR OS GRUPOS SELECIONADOS \\
   }
 
   void _salvarCompra() {
@@ -64,7 +64,7 @@ class ControllerCadastroCompra {
           tipo_pagamento: dropdownValueTipoPagamento,
           tipo_compra: dropdownValueTipoCompra,
           data_compra: gerarDateTimeFromString(controleData.text)!);
-      _definirDados(compra!);
+      _definirItensGrupoValorTotal(compra!);
       controller.inserirCompra(compra!);
     } else {
       // atualização
@@ -72,7 +72,7 @@ class ControllerCadastroCompra {
       compra!.data_compra = gerarDateTimeFromString(controleData.text)!;
       compra!.tipo_compra = dropdownValueTipoCompra;
       compra!.tipo_pagamento = dropdownValueTipoPagamento;
-      _definirDados(compra!);
+      _definirItensGrupoValorTotal(compra!);
       controller.atualizarCompra(compra!);
     }
   }
@@ -88,15 +88,15 @@ class ControllerCadastroCompra {
 
   void _addItemCompra(index) {
     ItemCompra item = ItemCompra(
-        valor: double.parse(
-            controleItens[index]['preco']!.text.replaceAll(",", ".")),
+        valor: double.parse(controleItens[index]['preco']!.text.replaceAll(",", ".")),
         descricao: controleItens[index]['descricao']!.text,
         quantidade: int.parse(controleItens[index]['qtd']!.text));
     itensCompra?.add(item);
   }
 
   void removerItemCompra(index) {
-    itensCompra?.removeAt(index);
+    controleItens.removeAt(index);
+    itensCompra!.isNotEmpty ? itensCompra?.removeAt(index) : null;
     _calcularPrecoTotal();
   }
 
@@ -135,9 +135,9 @@ class ControllerCadastroCompra {
     // TODO: popular grupos
     Future<List<Grupo>> gruposFromDB = grupoController.listarTodos();
     gruposFromDB.then((value) {
-      grupos = value;
-      for (int i = 0; i < grupos!.length; i++) {
-        controleGrupos.add(TextEditingController(text: grupos![i].descricao));
+      gruposCompra = value;
+      for (int i = 0; i < gruposCompra!.length; i++) {
+        controleGrupos.add(TextEditingController(text: gruposCompra![i].descricao));
       }
     });
     if (compra == null) {
