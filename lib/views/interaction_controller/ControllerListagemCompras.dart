@@ -29,17 +29,17 @@ class ControllerListagemCompras {
   }
 
   void cadastrarComprasEmGrupoEspecifico(BuildContext context, Grupo grupo) async {
-    //TO-DO: MODIFICAR TELA CADASTRO PARA RECEBER GRUPO NA HORA DE CRIAR A COMPRA
-    String s = await push(context, TelaCadastroCompra());
-    if (s == "Salvou") {
+    //TODO: MODIFICAR TELA CADASTRO PARA RECEBER GRUPO NA HORA DE CRIAR A COMPRA
+    String s = await push(context, TelaCadastroCompra(grupo: grupo));
+    if (s == "Salvo com sucesso") {
       compras = await controller.listarTodos();
       streamController.add(compras!);
     }
   }
 
-  void irTelaEdicaoCompra(BuildContext context) async {
-    String s = await push(context, TelaCadastroCompra());
-    if (s == "Salvou") {
+  void irTelaEdicaoCompra(BuildContext context, Compra compra) async {
+    String s = await push(context, TelaCadastroCompra(compra: compra));
+    if (s ==  "Salvo com sucesso") {
       compras = await controller.listarTodos();
       streamController.add(compras!);
     }

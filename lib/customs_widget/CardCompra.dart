@@ -59,7 +59,7 @@ class CardCompra extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            "R\$ ${compra.valor_total.toStringAsFixed(2)}",
+                            "R\$ ${compra.valor_total?.toStringAsFixed(2)}",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,
@@ -70,7 +70,7 @@ class CardCompra extends StatelessWidget {
                     ),
                     MenuAcoes(
                       onEdit: () async {
-                        controller.irTelaEdicaoCompra(context);
+                        controller.irTelaEdicaoCompra(context, compra);
                       },
                       onDelete: () async {
                         controller.removerCompra(index);

@@ -7,7 +7,7 @@ import 'ItemCompra.dart';
 
 class Compra extends Objeto {
   late List<ItemCompra>? itens;
-  late double valor_total;
+  late double? valor_total;
   late String descricao;
   late DateTime data_compra;
   late List<Grupo>? grupos;
@@ -20,6 +20,7 @@ class Compra extends Objeto {
       required this.tipo_compra,
       this.itens,
       required this.data_compra,
+      this.valor_total,
       this.grupos});
 
   Compra.mock(
@@ -31,20 +32,17 @@ class Compra extends Objeto {
       required this.data_compra,
       this.grupos});
 
-  Compra.fromMapToEntity(Map<String, dynamic> map) : super.fromMapToEntity(map) {
-
+  Compra.fromMapToEntity(Map<String, dynamic> map)
+      : super.fromMapToEntity(map) {
     try {
-      // grupo
       valor_total = map["valor_total"];
       descricao = map["descricao"];
       data_compra = gerarDateTimeFromISOString(map["data_compra"])!;
-      // itens
       tipo_pagamento = map["tipo_pagamento"];
       tipo_compra = map["tipo_compra"];
     } on Exception {
       ToastErro("Erro ao converter data.");
     }
-
   }
 
   String getDataFormatada() {
