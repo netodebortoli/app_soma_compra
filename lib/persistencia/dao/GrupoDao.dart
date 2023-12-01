@@ -36,4 +36,14 @@ class GrupoDAO extends BaseDAO<Grupo> {
     );
   }
 
+  Future<List<Grupo>?> listarTodosGruposPorCompra(int idCompra) async {
+    final dbClient = await db;
+
+    List<Map<String, dynamic>>? list = await dbClient?.rawQuery(
+        'SELECT DISTINCT * FROM $nomeTabela AS gp INNER JOIN grupo_compra gc ON gp.id = gc.id_grupo WHERE gc.id_compra = ?',
+        [idCompra]);
+
+    return list?.map((map) => fromMapToEntity(map)).toList();
+  }
+
 }
