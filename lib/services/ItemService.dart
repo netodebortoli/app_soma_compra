@@ -1,7 +1,7 @@
 import 'package:app_soma_conta/domain/ItemCompra.dart';
 import 'package:app_soma_conta/persistencia/dao/ItemCompraDao.dart';
 
-class ItemController {
+class ItemService {
   ItemCompraDAO dao = ItemCompraDAO();
 
   Future<List<ItemCompra>> listarItensPorCompra(int idCompra) async {

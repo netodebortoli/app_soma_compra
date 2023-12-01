@@ -11,8 +11,7 @@ import 'package:d_chart/ordinal/combo.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import '../../controllers/CompraController.dart';
-import '../../domain/Compra.dart';
+import '../../services/CompraService.dart';
 import '../../utils/Formatacao.dart';
 
 enum TipoGrafico { DATA, TIPO_COMPRA, TIPO_PAGAMENTO }
@@ -20,7 +19,7 @@ enum TipoGrafico { DATA, TIPO_COMPRA, TIPO_PAGAMENTO }
 class ControllerGrafico {
   ControllerGrafico();
 
-  CompraController controller = CompraController();
+  CompraService compraService = CompraService();
   final controlador_ano = TextEditingController();
 
   void setarAnoAtual() {
@@ -30,7 +29,7 @@ class ControllerGrafico {
   List<OrdinalData> _filtrarPorTipoCompra() {
     List<OrdinalData> ordinalList = [];
 
-    Future<List<DtoOrdinal>> dados = controller.getValorTotalPorTipoCompra(controlador_ano.text);
+    Future<List<DtoOrdinal>> dados = compraService.getValorTotalPorTipoCompra(controlador_ano.text);
     dados.then((value) => {
           for (DtoOrdinal dto in value){
               ordinalList.add(OrdinalData(domain: dto.chave, measure: dto.valor))
@@ -43,7 +42,7 @@ class ControllerGrafico {
   List<OrdinalData> _filtrarPorTipoPagamento() {
     List<OrdinalData> ordinalList = [];
 
-    Future<List<DtoOrdinal>> dados = controller.getValorTotalPorTipoPagamento(controlador_ano.text);
+    Future<List<DtoOrdinal>> dados = compraService.getValorTotalPorTipoPagamento(controlador_ano.text);
     dados.then((value) => {
       for (DtoOrdinal dto in value){
         ordinalList.add(OrdinalData(domain: dto.chave, measure: dto.valor))
@@ -57,7 +56,7 @@ class ControllerGrafico {
     List<OrdinalData> ordinalList = [];
 
     Future<List<DtoNumerico>> dados =
-        controller.getValorTotalPorMes(controlador_ano.text);
+        compraService.getValorTotalPorMes(controlador_ano.text);
     dados.then((value) => {
           for (DtoNumerico dto in value){
               ordinalList.add(OrdinalData(

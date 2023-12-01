@@ -1,4 +1,4 @@
-import 'package:app_soma_conta/controllers/GrupoController.dart';
+import 'package:app_soma_conta/services/GrupoService.dart';
 import 'package:app_soma_conta/utils/Navegacao.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +8,7 @@ import '../../domain/Grupo.dart';
 class ControllerCadastroGrupo {
 
   Grupo? grupo;
-  final GrupoController controller = GrupoController();
+  final GrupoService grupoService = GrupoService();
 
   ControllerCadastroGrupo(this.grupo);
 
@@ -31,10 +31,10 @@ class ControllerCadastroGrupo {
   void _criarGrupo() {
     if(grupo != null){
       grupo!.descricao = controleDescricao.text;
-      controller.atualizarGrupo(grupo!);
+      grupoService.atualizarGrupo(grupo!);
     } else {
       grupo = Grupo(descricao: controleDescricao.text, valor_total: 0.0);
-      controller.inserirGrupo(grupo!);
+      grupoService.inserirGrupo(grupo!);
     }
 
   }

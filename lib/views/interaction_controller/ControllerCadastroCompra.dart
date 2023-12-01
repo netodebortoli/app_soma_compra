@@ -1,6 +1,6 @@
-import 'package:app_soma_conta/controllers/CompraController.dart';
-import 'package:app_soma_conta/controllers/GrupoController.dart';
-import 'package:app_soma_conta/controllers/ItemController.dart';
+import 'package:app_soma_conta/services/CompraService.dart';
+import 'package:app_soma_conta/services/GrupoService.dart';
+import 'package:app_soma_conta/services/ItemService.dart';
 import 'package:app_soma_conta/customs_widget/ToastSucesso.dart';
 import 'package:app_soma_conta/domain/Grupo.dart';
 import 'package:app_soma_conta/views/TabFormCompra.dart';
@@ -21,9 +21,9 @@ class ControllerCadastroCompra {
   List<Grupo>? gruposCompra = [];
 
   //TODO -> renomear os controlers de acesso ao DAO para servicos
-  CompraController compraController = CompraController();
-  ItemController itemController = ItemController();
-  GrupoController grupoController = GrupoController();
+  CompraService compraService = CompraService();
+  ItemService itemService = ItemService();
+  GrupoService grupoService = GrupoService();
 
   // TextEditingController da compra
   final formkey = GlobalKey<FormState>();
@@ -71,7 +71,7 @@ class ControllerCadastroCompra {
           tipo_compra: tipoCompraSelecionado,
           data_compra: gerarDateTimeFromString(controleData.text)!);
       _definirItensGrupoValorTotal(compra!);
-      compraController.inserirCompra(compra!);
+      compraService.inserirCompra(compra!);
     } else {
       // atualização
       compra!.descricao = controleDescricao.text;
@@ -79,7 +79,7 @@ class ControllerCadastroCompra {
       compra!.tipo_compra = tipoCompraSelecionado;
       compra!.tipo_pagamento = tipoPagamentoSelecionado;
       _definirItensGrupoValorTotal(compra!);
-      compraController.atualizarCompra(compra!);
+      compraService.atualizarCompra(compra!);
     }
   }
 
@@ -134,7 +134,7 @@ class ControllerCadastroCompra {
   }
 
   void inicializarCampos() async {
-    gruposCompra = await grupoController.listarTodos();
+    gruposCompra = await grupoService.listarTodos();
     if (compra == null) {
       controleDescricao.text = "";
       controleData.text = formatarDateTimeToString(DateTime.now());
@@ -154,7 +154,7 @@ class ControllerCadastroCompra {
       tipoPagamentoSelecionado = compra!.tipo_pagamento;
       controleValorTotal.text = compra!.valor_total.toString();
       // TODO --> buscar todos os grupos de uma compra
-      Future<List<ItemCompra>> itensFromDB = itemController.listarItensPorCompra(compra!.id);
+      Future<List<ItemCompra>> itensFromDB = itemService.listarItensPorCompra(compra!.id);
       itensFromDB.then((value) {
         itensCompra = value;
         for (int i = 0; i < itensCompra!.length; i++) {

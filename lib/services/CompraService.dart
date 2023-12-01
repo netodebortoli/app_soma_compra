@@ -4,7 +4,7 @@ import 'package:app_soma_conta/persistencia/dao/CompraDao.dart';
 
 import '../domain/Compra.dart';
 
-class CompraController {
+class CompraService {
   final CompraDAO _dao = CompraDAO();
 
   Future<List<Compra>> listarTodos() async {

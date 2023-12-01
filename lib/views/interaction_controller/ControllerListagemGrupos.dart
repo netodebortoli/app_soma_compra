@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:app_soma_conta/controllers/GrupoController.dart';
+import 'package:app_soma_conta/services/GrupoService.dart';
 import 'package:app_soma_conta/customs_widget/DialogFormGrupo.dart';
 import 'package:flutter/material.dart';
 
@@ -12,10 +12,10 @@ class ControllerListagemGrupos {
 
   ControllerListagemGrupos();
 
-  GrupoController controller = GrupoController();
+  GrupoService grupoService = GrupoService();
 
   Future<List<Grupo>?> buscarGrupos() async {
-    grupos = await controller.listarTodos();
+    grupos = await grupoService.listarTodos();
     streamController.add(grupos!);
     return grupos;
   }
@@ -24,7 +24,7 @@ class ControllerListagemGrupos {
     String s = await showDialog(
         context: context, builder: (BuildContext context) => DialogFormGrupo(grupos![index]));
     if (s == "Salvo com sucesso") {
-      grupos = await controller.listarTodos();
+      grupos = await grupoService.listarTodos();
       streamController.add(grupos!);
     }
   }
@@ -32,7 +32,7 @@ class ControllerListagemGrupos {
   void removerGrupo(int index) {
     Grupo grupo = grupos![index];
     grupos!.removeAt(index);
-    controller.excluirGrupo(grupo);
+    grupoService.excluirGrupo(grupo);
     streamController.add(grupos!);
   }
 }

@@ -2,7 +2,7 @@ import 'package:app_soma_conta/persistencia/dao/GrupoDao.dart';
 
 import '../domain/Grupo.dart';
 
-class GrupoController {
+class GrupoService {
 
   final GrupoDAO _dao = GrupoDAO();
 
@@ -20,5 +20,14 @@ class GrupoController {
 
   void atualizarGrupo(Grupo grupo){
     _dao.atualizar(grupo);
+  }
+
+  Future<List<Grupo>> listarComprasPorGrupo(int idCompra) async {
+    List<Grupo>? dados = await _dao.listarTodosGruposPorCompra(idCompra);
+    List<Grupo> grupos = [];
+    if (dados != null) {
+      grupos.addAll(dados);
+    }
+    return grupos;
   }
 }
