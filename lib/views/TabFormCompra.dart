@@ -48,6 +48,7 @@ String tipoCompraSelecionado = tiposCompras.first;
 String tipoPagamentoSelecionado = tiposPagamentos.first;
 
 class _TabFormCompraState extends State<TabFormCompra> {
+
   @override
   Widget build(BuildContext context) {
     return _formCompras();
@@ -74,7 +75,7 @@ class _TabFormCompraState extends State<TabFormCompra> {
                 searchHint: "Pesquise pelo nome",
                 searchTextStyle: const TextStyle(color: Colors.black),
                 initialValue: gruposSelecionados!,
-                items: widget.controllerCompra.gruposCompra!
+                items: widget.controllerCompra.gruposDisponiveis!
                     .map((grupo) =>
                         MultiSelectItem<Grupo>(grupo, grupo.descricao))
                     .toList(),

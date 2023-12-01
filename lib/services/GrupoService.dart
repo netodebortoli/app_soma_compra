@@ -22,7 +22,7 @@ class GrupoService {
     _dao.atualizar(grupo);
   }
 
-  Future<List<Grupo>> listarComprasPorGrupo(int idCompra) async {
+  Future<List<Grupo>> listarGrupoPorCompra(int idCompra) async {
     List<Grupo>? dados = await _dao.listarTodosGruposPorCompra(idCompra);
     List<Grupo> grupos = [];
     if (dados != null) {

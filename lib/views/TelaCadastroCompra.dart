@@ -27,6 +27,9 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra>
   void initState() {
     super.initState();
     controladora = ControllerCadastroCompra(widget.compra, widget.grupo);
+    controladora.popularMultiSelectorGrupos().then((value) {
+      setState(() {});
+    });
     controladora.inicializarCampos();
     tabController = TabController(length: 2, vsync: this);
     tabController.addListener(() {

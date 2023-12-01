@@ -18,9 +18,8 @@ class ControllerCadastroCompra {
   Compra? compra;
 
   List<ItemCompra>? itensCompra = [];
-  List<Grupo>? gruposCompra = [];
+  List<Grupo>? gruposDisponiveis = [];
 
-  //TODO -> renomear os controlers de acesso ao DAO para servicos
   CompraService compraService = CompraService();
   ItemService itemService = ItemService();
   GrupoService grupoService = GrupoService();
@@ -94,7 +93,8 @@ class ControllerCadastroCompra {
 
   void _addItemCompra(index) {
     ItemCompra item = ItemCompra(
-        valor: double.parse(controleItens[index]['preco']!.text.replaceAll(",", ".")),
+        valor: double.parse(
+            controleItens[index]['preco']!.text.replaceAll(",", ".")),
         descricao: controleItens[index]['descricao']!.text,
         quantidade: int.parse(controleItens[index]['qtd']!.text));
     itensCompra?.add(item);
@@ -133,8 +133,13 @@ class ControllerCadastroCompra {
     }
   }
 
-  void inicializarCampos() async {
-    gruposCompra = await grupoService.listarTodos();
+  Future<List<Grupo>> popularMultiSelectorGrupos() async {
+    List<Grupo> dados = await grupoService.listarTodos();
+    gruposDisponiveis!.addAll(dados);
+    return gruposDisponiveis!;
+  }
+
+  void inicializarCampos() {
     if (compra == null) {
       controleDescricao.text = "";
       controleData.text = formatarDateTimeToString(DateTime.now());
@@ -143,8 +148,8 @@ class ControllerCadastroCompra {
       tipoPagamentoSelecionado = tiposPagamentos.first;
       gruposSelecionados = [];
       // TODO se o grupo for diferente de null, setar, mas nao ta funcionandoo
-      if (grupo != null) {
-        gruposSelecionados?.add(grupo!);
+      if (this.grupo != null) {
+        gruposSelecionados!.add(grupo!);
       }
     } else {
       controleDescricao.text = compra!.descricao;
@@ -154,14 +159,26 @@ class ControllerCadastroCompra {
       tipoPagamentoSelecionado = compra!.tipo_pagamento;
       controleValorTotal.text = compra!.valor_total.toString();
       // TODO --> buscar todos os grupos de uma compra
-      Future<List<ItemCompra>> itensFromDB = itemService.listarItensPorCompra(compra!.id);
+
+      Future<List<Grupo>> gruposFromDB =
+          grupoService.listarGrupoPorCompra(compra!.id);
+      gruposFromDB.then((value) {
+        for(Grupo g in value){
+          gruposSelecionados!.add(g);
+        }
+      });
+
+      Future<List<ItemCompra>> itensFromDB =
+          itemService.listarItensPorCompra(compra!.id);
       itensFromDB.then((value) {
         itensCompra = value;
         for (int i = 0; i < itensCompra!.length; i++) {
           controleItens.add({
             'descricao': TextEditingController(text: itensCompra![i].descricao),
-            'preco': TextEditingController(text: itensCompra![i].valor.toString().replaceAll(".", ",")),
-            'qtd': TextEditingController(text: itensCompra![i].quantidade.toString())
+            'preco': TextEditingController(
+                text: itensCompra![i].valor.toString().replaceAll(".", ",")),
+            'qtd': TextEditingController(
+                text: itensCompra![i].quantidade.toString())
           });
         }
       });
