@@ -65,6 +65,7 @@ class _ListagemDeComprasState extends State<ListagemDeCompras> {
 
   ListView _listView() {
     return ListView.builder(
+      padding: const EdgeInsets.only(bottom: 70),
       itemCount: _controllerListagemCompras.compras != null
           ? _controllerListagemCompras.compras!.length
           : 0,

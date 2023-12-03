@@ -43,7 +43,8 @@ class _ComprasPorGrupoState extends State<ComprasPorGrupo> {
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
         onPressed: () {
-          _controllerListagemCompras.cadastrarComprasEmGrupoEspecifico(context, widget.grupo);
+          _controllerListagemCompras.cadastrarComprasEmGrupoEspecifico(
+              context, widget.grupo);
         },
         tooltip: 'Cadastrar nova compra',
         icon: const Icon(Icons.add),
@@ -89,13 +90,14 @@ class _ComprasPorGrupoState extends State<ComprasPorGrupo> {
         children: [
           Center(
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 0),
+            padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 0),
             child: const Text("Grupo vazio."),
           ))
         ],
       );
     }
     return ListView.builder(
+      padding: const EdgeInsets.only(bottom: 70),
       itemCount: _controllerListagemCompras.compras != null
           ? _controllerListagemCompras.compras!.length
           : 0,

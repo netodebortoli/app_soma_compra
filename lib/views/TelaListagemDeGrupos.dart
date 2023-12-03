@@ -64,6 +64,7 @@ class _ListagemDeGruposState extends State<ListagemDeGrupos> {
 
   ListView _listView() {
     return ListView.builder(
+      padding: const EdgeInsets.only(bottom: 70),
       itemCount: _controllerListagemGrupos.grupos != null
           ? _controllerListagemGrupos.grupos!.length
           : 0,
