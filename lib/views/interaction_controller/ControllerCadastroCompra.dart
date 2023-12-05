@@ -149,8 +149,8 @@ class ControllerCadastroCompra {
       tipoCompraSelecionado = tiposCompras.first;
       tipoPagamentoSelecionado = tiposPagamentos.first;
       if (grupo != null) {
-        selectController.setSelectedOptions(selectController.options
-            .where((element) => element.value!.id == grupo!.id).toList());
+        selectController.addSelectedOption(selectController.options
+            .firstWhere((element) => element.value == grupo!));
       }
     } else {
       controleDescricao.text = compra!.descricao;
@@ -165,11 +165,10 @@ class ControllerCadastroCompra {
           grupoService.listarGrupoPorCompra(compra!.id);
       gruposFromDB.then((value) {
         //TODO --> SETAR AS OPCOES SELECIONADAS COM BASE NOS GRUPOS
-        // for (Grupo g in value) {
-        //   gruposSelecionados!.add(g);
-        // }
-        selectController
-            .setSelectedOptions(fromGrupoListToValueItemList(value));
+        for (Grupo gp in value) {
+          selectController.addSelectedOption(selectController.options
+              .firstWhere((element) => element.value == gp));
+        }
       });
 
       Future<List<ItemCompra>> itensFromDB =
