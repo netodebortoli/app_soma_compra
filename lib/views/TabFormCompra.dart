@@ -1,10 +1,8 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import '../customs_widget/Botao.dart';
@@ -43,12 +41,10 @@ const List<String> tiposPagamentos = <String>[
   "Outros"
 ];
 
-List<Grupo>? gruposSelecionados;
 String tipoCompraSelecionado = tiposCompras.first;
 String tipoPagamentoSelecionado = tiposPagamentos.first;
 
 class _TabFormCompraState extends State<TabFormCompra> {
-
   @override
   Widget build(BuildContext context) {
     return _formCompras();
@@ -63,25 +59,24 @@ class _TabFormCompraState extends State<TabFormCompra> {
         child: ListView(
           children: [
             MultiSelectDialogField(
-                title: const Text("Grupos"),
+              title: const Text("Grupos"),
               dialogHeight: MediaQuery.of(context).size.height * 0.5,
               dialogWidth: MediaQuery.of(context).size.width * 0.5,
               buttonText: const Text("Selecione os grupos desta compra",
-                    style: TextStyle(fontSize: 16)),
-                buttonIcon:
-                    const Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
-                cancelText: const Text("Cancelar"),
-                searchable: true,
-                searchHint: "Pesquise pelo nome",
-                searchTextStyle: const TextStyle(color: Colors.black),
-                initialValue: gruposSelecionados!,
-                items: widget.controllerCompra.gruposDisponiveis!
-                    .map((grupo) =>
-                        MultiSelectItem<Grupo>(grupo, grupo.descricao))
-                    .toList(),
-                onConfirm: (value) {
-                  gruposSelecionados = value;
-                },
+                  style: TextStyle(fontSize: 16)),
+              buttonIcon:
+                  const Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
+              cancelText: const Text("Cancelar"),
+              searchable: true,
+              searchHint: "Pesquise pelo nome",
+              searchTextStyle: const TextStyle(color: Colors.black),
+              initialValue: widget.controllerCompra.gruposSelecionados!,
+              items: widget.controllerCompra.gruposDisponiveis!
+                  .map((grupo) => MultiSelectItem<Grupo>(grupo, grupo.descricao))
+                  .toList(),
+              onConfirm: (value) {
+                widget.controllerCompra.gruposSelecionados = value;
+              },
             ),
             CampoForm("Descrição", widget.controllerCompra.controleDescricao,
                 maxLength: 200),

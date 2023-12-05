@@ -19,6 +19,7 @@ class ControllerCadastroCompra {
 
   List<ItemCompra>? itensCompra = [];
   List<Grupo>? gruposDisponiveis = [];
+  List<Grupo>? gruposSelecionados = [];
 
   CompraService compraService = CompraService();
   ItemService itemService = ItemService();
@@ -139,7 +140,8 @@ class ControllerCadastroCompra {
     return gruposDisponiveis!;
   }
 
-  void inicializarCampos() {
+  Future<void> inicializarCampos() async {
+    popularMultiSelectorGrupos();
     if (compra == null) {
       controleDescricao.text = "";
       controleData.text = formatarDateTimeToString(DateTime.now());
@@ -147,9 +149,8 @@ class ControllerCadastroCompra {
       tipoCompraSelecionado = tiposCompras.first;
       tipoPagamentoSelecionado = tiposPagamentos.first;
       gruposSelecionados = [];
-      // TODO se o grupo for diferente de null, setar, mas nao ta funcionandoo
-      if (this.grupo != null) {
-        gruposSelecionados!.add(grupo!);
+      if (grupo != null) {
+        gruposSelecionados?.add(grupo!);
       }
     } else {
       controleDescricao.text = compra!.descricao;
@@ -158,27 +159,18 @@ class ControllerCadastroCompra {
       tipoCompraSelecionado = compra!.tipo_compra;
       tipoPagamentoSelecionado = compra!.tipo_pagamento;
       controleValorTotal.text = compra!.valor_total.toString();
-      // TODO --> buscar todos os grupos de uma compra
-
-      Future<List<Grupo>> gruposFromDB =
-          grupoService.listarGrupoPorCompra(compra!.id);
+      Future<List<Grupo>> gruposFromDB = grupoService.listarGrupoPorCompra(compra!.id);
       gruposFromDB.then((value) {
-        for(Grupo g in value){
-          gruposSelecionados!.add(g);
-        }
+          gruposSelecionados!.addAll(value);
       });
-
-      Future<List<ItemCompra>> itensFromDB =
-          itemService.listarItensPorCompra(compra!.id);
+      Future<List<ItemCompra>> itensFromDB = itemService.listarItensPorCompra(compra!.id);
       itensFromDB.then((value) {
         itensCompra = value;
         for (int i = 0; i < itensCompra!.length; i++) {
           controleItens.add({
             'descricao': TextEditingController(text: itensCompra![i].descricao),
-            'preco': TextEditingController(
-                text: itensCompra![i].valor.toString().replaceAll(".", ",")),
-            'qtd': TextEditingController(
-                text: itensCompra![i].quantidade.toString())
+            'preco': TextEditingController(text: itensCompra![i].valor.toString().replaceAll(".", ",")),
+            'qtd': TextEditingController(text: itensCompra![i].quantidade.toString())
           });
         }
       });

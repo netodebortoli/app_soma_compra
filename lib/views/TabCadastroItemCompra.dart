@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../customs_widget/CampoForm.dart';
 import 'interaction_controller/ControllerCadastroCompra.dart';

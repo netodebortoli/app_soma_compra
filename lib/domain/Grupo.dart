@@ -10,4 +10,14 @@ class Grupo extends Objeto {
     descricao = map["descricao"];
     valor_total = map["valor_total"];
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Grupo &&
+          runtimeType == other.runtimeType &&
+          descricao == other.descricao;
+
+  @override
+  int get hashCode => descricao.hashCode;
 }
