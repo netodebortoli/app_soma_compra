@@ -158,7 +158,7 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
 
   _removeItem(i) {
     setState(() {
-      widget.controllerCompra.removerItemCompra(i);
+      widget.controllerCompra.controleItens.removeAt(i);
     });
   }
 }

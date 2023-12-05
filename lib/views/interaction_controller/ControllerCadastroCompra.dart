@@ -20,6 +20,7 @@ class ControllerCadastroCompra {
   List<ItemCompra>? itensCompra = [];
   List<Grupo>? gruposDisponiveis = [];
   List<Grupo>? gruposSelecionados = [];
+  double valorTotalAntigo = 0;
 
   CompraService compraService = CompraService();
   ItemService itemService = ItemService();
@@ -57,6 +58,7 @@ class ControllerCadastroCompra {
     }
     if (gruposSelecionados!.isNotEmpty) {
       for (Grupo g in gruposSelecionados!) {
+        g.valor_total = g.valor_total! + compra.valor_total! - valorTotalAntigo;
         compra.grupos?.add(g);
       }
     }
@@ -101,12 +103,6 @@ class ControllerCadastroCompra {
     itensCompra?.add(item);
   }
 
-  void removerItemCompra(index) {
-    controleItens.removeAt(index);
-    itensCompra!.isNotEmpty ? itensCompra?.removeAt(index) : null;
-    _calcularPrecoTotal();
-  }
-
   void _calcularPrecoTotal() {
     double valor = 0;
     itensCompra?.forEach((element) {
@@ -131,6 +127,8 @@ class ControllerCadastroCompra {
         _addItemCompra(i);
       }
       _calcularPrecoTotal();
+    } else {
+      controleItens.removeAt(controleItens.length - 1);
     }
   }
 
@@ -153,6 +151,7 @@ class ControllerCadastroCompra {
         gruposSelecionados?.add(grupo!);
       }
     } else {
+      valorTotalAntigo = compra!.valor_total!;
       controleDescricao.text = compra!.descricao;
       controleData.text = formatarDateTimeToString(compra!.data_compra);
       controleValorTotal.text = compra!.valor_total.toString();

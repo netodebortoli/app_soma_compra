@@ -3,6 +3,7 @@ import 'package:app_soma_conta/domain/Grupo.dart';
 import 'package:app_soma_conta/domain/dto/dto_numerico.dart';
 import 'package:app_soma_conta/domain/dto/dto_ordinal.dart';
 import 'package:app_soma_conta/persistencia/dao/BaseDao.dart';
+import 'package:app_soma_conta/persistencia/dao/GrupoDao.dart';
 import 'package:app_soma_conta/utils/Formatacao.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -11,6 +12,8 @@ import '../../domain/ItemCompra.dart';
 class CompraDAO extends BaseDAO<Compra> {
   @override
   String get nomeTabela => "compra";
+
+  final GrupoDAO _grupoDAO = GrupoDAO();
 
   @override
   Compra fromMapToEntity(Map<String, dynamic> map) {
@@ -25,12 +28,18 @@ class CompraDAO extends BaseDAO<Compra> {
     return DtoOrdinal.fromMapToDtoOrdinal(map);
   }
 
+  atualizarValorTotalGrupo(Grupo grupo, Transaction txn) async {
+    await txn.rawUpdate("UPDATE grupo SET valor_total = ? WHERE id = ?",
+        [grupo.valor_total, grupo.id]);
+  }
+
   _criarGrupoCompra(Compra model, int idCompra, Transaction txn) async {
     if (model.grupos!.isNotEmpty) {
       for (Grupo grupo in model.grupos!) {
         await txn.rawInsert(
             "INSERT INTO grupo_compra(id_grupo, id_compra) VALUES (?, ?)",
             [grupo.id, idCompra]);
+        atualizarValorTotalGrupo(grupo, txn);
       }
     }
   }
@@ -88,6 +97,18 @@ class CompraDAO extends BaseDAO<Compra> {
   Future<int?> excluir(Compra model) async {
     final dbClient = await db;
     dbClient?.transaction((txn) async {
+      Future<List<Grupo>?> gruposFromDB =
+          _grupoDAO.listarTodosGruposPorCompra(model.id);
+      List<Grupo>? grupos = [];
+      gruposFromDB.then((value) {
+        grupos = value;
+        if (grupos != null && grupos!.isNotEmpty) {
+          for (Grupo grupo in grupos!) {
+            grupo.valor_total = grupo.valor_total! - model.valor_total!;
+            atualizarValorTotalGrupo(grupo, txn);
+          }
+        }
+      });
       return await txn.rawDelete("DELETE FROM compra WHERE id = ?", [model.id]);
     });
   }
@@ -122,7 +143,7 @@ class CompraDAO extends BaseDAO<Compra> {
 
     List<Map<String, dynamic>>? list = await dbClient?.rawQuery(
         "SELECT tipo_compra as chave, SUM(valor_total) AS valor FROM $nomeTabela "
-            " WHERE strftime('%Y',data_compra) = ? group by chave",
+        " WHERE strftime('%Y',data_compra) = ? group by chave",
         [ano]);
 
     return list?.map((map) => fromMapToDtoOrdinal(map)).toList();
@@ -133,7 +154,7 @@ class CompraDAO extends BaseDAO<Compra> {
 
     List<Map<String, dynamic>>? list = await dbClient?.rawQuery(
         "SELECT tipo_pagamento as chave, SUM(valor_total) AS valor FROM $nomeTabela "
-            " WHERE strftime('%Y',data_compra) = ? group by chave",
+        " WHERE strftime('%Y',data_compra) = ? group by chave",
         [ano]);
 
     return list?.map((map) => fromMapToDtoOrdinal(map)).toList();

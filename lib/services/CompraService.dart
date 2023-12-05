@@ -1,10 +1,12 @@
 import 'package:app_soma_conta/domain/dto/dto_numerico.dart';
 import 'package:app_soma_conta/domain/dto/dto_ordinal.dart';
 import 'package:app_soma_conta/persistencia/dao/CompraDao.dart';
+import 'package:app_soma_conta/persistencia/dao/GrupoDao.dart';
 
 import '../domain/Compra.dart';
 
 class CompraService {
+
   final CompraDAO _dao = CompraDAO();
 
   Future<List<Compra>> listarTodos() async {
