@@ -5,6 +5,7 @@ import 'package:app_soma_conta/customs_widget/ToastSucesso.dart';
 import 'package:app_soma_conta/domain/Grupo.dart';
 import 'package:app_soma_conta/views/TabFormCompra.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 import '../../domain/Compra.dart';
 import '../../domain/ItemCompra.dart';
@@ -18,7 +19,8 @@ class ControllerCadastroCompra {
   Compra? compra;
 
   List<ItemCompra>? itensCompra = [];
-  List<Grupo>? gruposDisponiveis = [];
+
+  List<ValueItem<Grupo>> opcoesGruposMultiselect = [];
 
   CompraService compraService = CompraService();
   ItemService itemService = ItemService();
@@ -29,6 +31,7 @@ class ControllerCadastroCompra {
   final controleDescricao = TextEditingController();
   final controleData = TextEditingController();
   late TextEditingController controleValorTotal = TextEditingController();
+  final MultiSelectController<Grupo> selectController = MultiSelectController();
 
   // TextEditingController dos item de compra
   final formkeyItem = GlobalKey<FormState>();
@@ -54,10 +57,8 @@ class ControllerCadastroCompra {
         compra.itens?.add(i);
       }
     }
-    if (gruposSelecionados!.isNotEmpty) {
-      for (Grupo g in gruposSelecionados!) {
-        compra.grupos?.add(g);
-      }
+    for (ValueItem<Grupo> vi in selectController.selectedOptions) {
+      compra.grupos?.add(vi.value!);
     }
   }
 
@@ -133,10 +134,11 @@ class ControllerCadastroCompra {
     }
   }
 
-  Future<List<Grupo>> popularMultiSelectorGrupos() async {
-    List<Grupo> dados = await grupoService.listarTodos();
-    gruposDisponiveis!.addAll(dados);
-    return gruposDisponiveis!;
+  Future<void> popularMultiSelectorGrupos() async {
+    List<Grupo> dados = [];
+    dados = await grupoService.listarGrupos();
+    opcoesGruposMultiselect = fromGrupoListToValueItemList(dados);
+    selectController.setOptions(opcoesGruposMultiselect);
   }
 
   void inicializarCampos() {
@@ -146,10 +148,9 @@ class ControllerCadastroCompra {
       controleValorTotal.text = "0.0";
       tipoCompraSelecionado = tiposCompras.first;
       tipoPagamentoSelecionado = tiposPagamentos.first;
-      gruposSelecionados = [];
-      // TODO se o grupo for diferente de null, setar, mas nao ta funcionandoo
-      if (this.grupo != null) {
-        gruposSelecionados!.add(grupo!);
+      if (grupo != null) {
+        selectController.setSelectedOptions(selectController.options
+            .where((element) => element.value!.id == grupo!.id).toList());
       }
     } else {
       controleDescricao.text = compra!.descricao;
@@ -163,9 +164,12 @@ class ControllerCadastroCompra {
       Future<List<Grupo>> gruposFromDB =
           grupoService.listarGrupoPorCompra(compra!.id);
       gruposFromDB.then((value) {
-        for(Grupo g in value){
-          gruposSelecionados!.add(g);
-        }
+        //TODO --> SETAR AS OPCOES SELECIONADAS COM BASE NOS GRUPOS
+        // for (Grupo g in value) {
+        //   gruposSelecionados!.add(g);
+        // }
+        selectController
+            .setSelectedOptions(fromGrupoListToValueItemList(value));
       });
 
       Future<List<ItemCompra>> itensFromDB =
@@ -183,5 +187,21 @@ class ControllerCadastroCompra {
         }
       });
     }
+  }
+
+  List<ValueItem<Grupo>> fromGrupoListToValueItemList(List<Grupo> grupos) {
+    List<ValueItem<Grupo>> valueItemList = [];
+    valueItemList =
+        grupos.map((e) => ValueItem(label: e.descricao, value: e)).toList();
+    return valueItemList;
+  }
+
+  ValueItem<Grupo> compareGrupoValueItem(Grupo grupo) {
+    for (ValueItem<Grupo> vi in opcoesGruposMultiselect) {
+      if (vi.value == grupo) {
+        return vi;
+      }
+    }
+    return ValueItem(label: grupo.descricao, value: grupo);
   }
 }

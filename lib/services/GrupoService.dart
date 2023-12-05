@@ -10,6 +10,15 @@ class GrupoService {
     return await _dao.listarTodos();
   }
 
+  Future<List<Grupo>> listarGrupos() async {
+    List<Grupo>? dados = await _dao.listarTodos();
+    List<Grupo> grupos = [];
+    if (dados != null) {
+      grupos.addAll(dados);
+    }
+    return grupos;
+  }
+
   void inserirGrupo(Grupo grupo) {
     _dao.criar(grupo);
   }
