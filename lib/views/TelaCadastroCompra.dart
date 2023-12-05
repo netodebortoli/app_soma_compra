@@ -16,12 +16,8 @@ class TelaCadastroCompra extends StatefulWidget {
   TelaCadastroCompra({super.key, this.compra, this.grupo});
 }
 
-class _TelaCadastroCompra extends State<TelaCadastroCompra>
-    with SingleTickerProviderStateMixin {
+class _TelaCadastroCompra extends State<TelaCadastroCompra> {
   late ControllerCadastroCompra controladora;
-
-  late TabController tabController;
-  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -30,15 +26,19 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra>
     controladora.inicializarCampos().then((value) {
       setState(() {});
     });
-    tabController = TabController(length: 2, vsync: this);
-    tabController.addListener(() {
-      setState(() {
-        _selectedIndex = tabController.index;
-      });
-      if (_selectedIndex == 0) {
-        controladora.calcularTotal();
-      }
-    });
+    // _tabController.addListener(() {
+    //   setState(() {
+    //     _selectedIndex = _tabController.index;
+    //   });
+    //   if (_selectedIndex == 0) {
+    //     controladora.calcularTotal();
+    //   }
+    // });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -47,25 +47,48 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra>
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
-            appBar: AppBar(
-              bottom: const TabBar(tabs: [
-                Tab(icon: Icon(Icons.shopping_cart_rounded)),
-                Tab(icon: Icon(Icons.add_shopping_cart))
-              ]),
-              title: const Text("Gerenciar Compras"),
-              backgroundColor: Colors.blue,
-              foregroundColor: Colors.white,
-            ),
-            body: Builder(builder: (contextTab) {
-              return TabBarView(
-                controller: tabController,
-                children: <Widget>[
-                  TabFormCompra(context, controladora),
-                  TabCadastroItemCompra(context, controladora)
-                ],
-              );
-            })),
+            body: NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification scrollNotification) {
+                if (scrollNotification is ScrollEndNotification) _onTabChange();
+                return false;
+              },
+              child: NestedScrollView(
+                headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled){
+                  return <Widget>[
+                    const SliverAppBar(
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                      title: Text("Gerenciar Compras"),
+                      pinned: true,
+                      floating: true,
+                      bottom: TabBar(tabs: [
+                        Tab(icon: Icon(Icons.shopping_cart_rounded)),
+                        Tab(icon: Icon(Icons.add_shopping_cart))
+                      ]),
+                    ),
+                  ];
+                },
+                body: TabBarView(
+
+                    children: <Widget>[
+                      TabFormCompra(context, controladora),
+                      TabCadastroItemCompra(context, controladora)
+                    ],
+                  ),
+              ),
+            )),
       ),
     );
+  }
+
+  void _onTabChange() {
+    controladora.calcularTotal();
+    // switch (_tabController.index) {
+    //   case 0:
+    //     controladora.calcularTotal();
+    //     break;
+    //   default:
+    //     break;
+    // }
   }
 }
