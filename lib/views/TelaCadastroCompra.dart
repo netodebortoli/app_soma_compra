@@ -26,14 +26,6 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra> {
     controladora.inicializarCampos().then((value) {
       setState(() {});
     });
-    // _tabController.addListener(() {
-    //   setState(() {
-    //     _selectedIndex = _tabController.index;
-    //   });
-    //   if (_selectedIndex == 0) {
-    //     controladora.calcularTotal();
-    //   }
-    // });
   }
 
   @override
@@ -46,49 +38,35 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra> {
     return MaterialApp(
       home: DefaultTabController(
         length: 2,
-        child: Scaffold(
-            body: NotificationListener<ScrollNotification>(
-              onNotification: (ScrollNotification scrollNotification) {
-                if (scrollNotification is ScrollEndNotification) _onTabChange();
-                return false;
-              },
-              child: NestedScrollView(
-                headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled){
-                  return <Widget>[
-                    const SliverAppBar(
-                      backgroundColor: Colors.blue,
-                      foregroundColor: Colors.white,
-                      title: Text("Gerenciar Compras"),
-                      pinned: true,
-                      floating: true,
-                      bottom: TabBar(tabs: [
-                        Tab(icon: Icon(Icons.shopping_cart_rounded)),
-                        Tab(icon: Icon(Icons.add_shopping_cart))
-                      ]),
-                    ),
-                  ];
-                },
-                body: TabBarView(
-
-                    children: <Widget>[
-                      TabFormCompra(context, controladora),
-                      TabCadastroItemCompra(context, controladora)
-                    ],
-                  ),
-              ),
-            )),
+        child: Builder(builder: (BuildContext tabContext) {
+          final TabController tabController =
+              DefaultTabController.of(tabContext);
+          tabController.addListener(() {
+            if(!tabController.indexIsChanging){
+              if(tabController.index == 0){
+                controladora.calcularTotal();
+              }
+            }
+          });
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+              title: const Text("Gerenciar Compras"),
+              bottom: const TabBar(tabs: [
+                Tab(icon: Icon(Icons.shopping_cart_rounded)),
+                Tab(icon: Icon(Icons.add_shopping_cart))
+              ]),
+            ),
+            body: TabBarView(
+              children: <Widget>[
+                TabFormCompra(context, controladora),
+                TabCadastroItemCompra(context, controladora)
+              ],
+            ),
+          );
+        }),
       ),
     );
-  }
-
-  void _onTabChange() {
-    controladora.calcularTotal();
-    // switch (_tabController.index) {
-    //   case 0:
-    //     controladora.calcularTotal();
-    //     break;
-    //   default:
-    //     break;
-    // }
   }
 }
