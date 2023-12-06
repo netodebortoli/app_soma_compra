@@ -16,12 +16,8 @@ class TelaCadastroCompra extends StatefulWidget {
   TelaCadastroCompra({super.key, this.compra, this.grupo});
 }
 
-class _TelaCadastroCompra extends State<TelaCadastroCompra>
-    with SingleTickerProviderStateMixin {
+class _TelaCadastroCompra extends State<TelaCadastroCompra> {
   late ControllerCadastroCompra controladora;
-
-  late TabController tabController;
-  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -30,15 +26,11 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra>
     controladora.inicializarCampos().then((value) {
       setState(() {});
     });
-    tabController = TabController(length: 2, vsync: this);
-    tabController.addListener(() {
-      setState(() {
-        _selectedIndex = tabController.index;
-      });
-      if (_selectedIndex == 0) {
-        controladora.calcularTotal();
-      }
-    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -46,25 +38,34 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra>
     return MaterialApp(
       home: DefaultTabController(
         length: 2,
-        child: Scaffold(
+        child: Builder(builder: (BuildContext tabContext) {
+          final TabController tabController =
+              DefaultTabController.of(tabContext);
+          tabController.addListener(() {
+            if(!tabController.indexIsChanging){
+              if(tabController.index == 0){
+                controladora.calcularTotal();
+              }
+            }
+          });
+          return Scaffold(
             appBar: AppBar(
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+              title: const Text("Gerenciar Compras"),
               bottom: const TabBar(tabs: [
                 Tab(icon: Icon(Icons.shopping_cart_rounded)),
                 Tab(icon: Icon(Icons.add_shopping_cart))
               ]),
-              title: const Text("Gerenciar Compras"),
-              backgroundColor: Colors.blue,
-              foregroundColor: Colors.white,
             ),
-            body: Builder(builder: (contextTab) {
-              return TabBarView(
-                controller: tabController,
-                children: <Widget>[
-                  TabFormCompra(context, controladora),
-                  TabCadastroItemCompra(context, controladora)
-                ],
-              );
-            })),
+            body: TabBarView(
+              children: <Widget>[
+                TabFormCompra(context, controladora),
+                TabCadastroItemCompra(context, controladora)
+              ],
+            ),
+          );
+        }),
       ),
     );
   }
