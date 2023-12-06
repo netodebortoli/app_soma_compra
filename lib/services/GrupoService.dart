@@ -3,7 +3,6 @@ import 'package:app_soma_conta/persistencia/dao/GrupoDao.dart';
 import '../domain/Grupo.dart';
 
 class GrupoService {
-
   final GrupoDAO _dao = GrupoDAO();
 
   Future<List<Grupo>> listarTodos() async {
@@ -14,11 +13,11 @@ class GrupoService {
     _dao.criar(grupo);
   }
 
-  void excluirGrupo(Grupo grupo){
+  void excluirGrupo(Grupo grupo) {
     _dao.excluir(grupo);
   }
 
-  void atualizarGrupo(Grupo grupo){
+  void atualizarGrupo(Grupo grupo) {
     _dao.atualizar(grupo);
   }
 
@@ -29,5 +28,11 @@ class GrupoService {
       grupos.addAll(dados);
     }
     return grupos;
+  }
+
+  void atualizarGrupos(List<Grupo> gruposAtualizados) {
+    if (gruposAtualizados.isNotEmpty) {
+      _dao.atualizarGrupos(gruposAtualizados);
+    }
   }
 }

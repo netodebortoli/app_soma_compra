@@ -20,6 +20,7 @@ class ControllerCadastroCompra {
   List<ItemCompra>? itensCompra = [];
   List<Grupo>? gruposDisponiveis = [];
   List<Grupo>? gruposSelecionados = [];
+  List<Grupo>? gruposSelecionadosAntigo = [];
   double valorTotalAntigo = 0;
 
   CompraService compraService = CompraService();
@@ -38,30 +39,25 @@ class ControllerCadastroCompra {
 
   void cadastrarCompra(BuildContext context) {
     if (formkey.currentState!.validate()) {
-      ToastSucesso("Operação realizada com sucesso!");
       _salvarCompra();
       _clearCamposCompra();
+      ToastSucesso("Operação realizada com sucesso!");
       pop(context, mensagem: "Salvo com sucesso");
     }
   }
 
-  void _definirItensGrupoValorTotal(Compra compra) {
-    if (controleValorTotal.text.isNotEmpty) {
-      compra.valor_total = double.parse(controleValorTotal.text);
-    }
-    compra.itens = [];
-    compra.grupos = [];
-    if (itensCompra != null && itensCompra!.isNotEmpty) {
-      for (ItemCompra i in itensCompra!) {
-        compra.itens?.add(i);
-      }
-    }
-    if (gruposSelecionados!.isNotEmpty) {
-      for (Grupo g in gruposSelecionados!) {
-        g.valor_total = g.valor_total! + compra.valor_total! - valorTotalAntigo;
-        compra.grupos?.add(g);
-      }
-    }
+  void cancelarCompra(BuildContext context) {
+    _clearCamposCompra();
+    Navigator.pop(context, "");
+  }
+
+  void _clearCamposCompra() {
+    controleData.clear();
+    controleValorTotal.clear();
+    controleDescricao.clear();
+    tipoCompraSelecionado = tiposCompras.first;
+    tipoPagamentoSelecionado = tiposPagamentos.first;
+    controleItens.clear();
   }
 
   void _salvarCompra() {
@@ -85,9 +81,39 @@ class ControllerCadastroCompra {
     }
   }
 
-  void cancelarCompra(BuildContext context) {
-    _clearCamposCompra();
-    Navigator.pop(context, "");
+  void _definirItensGrupoValorTotal(Compra compra) {
+    if (controleValorTotal.text.isNotEmpty) {
+      compra.valor_total = double.parse(controleValorTotal.text);
+    }
+    compra.itens = [];
+    compra.grupos = [];
+    if (itensCompra != null && itensCompra!.isNotEmpty) {
+        compra.itens?.addAll(itensCompra!);
+    }
+    _definirValorTotalGrupos(compra);
+  }
+
+  void _definirValorTotalGrupos(Compra compra) {
+    if (gruposSelecionados != null && gruposSelecionados!.isNotEmpty) {
+      for (Grupo g in gruposSelecionados!) {
+        if (gruposSelecionadosAntigo != null && gruposSelecionadosAntigo!.contains(g)) {
+          g.valor_total = g.valor_total! + compra.valor_total! - valorTotalAntigo;
+        } else {
+          g.valor_total = g.valor_total! + compra.valor_total!;
+        }
+        compra.grupos?.add(g);
+      }
+    }
+    if (gruposSelecionadosAntigo != null && gruposSelecionadosAntigo!.isNotEmpty) {
+      List<Grupo> gruposAtualizados = [];
+      for (Grupo g in gruposSelecionadosAntigo!) {
+        if (!gruposSelecionados!.contains(g)) {
+          g.valor_total = g.valor_total! - valorTotalAntigo;
+          gruposAtualizados.add(g);
+        }
+      }
+      grupoService.atualizarGrupos(gruposAtualizados);
+    }
   }
 
   bool validarFormItem(BuildContext context) {
@@ -96,8 +122,7 @@ class ControllerCadastroCompra {
 
   void _addItemCompra(index) {
     ItemCompra item = ItemCompra(
-        valor: double.parse(
-            controleItens[index]['preco']!.text.replaceAll(",", ".")),
+        valor: double.parse(controleItens[index]['preco']!.text.replaceAll(",", ".")),
         descricao: controleItens[index]['descricao']!.text,
         quantidade: int.parse(controleItens[index]['qtd']!.text));
     itensCompra?.add(item);
@@ -109,15 +134,6 @@ class ControllerCadastroCompra {
       valor += element.valor * element.quantidade;
     });
     controleValorTotal.text = valor.toString();
-  }
-
-  void _clearCamposCompra() {
-    controleData.clear();
-    controleValorTotal.clear();
-    controleDescricao.clear();
-    tipoCompraSelecionado = tiposCompras.first;
-    tipoPagamentoSelecionado = tiposPagamentos.first;
-    controleItens.clear();
   }
 
   void calcularTotal() {
@@ -161,6 +177,7 @@ class ControllerCadastroCompra {
       Future<List<Grupo>> gruposFromDB = grupoService.listarGrupoPorCompra(compra!.id);
       gruposFromDB.then((value) {
           gruposSelecionados!.addAll(value);
+          gruposSelecionadosAntigo!.addAll(value);
       });
       Future<List<ItemCompra>> itensFromDB = itemService.listarItensPorCompra(compra!.id);
       itensFromDB.then((value) {
