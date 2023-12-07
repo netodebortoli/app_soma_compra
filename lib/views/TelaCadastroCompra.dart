@@ -24,7 +24,10 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra>
 
   static const List<Tab> tabs = <Tab>[
     Tab(icon: Icon(Icons.shopping_cart_rounded), text: "Dados da compra"),
-    Tab(icon: Icon(Icons.add_shopping_cart), text: "Itens da compra",)
+    Tab(
+      icon: Icon(Icons.add_shopping_cart),
+      text: "Itens da compra",
+    )
   ];
 
   @override
@@ -44,34 +47,30 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra>
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification scrollNotification) {
-          if (scrollNotification is ScrollStartNotification) {
-            if (_tabController.index == 1) {
-              Future.delayed(const Duration(milliseconds: 300), () {
-                controladora.calcularTotal();
-              });
-            }
-          }
-          return true;
-        },
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.blue,
-            foregroundColor: Colors.white,
-            title: const Text("Gerenciar Compras"),
-            bottom: TabBar(controller: _tabController, tabs: tabs),
-          ),
-          body: TabBarView(
-            physics: const NeverScrollableScrollPhysics(),
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+          title: const Text("Gerenciar Compras"),
+          bottom: TabBar(
             controller: _tabController,
-            children: <Widget>[
-              TabFormCompra(context, controladora, futureDados),
-              TabCadastroItemCompra(context, controladora)
-            ],
+            tabs: tabs,
+            onTap: (index) {
+              if (_tabController.index == 0) {
+                controladora.calcularTotal();
+              }
+            },
           ),
         ),
-      )
+        body: TabBarView(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: _tabController,
+          children: <Widget>[
+            TabFormCompra(context, controladora, futureDados),
+            TabCadastroItemCompra(context, controladora)
+          ],
+        ),
+      ),
     );
   }
 }
