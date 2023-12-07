@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app_soma_conta/services/CompraService.dart';
 import 'package:app_soma_conta/services/GrupoService.dart';
 import 'package:app_soma_conta/services/ItemService.dart';
@@ -88,7 +90,7 @@ class ControllerCadastroCompra {
     compra.itens = [];
     compra.grupos = [];
     if (itensCompra != null && itensCompra!.isNotEmpty) {
-        compra.itens?.addAll(itensCompra!);
+      compra.itens?.addAll(itensCompra!);
     }
     _definirValorTotalGrupos(compra);
   }
