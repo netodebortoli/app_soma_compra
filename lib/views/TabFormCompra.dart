@@ -14,8 +14,9 @@ import 'interaction_controller/ControllerCadastroCompra.dart';
 class TabFormCompra extends StatefulWidget {
   BuildContext buildContext;
   ControllerCadastroCompra controllerCompra;
+  Future futureDados;
 
-  TabFormCompra(this.buildContext, this.controllerCompra, {super.key});
+  TabFormCompra(this.buildContext, this.controllerCompra, this.futureDados,{super.key});
 
   @override
   State<TabFormCompra> createState() => _TabFormCompraState();
@@ -47,7 +48,18 @@ String tipoPagamentoSelecionado = tiposPagamentos.first;
 class _TabFormCompraState extends State<TabFormCompra> {
   @override
   Widget build(BuildContext context) {
-    return _formCompras();
+    return FutureBuilder(
+        future: widget.futureDados,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return const Center(child: Text('Erro ao carregar dados'));
+            }
+            return _formCompras();
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        });
   }
 
   _formCompras() {

@@ -18,14 +18,13 @@ class TelaCadastroCompra extends StatefulWidget {
 
 class _TelaCadastroCompra extends State<TelaCadastroCompra> {
   late ControllerCadastroCompra controladora;
+  late Future futureDados;
 
   @override
   void initState() {
     super.initState();
     controladora = ControllerCadastroCompra(widget.compra, widget.grupo);
-    controladora.inicializarCampos().then((value) {
-      setState(() {});
-    });
+    futureDados = controladora.inicializarCampos();
   }
 
   @override
@@ -60,7 +59,7 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra> {
             ),
             body: TabBarView(
               children: <Widget>[
-                TabFormCompra(context, controladora),
+                TabFormCompra(context, controladora, futureDados),
                 TabCadastroItemCompra(context, controladora)
               ],
             ),

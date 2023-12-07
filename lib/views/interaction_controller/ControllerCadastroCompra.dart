@@ -130,8 +130,8 @@ class ControllerCadastroCompra {
 
   void _calcularPrecoTotal() {
     double valor = 0;
-    itensCompra?.forEach((element) {
-      valor += element.valor * element.quantidade;
+    itensCompra?.forEach((item) {
+      valor += item.valor * item.quantidade;
     });
     controleValorTotal.text = valor.toString();
   }
@@ -174,22 +174,18 @@ class ControllerCadastroCompra {
       tipoCompraSelecionado = compra!.tipo_compra;
       tipoPagamentoSelecionado = compra!.tipo_pagamento;
       controleValorTotal.text = compra!.valor_total.toString();
-      Future<List<Grupo>> gruposFromDB = grupoService.listarGrupoPorCompra(compra!.id);
-      gruposFromDB.then((value) {
-          gruposSelecionados!.addAll(value);
-          gruposSelecionadosAntigo!.addAll(value);
-      });
-      Future<List<ItemCompra>> itensFromDB = itemService.listarItensPorCompra(compra!.id);
-      itensFromDB.then((value) {
-        itensCompra = value;
-        for (int i = 0; i < itensCompra!.length; i++) {
-          controleItens.add({
-            'descricao': TextEditingController(text: itensCompra![i].descricao),
-            'preco': TextEditingController(text: itensCompra![i].valor.toString().replaceAll(".", ",")),
-            'qtd': TextEditingController(text: itensCompra![i].quantidade.toString())
-          });
-        }
-      });
+      List<Grupo> gruposFromDB = await grupoService.listarGrupoPorCompra(compra!.id);
+      gruposSelecionados!.addAll(gruposFromDB);
+      gruposSelecionadosAntigo!.addAll(gruposFromDB);
+      List<ItemCompra> itensFromDB = await itemService.listarItensPorCompra(compra!.id);
+      itensCompra!.addAll(itensFromDB);
+      for (int i = 0; i < itensCompra!.length; i++) {
+        controleItens.add({
+          'descricao': TextEditingController(text: itensCompra![i].descricao),
+          'preco': TextEditingController(text: itensCompra![i].valor.toString().replaceAll(".", ",")),
+          'qtd': TextEditingController(text: itensCompra![i].quantidade.toString())
+        });
+      }
     }
   }
 }
