@@ -97,8 +97,7 @@ class CompraDAO extends BaseDAO<Compra> {
   Future<int?> excluir(Compra model) async {
     final dbClient = await db;
     dbClient?.transaction((txn) async {
-      Future<List<Grupo>?> gruposFromDB =
-          _grupoDAO.listarTodosGruposPorCompra(model.id);
+      Future<List<Grupo>?> gruposFromDB = _grupoDAO.listarTodosGruposPorCompra(model.id);
       List<Grupo>? grupos = [];
       gruposFromDB.then((value) {
         grupos = value;
@@ -108,8 +107,8 @@ class CompraDAO extends BaseDAO<Compra> {
             atualizarValorTotalGrupo(grupo, txn);
           }
         }
+        return txn.rawDelete("DELETE FROM compra WHERE id = ?", [model.id]);
       });
-      return await txn.rawDelete("DELETE FROM compra WHERE id = ?", [model.id]);
     });
   }
 
