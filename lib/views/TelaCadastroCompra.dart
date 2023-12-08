@@ -62,8 +62,7 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra>
               controller: _tabController,
               tabs: tabs,
               onTap: (index) {
-                if (_tabController.index == 0 &&
-                    _tabController.previousIndex != 0) {
+                if (_tabController.index == 0 && _tabController.previousIndex != 0) {
                   controladora.calcularTotal();
                 }
               },

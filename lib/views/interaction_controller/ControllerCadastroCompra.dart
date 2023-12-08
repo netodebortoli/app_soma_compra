@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app_soma_conta/customs_widget/ToastErro.dart';
 import 'package:app_soma_conta/services/CompraService.dart';
 import 'package:app_soma_conta/services/GrupoService.dart';
 import 'package:app_soma_conta/services/ItemService.dart';
@@ -98,10 +99,8 @@ class ControllerCadastroCompra {
   void _definirValorTotalGrupos(Compra compra) {
     if (gruposSelecionados != null && gruposSelecionados!.isNotEmpty) {
       for (Grupo g in gruposSelecionados!) {
-        if (gruposSelecionadosAntigo != null &&
-            gruposSelecionadosAntigo!.contains(g)) {
-          g.valor_total =
-              g.valor_total! + compra.valor_total! - valorTotalAntigo;
+        if (gruposSelecionadosAntigo != null && gruposSelecionadosAntigo!.contains(g)) {
+          g.valor_total = g.valor_total! + compra.valor_total! - valorTotalAntigo;
         } else {
           g.valor_total = g.valor_total! + compra.valor_total!;
         }
@@ -127,8 +126,7 @@ class ControllerCadastroCompra {
 
   void _addItemCompra(index) {
     ItemCompra item = ItemCompra(
-        valor: double.parse(
-            controleItens[index]['preco']!.text.replaceAll(",", ".")),
+        valor: double.parse(controleItens[index]['preco']!.text.replaceAll(",", ".")),
         descricao: controleItens[index]['descricao']!.text,
         quantidade: int.parse(controleItens[index]['qtd']!.text));
     itensCompra?.add(item);
@@ -143,15 +141,15 @@ class ControllerCadastroCompra {
   }
 
   void calcularTotal() {
-    if (formkeyItem.currentState!.validate()) {
+    if (formkeyItem.currentState != null && formkeyItem.currentState!.validate()) {
       itensCompra?.clear();
       for (int i = 0; i < controleItens.length; i++) {
         _addItemCompra(i);
       }
       _calcularPrecoTotal();
     } else {
-      controleItens.removeAt(controleItens.length - 1);
-    }
+      ToastErro("Campos inválidos nos itens!");
+     }
   }
 
   Future<List<Grupo>> popularMultiSelectorGrupos() async {
@@ -180,20 +178,16 @@ class ControllerCadastroCompra {
       tipoCompraSelecionado = compra!.tipo_compra;
       tipoPagamentoSelecionado = compra!.tipo_pagamento;
       controleValorTotal.text = compra!.valor_total.toString();
-      List<Grupo> gruposFromDB =
-          await grupoService.listarGrupoPorCompra(compra!.id);
+      List<Grupo> gruposFromDB = await grupoService.listarGrupoPorCompra(compra!.id);
       gruposSelecionados!.addAll(gruposFromDB);
       gruposSelecionadosAntigo!.addAll(gruposFromDB);
-      List<ItemCompra> itensFromDB =
-          await itemService.listarItensPorCompra(compra!.id);
+      List<ItemCompra> itensFromDB = await itemService.listarItensPorCompra(compra!.id);
       itensCompra!.addAll(itensFromDB);
       for (int i = 0; i < itensCompra!.length; i++) {
         controleItens.add({
           'descricao': TextEditingController(text: itensCompra![i].descricao),
-          'preco': TextEditingController(
-              text: itensCompra![i].valor.toString().replaceAll(".", ",")),
-          'qtd':
-              TextEditingController(text: itensCompra![i].quantidade.toString())
+          'preco': TextEditingController(text: itensCompra![i].valor.toString().replaceAll(".", ",")),
+          'qtd':TextEditingController(text: itensCompra![i].quantidade.toString())
         });
       }
     }

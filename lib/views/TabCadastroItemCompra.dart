@@ -21,8 +21,7 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
 
   _formItensCompras() {
     return Container(
-      color: Colors.white,
-      margin: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(7),
       child: ListView(
         children: [
           Row(
@@ -39,7 +38,7 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
                   _addItem();
                 },
                 child:
-                    const Icon(Icons.add_circle, color: Colors.blue, size: 30),
+                    const Icon(Icons.add_circle, color: Colors.green, size: 30),
               )
             ],
           ),

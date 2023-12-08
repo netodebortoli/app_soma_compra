@@ -22,28 +22,11 @@ class TabFormCompra extends StatefulWidget {
   State<TabFormCompra> createState() => _TabFormCompraState();
 }
 
-final dateMask = MaskTextInputFormatter(mask: '##/##/####');
-
-const List<String> tiposCompras = <String>[
-  "Mercado",
-  "Serviços",
-  "Saúde",
-  "Lazer",
-  "Urgência",
-  "Transporte",
-  "Outros"
-];
-
-const List<String> tiposPagamentos = <String>[
-  "Dinheiro",
-  "Pix",
-  "Débito",
-  "Crédito",
-  "Outros"
-];
-
+List<String> tiposCompras = <String>["Mercado", "Serviços", "Saúde", "Lazer", "Urgência", "Transporte", "Outros"];
+List<String> tiposPagamentos = <String>["Dinheiro", "Pix", "Débito", "Crédito", "Outros"];
 String tipoCompraSelecionado = tiposCompras.first;
 String tipoPagamentoSelecionado = tiposPagamentos.first;
+final dateMask = MaskTextInputFormatter(mask: '##/##/####');
 
 class _TabFormCompraState extends State<TabFormCompra> {
   @override
@@ -64,8 +47,7 @@ class _TabFormCompraState extends State<TabFormCompra> {
 
   _formCompras() {
     return Container(
-      color: Colors.white,
-      margin: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(7),
       child: Form(
         key: widget.controllerCompra.formkey,
         child: ListView(
@@ -146,8 +128,7 @@ class _TabFormCompraState extends State<TabFormCompra> {
               decoration: const InputDecoration(
                   labelText: "Tipo de compra",
                   labelStyle: TextStyle(color: Colors.grey, fontSize: 20)),
-              items:
-                  tiposCompras.map<DropdownMenuItem<String>>((String? value) {
+              items: tiposCompras.map<DropdownMenuItem<String>>((String? value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value!),

@@ -6,8 +6,7 @@ void ToastErro(String mensagem) {
       msg: mensagem,
       toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.CENTER,
-      timeInSecForIosWeb: 5,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
+      timeInSecForIosWeb: 3,
+      textColor: Colors.black,
       fontSize: 22.0);
 }
