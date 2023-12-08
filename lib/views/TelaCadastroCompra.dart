@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../domain/Compra.dart';
 import '../domain/Grupo.dart';
+import '../utils/Navegacao.dart';
 
 class TelaCadastroCompra extends StatefulWidget {
   @override
@@ -46,29 +47,36 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra>
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blue,
-          foregroundColor: Colors.white,
-          title: const Text("Gerenciar Compras"),
-          bottom: TabBar(
-            controller: _tabController,
-            tabs: tabs,
-            onTap: (index) {
-              if (_tabController.index == 0) {
-                controladora.calcularTotal();
-              }
-            },
+    return WillPopScope(
+      onWillPop: () {
+        pop(context, mensagem: "");
+        return Future.value(false);
+      },
+      child: MaterialApp(
+        home: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white,
+            title: const Text("Gerenciar Compras"),
+            bottom: TabBar(
+              controller: _tabController,
+              tabs: tabs,
+              onTap: (index) {
+                if (_tabController.index == 0 &&
+                    _tabController.previousIndex != 0) {
+                  controladora.calcularTotal();
+                }
+              },
+            ),
           ),
-        ),
-        body: TabBarView(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: _tabController,
-          children: <Widget>[
-            TabFormCompra(context, controladora, futureDados),
-            TabCadastroItemCompra(context, controladora)
-          ],
+          body: TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: _tabController,
+            children: <Widget>[
+              TabFormCompra(context, controladora, futureDados),
+              TabCadastroItemCompra(context, controladora)
+            ],
+          ),
         ),
       ),
     );

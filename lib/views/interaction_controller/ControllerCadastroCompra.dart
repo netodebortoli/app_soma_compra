@@ -50,7 +50,7 @@ class ControllerCadastroCompra {
 
   void cancelarCompra(BuildContext context) {
     _clearCamposCompra();
-    Navigator.pop(context, "");
+    pop(context, mensagem: "");
   }
 
   void _clearCamposCompra() {
@@ -98,15 +98,18 @@ class ControllerCadastroCompra {
   void _definirValorTotalGrupos(Compra compra) {
     if (gruposSelecionados != null && gruposSelecionados!.isNotEmpty) {
       for (Grupo g in gruposSelecionados!) {
-        if (gruposSelecionadosAntigo != null && gruposSelecionadosAntigo!.contains(g)) {
-          g.valor_total = g.valor_total! + compra.valor_total! - valorTotalAntigo;
+        if (gruposSelecionadosAntigo != null &&
+            gruposSelecionadosAntigo!.contains(g)) {
+          g.valor_total =
+              g.valor_total! + compra.valor_total! - valorTotalAntigo;
         } else {
           g.valor_total = g.valor_total! + compra.valor_total!;
         }
         compra.grupos?.add(g);
       }
     }
-    if (gruposSelecionadosAntigo != null && gruposSelecionadosAntigo!.isNotEmpty) {
+    if (gruposSelecionadosAntigo != null &&
+        gruposSelecionadosAntigo!.isNotEmpty) {
       List<Grupo> gruposAtualizados = [];
       for (Grupo g in gruposSelecionadosAntigo!) {
         if (!gruposSelecionados!.contains(g)) {
@@ -124,7 +127,8 @@ class ControllerCadastroCompra {
 
   void _addItemCompra(index) {
     ItemCompra item = ItemCompra(
-        valor: double.parse(controleItens[index]['preco']!.text.replaceAll(",", ".")),
+        valor: double.parse(
+            controleItens[index]['preco']!.text.replaceAll(",", ".")),
         descricao: controleItens[index]['descricao']!.text,
         quantidade: int.parse(controleItens[index]['qtd']!.text));
     itensCompra?.add(item);
@@ -176,16 +180,20 @@ class ControllerCadastroCompra {
       tipoCompraSelecionado = compra!.tipo_compra;
       tipoPagamentoSelecionado = compra!.tipo_pagamento;
       controleValorTotal.text = compra!.valor_total.toString();
-      List<Grupo> gruposFromDB = await grupoService.listarGrupoPorCompra(compra!.id);
+      List<Grupo> gruposFromDB =
+          await grupoService.listarGrupoPorCompra(compra!.id);
       gruposSelecionados!.addAll(gruposFromDB);
       gruposSelecionadosAntigo!.addAll(gruposFromDB);
-      List<ItemCompra> itensFromDB = await itemService.listarItensPorCompra(compra!.id);
+      List<ItemCompra> itensFromDB =
+          await itemService.listarItensPorCompra(compra!.id);
       itensCompra!.addAll(itensFromDB);
       for (int i = 0; i < itensCompra!.length; i++) {
         controleItens.add({
           'descricao': TextEditingController(text: itensCompra![i].descricao),
-          'preco': TextEditingController(text: itensCompra![i].valor.toString().replaceAll(".", ",")),
-          'qtd': TextEditingController(text: itensCompra![i].quantidade.toString())
+          'preco': TextEditingController(
+              text: itensCompra![i].valor.toString().replaceAll(".", ",")),
+          'qtd':
+              TextEditingController(text: itensCompra![i].quantidade.toString())
         });
       }
     }
