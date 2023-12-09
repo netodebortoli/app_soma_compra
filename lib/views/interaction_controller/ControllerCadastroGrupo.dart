@@ -2,7 +2,7 @@ import 'package:app_soma_conta/services/GrupoService.dart';
 import 'package:app_soma_conta/utils/Navegacao.dart';
 import 'package:flutter/material.dart';
 
-import '../../customs_widget/ToastSucesso.dart';
+import '../../customs_widget/Toast.dart';
 import '../../domain/Grupo.dart';
 
 class ControllerCadastroGrupo {
@@ -43,7 +43,7 @@ class ControllerCadastroGrupo {
     if (formkey.currentState!.validate()) {
       _criarGrupo();
       controleDescricao.clear();
-      ToastSucesso("Grupo salvo com sucesso.");
+      ToastSucesso("Grupo salvo com sucesso.", context);
       pop(context, mensagem: "Salvo com sucesso");
     }
   }

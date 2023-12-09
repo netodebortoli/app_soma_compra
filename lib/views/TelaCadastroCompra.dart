@@ -53,6 +53,7 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra>
         return Future.value(false);
       },
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.blue,
@@ -63,7 +64,7 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra>
               tabs: tabs,
               onTap: (index) {
                 if (_tabController.index == 0 && _tabController.previousIndex != 0) {
-                  controladora.calcularTotal();
+                  controladora.calcularTotal(context);
                 }
               },
             ),

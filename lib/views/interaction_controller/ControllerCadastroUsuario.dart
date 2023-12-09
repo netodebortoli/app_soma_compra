@@ -1,11 +1,9 @@
-import 'package:app_soma_conta/customs_widget/ToastErro.dart';
-import 'package:app_soma_conta/customs_widget/ToastSucesso.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
+import '../../customs_widget/Toast.dart';
 
 class ControllerFormCadastro {
-  // Controlador de formulário (para fazer validações)
   final formkey = GlobalKey<FormState>();
   final controleLogin = TextEditingController();
   final controleSenha1 = TextEditingController();
@@ -14,11 +12,11 @@ class ControllerFormCadastro {
   void signUp(BuildContext context) {
     if (formkey.currentState!.validate()) {
       if (controleSenha1.value != controleSenha2.value) {
-        ToastErro("As senhas não são iguais.");
+        ToastErro("As senhas não são iguais.", context);
       } else {
-        ToastSucesso("Cadastro realizado com sucesso.");
-        // INSERIR POSTERIOMENTE NO BANCO DE DADOS
-        // REDIRECIONAR PARA A TELA DE LOGIN
+        ToastSucesso("Cadastro realizado com sucesso.", context);
+        //TODO: INSERIR POSTERIOMENTE NO BANCO DE DADOS
+        //TODO: REDIRECIONAR PARA A TELA DE LOGIN
       }
     }
   }

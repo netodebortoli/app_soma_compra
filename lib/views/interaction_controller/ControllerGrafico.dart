@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:app_soma_conta/customs_widget/ToastErro.dart';
 import 'package:app_soma_conta/domain/dto/dto_numerico.dart';
 import 'package:app_soma_conta/domain/dto/dto_ordinal.dart';
 import 'package:d_chart/commons/axis.dart';
@@ -13,6 +12,7 @@ import 'package:d_chart/ordinal/combo.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
+import '../../customs_widget/Toast.dart';
 import '../../services/CompraService.dart';
 import '../../utils/Formatacao.dart';
 
@@ -29,12 +29,12 @@ class ControllerGrafico {
     controlador_ano.text = DateTime.now().year.toString();
   }
 
-  Widget gerarGrafico(TipoGrafico tipo) {
+  Widget gerarGrafico(TipoGrafico tipo, BuildContext context) {
     FocusManager.instance.primaryFocus?.unfocus();
     if (formkey.currentState!.validate() && tipo != TipoGrafico.UNKNOWN) {
       return gerarGraficoPorTipo(tipo);
     } else if (formkey.currentState!.validate() && tipo == TipoGrafico.UNKNOWN) {
-      ToastErro("É necessário selecionar um filtro.");
+      ToastAlerta("É necessário selecionar um filtro.", context);
       return const SizedBox();
     }
     return const SizedBox();

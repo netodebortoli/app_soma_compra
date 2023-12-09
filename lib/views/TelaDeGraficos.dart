@@ -113,25 +113,25 @@ class _TelaDeGraficosState extends State<TelaDeGraficos> {
                       switch (opcaoSelecionada) {
                         case "Mês":
                           grafico =
-                              _controllerGrafico.gerarGrafico(TipoGrafico.DATA);
+                              _controllerGrafico.gerarGrafico(TipoGrafico.DATA, context);
                           Future.delayed(const Duration(milliseconds: 500), () {
                             setState(() {});
                           });
                         case "Tipo de compra":
                           grafico = _controllerGrafico
-                              .gerarGrafico(TipoGrafico.TIPO_COMPRA);
+                              .gerarGrafico(TipoGrafico.TIPO_COMPRA, context);
                           Future.delayed(const Duration(milliseconds: 500), () {
                             setState(() {});
                           });
                         case "Tipo de pagamento":
                           grafico = _controllerGrafico
-                              .gerarGrafico(TipoGrafico.TIPO_PAGAMENTO);
+                              .gerarGrafico(TipoGrafico.TIPO_PAGAMENTO, context);
                           Future.delayed(const Duration(milliseconds: 500), () {
                             setState(() {});
                           });
                         default:
                           grafico = _controllerGrafico
-                              .gerarGrafico(TipoGrafico.UNKNOWN);
+                              .gerarGrafico(TipoGrafico.UNKNOWN, context);
                           Future.delayed(const Duration(milliseconds: 10), () {
                             setState(() {});
                           });

@@ -1,14 +1,13 @@
 import 'dart:async';
 
-import 'package:app_soma_conta/customs_widget/ToastErro.dart';
 import 'package:app_soma_conta/services/CompraService.dart';
 import 'package:app_soma_conta/services/GrupoService.dart';
 import 'package:app_soma_conta/services/ItemService.dart';
-import 'package:app_soma_conta/customs_widget/ToastSucesso.dart';
 import 'package:app_soma_conta/domain/Grupo.dart';
 import 'package:app_soma_conta/views/TabFormCompra.dart';
 import 'package:flutter/material.dart';
 
+import '../../customs_widget/Toast.dart';
 import '../../domain/Compra.dart';
 import '../../domain/ItemCompra.dart';
 import '../../utils/Formatacao.dart';
@@ -44,7 +43,7 @@ class ControllerCadastroCompra {
     if (formkey.currentState!.validate()) {
       _salvarCompra();
       _clearCamposCompra();
-      ToastSucesso("Operação realizada com sucesso!");
+      ToastSucesso("Operação realizada com sucesso!", context);
       pop(context, mensagem: "Salvo com sucesso");
     }
   }
@@ -140,7 +139,7 @@ class ControllerCadastroCompra {
     controleValorTotal.text = valor.toString();
   }
 
-  void calcularTotal() {
+  void calcularTotal(BuildContext context) {
     if (formkeyItem.currentState != null && formkeyItem.currentState!.validate()) {
       itensCompra?.clear();
       for (int i = 0; i < controleItens.length; i++) {
@@ -148,7 +147,7 @@ class ControllerCadastroCompra {
       }
       _calcularPrecoTotal();
     } else {
-      ToastErro("Campos inválidos nos itens!");
+      ToastAlerta("Campos inválidos nos itens!", context);
      }
   }
 
