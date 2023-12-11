@@ -1,8 +1,9 @@
-import 'package:app_soma_conta/views/TelaLogin.dart';
+import 'package:app_soma_conta/views/TelaDeAbertura.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -47,6 +48,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _body() {
-    return TelaLogin();
+    return TelaDeAbertura();
   }
 }
