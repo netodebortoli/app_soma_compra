@@ -11,6 +11,8 @@ class CampoForm extends StatelessWidget {
   num maxLength;
   bool formEnable;
   bool isFormRequired;
+  FocusNode? marcadorFoco;
+  FocusNode? passarFocoPara;
 
   String? validarCampoEdicao(String? text) {
     if (isFormRequired == true) {
@@ -35,7 +37,9 @@ class CampoForm extends StatelessWidget {
       this.formEnable = true,
       this.isFormRequired = true,
       this.typeInput = TextInputType.text,
-      this.validator}) {
+      this.validator,
+      this.marcadorFoco,
+      this.passarFocoPara}) {
     validator ??= validarCampoEdicao;
   }
 
@@ -48,6 +52,10 @@ class CampoForm extends StatelessWidget {
         obscureText: password,
         keyboardType: typeInput,
         enabled: formEnable,
+        focusNode: marcadorFoco,
+        onFieldSubmitted: (String text) {
+          FocusScope.of(context).requestFocus(passarFocoPara);
+        },
         decoration: InputDecoration(
             labelText: label,
             hintText: hint,
