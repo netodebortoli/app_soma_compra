@@ -22,12 +22,12 @@ class _TelaDeAberturaState extends State<TelaDeAbertura> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue,
+      color: Colors.blue.shade800,
       alignment: Alignment.center,
       child: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Image.asset("assets/icon/logo_soma_compra_256x256.png", fit: BoxFit.contain),
+          Image.asset("assets/icon/logo_soma_compra_256x256.png", fit: BoxFit.scaleDown),
           Container(
             alignment: Alignment.bottomCenter,
             padding: const EdgeInsets.only(bottom: 100),
