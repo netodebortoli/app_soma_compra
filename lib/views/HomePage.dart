@@ -36,6 +36,7 @@ class _HomePageState extends State<HomePage> {
                     break;
                 }
               },
+              icon: const Icon(Icons.create_new_folder),
               itemBuilder: (BuildContext context) {
                 return <PopupMenuItem<PopupMenuPages>>[
                   const PopupMenuItem(
@@ -44,34 +45,6 @@ class _HomePageState extends State<HomePage> {
                 ];
               })
         ],
-      ),
-      drawer: Drawer(
-        child: ListView(padding: EdgeInsets.zero, children: const <Widget>[
-          DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Text('Nome de usuário aqui',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                    )),
-              )),
-          ListTile(
-            leading: Icon(Icons.account_circle),
-            title: Text('Minha conta'),
-          ),
-          ListTile(
-            leading: Icon(Icons.help),
-            title: Text('Ajuda'),
-          ),
-          ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Sair'),
-          ),
-        ]),
       ),
       floatingActionButton: FloatingActionButton.extended(
         label: const Text("Nova compra"),
