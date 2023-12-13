@@ -64,6 +64,11 @@ class _TelaCadastroCompra extends State<TelaCadastroCompra>
               tabs: tabs,
               onTap: (index) {
                 if (_tabController.index == 0 && _tabController.previousIndex != 0) {
+                  if (!controladora.validarFormItem(context)) {
+                    controladora.focusItens.removeLast();
+                    controladora.controleItens.removeLast();
+                    setState(() {});
+                  }
                   controladora.calcularTotal(context);
                 }
               },

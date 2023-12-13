@@ -149,14 +149,12 @@ class ControllerCadastroCompra {
   }
 
   void calcularTotal(BuildContext context) {
-    if (formkeyItem.currentState != null && formkeyItem.currentState!.validate()) {
+    if(formkeyItem.currentState != null){
       itensCompra?.clear();
       for (int i = 0; i < controleItens.length; i++) {
         _addItemCompra(i);
       }
       _calcularPrecoTotal();
-    } else {
-      ToastAlerta("Campos inválidos nos itens!", context);
     }
   }
 
