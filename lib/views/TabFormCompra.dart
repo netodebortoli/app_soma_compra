@@ -102,6 +102,7 @@ class _TabFormCompraState extends State<TabFormCompra> {
                 }
               },
               keyboardType: TextInputType.datetime,
+              readOnly: true,
               onTap: () async {
                 DateTime? pickerDate = await showDatePicker(
                     context: widget.buildContext,
