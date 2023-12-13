@@ -4,6 +4,7 @@ import 'package:app_soma_conta/services/CompraService.dart';
 import 'package:app_soma_conta/services/GrupoService.dart';
 import 'package:app_soma_conta/services/ItemService.dart';
 import 'package:app_soma_conta/domain/Grupo.dart';
+import 'package:app_soma_conta/views/TabCadastroItemCompra.dart';
 import 'package:app_soma_conta/views/TabFormCompra.dart';
 import 'package:flutter/material.dart';
 
@@ -45,9 +46,8 @@ class ControllerCadastroCompra {
   final focus_tipo_compra = FocusNode();
   final focus_tipo_pagamento = FocusNode();
   final focus_botao_cadastrar = FocusNode();
-  final focus_descricao_item = FocusNode();
-  final focus_qtd_item = FocusNode();
-  final focus_preco_item = FocusNode();
+  final focus_botao_add_item = FocusNode();
+  final List<Map<String, FocusNode>> focusItens = [];
 
   void cadastrarCompra(BuildContext context) {
     if (formkey.currentState!.validate()) {
@@ -116,8 +116,7 @@ class ControllerCadastroCompra {
         compra.grupos?.add(g);
       }
     }
-    if (gruposSelecionadosAntigo != null &&
-        gruposSelecionadosAntigo!.isNotEmpty) {
+    if (gruposSelecionadosAntigo != null && gruposSelecionadosAntigo!.isNotEmpty) {
       List<Grupo> gruposAtualizados = [];
       for (Grupo g in gruposSelecionadosAntigo!) {
         if (!gruposSelecionados!.contains(g)) {
@@ -158,7 +157,7 @@ class ControllerCadastroCompra {
       _calcularPrecoTotal();
     } else {
       ToastAlerta("Campos inválidos nos itens!", context);
-     }
+    }
   }
 
   Future<List<Grupo>> popularMultiSelectorGrupos() async {

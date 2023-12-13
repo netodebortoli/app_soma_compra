@@ -24,29 +24,11 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
       margin: const EdgeInsets.all(7),
       child: ListView(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Text("Adicione os itens da compra ",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontSize: 16,
-                  )),
-              InkWell(
-                onTap: () {
-                  _addItem();
-                },
-                child:
-                    const Icon(Icons.add_circle, color: Colors.green, size: 30),
-              )
-            ],
-          ),
           Form(
             key: widget.controllerCompra.formkeyItem,
             child: Column(
               children: [
-                for (int i = 0; i < widget.controllerCompra.controleItens.length; i++)
+                for (int i = 0;i < widget.controllerCompra.controleItens.length;i++)
                   Column(
                     children: [
                       Row(
@@ -56,9 +38,12 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
                             flex: 3,
                             child: Padding(
                               padding: const EdgeInsets.all(5),
-                              child: CampoForm("Descrição",
-                                  widget.controllerCompra.controleItens[i]['descricao'],
-                                  validator: (value) {
+                              child: CampoForm(
+                                "Descrição",
+                                widget.controllerCompra.controleItens[i]['descricao'],
+                                marcadorFoco: widget.controllerCompra.focusItens[i]['descricao'],
+                                passarFocoPara: widget.controllerCompra.focusItens[i]['qtd'],
+                                validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Obrigatório!';
                                 }
@@ -72,10 +57,13 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
                             flex: 2,
                             child: Padding(
                               padding: const EdgeInsets.all(5),
-                              child: CampoForm("Qtd",
-                                  widget.controllerCompra.controleItens[i]['qtd'],
-                                  typeInput: TextInputType.number,
-                                  validator: (value) {
+                              child: CampoForm(
+                                "Qtd",
+                                widget.controllerCompra.controleItens[i]['qtd'],
+                                marcadorFoco: widget.controllerCompra.focusItens[i]['qtd'],
+                                passarFocoPara: widget.controllerCompra.focusItens[i]['preco'],
+                                typeInput: TextInputType.number,
+                                validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Obrigatório!';
                                 }
@@ -95,6 +83,12 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
                                 child: TextFormField(
                                     keyboardType: TextInputType.number,
                                     controller: widget.controllerCompra.controleItens[i]['preco'],
+                                    focusNode: widget.controllerCompra.focusItens[i]['preco'],
+                                    onFieldSubmitted: (String text) {
+                                      FocusScope.of(context).requestFocus(widget
+                                          .controllerCompra
+                                          .focus_botao_add_item);
+                                    },
                                     validator: (value) {
                                       value = value?.replaceAll(',', ".");
                                       if (value == null || value.isEmpty) {
@@ -137,6 +131,23 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
                   ),
               ],
             ),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [FloatingActionButton.extended(
+              autofocus: true,
+              focusNode: widget.controllerCompra.focus_botao_add_item,
+              backgroundColor: Colors.green,
+              foregroundColor: Colors.white,
+              onPressed: () {
+                int i = _addItem();
+                widget.controllerCompra.focusItens[i]['descricao']?.requestFocus();
+              },
+              tooltip: "Adicionar novo item",
+              label: const Text("Novo item", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+              icon: const Icon(Icons.add_outlined),
+            )],
           )
         ],
       ),
@@ -151,13 +162,20 @@ class _TabCadastroItemCompraState extends State<TabCadastroItemCompra> {
           'qtd': TextEditingController(),
           'preco': TextEditingController(),
         });
+        widget.controllerCompra.focusItens.add({
+          'descricao': FocusNode(),
+          'qtd': FocusNode(),
+          'preco': FocusNode(),
+        });
       });
+      return widget.controllerCompra.controleItens.length - 1;
     }
   }
 
   _removeItem(i) {
     setState(() {
       widget.controllerCompra.controleItens.removeAt(i);
+      widget.controllerCompra.focusItens.removeAt(i);
     });
   }
 }
