@@ -70,12 +70,19 @@ class _TabFormCompraState extends State<TabFormCompra> {
                   .toList(),
               onConfirm: (value) {
                 widget.controllerCompra.gruposSelecionados = value;
+                FocusScope.of(context).requestFocus(widget.controllerCompra.focus_descricao_compra);
               },
             ),
             CampoForm("Descrição", widget.controllerCompra.controleDescricao,
+                marcadorFoco: widget.controllerCompra.focus_descricao_compra,
+                passarFocoPara: widget.controllerCompra.focus_data_compra,
                 maxLength: 200),
             const SizedBox(height: 15),
             TextFormField(
+              focusNode: widget.controllerCompra.focus_data_compra,
+              onFieldSubmitted: (String text) {
+                FocusScope.of(context).requestFocus(widget.controllerCompra.focus_tipo_compra);
+              },
               inputFormatters: [dateMask],
               controller: widget.controllerCompra.controleData,
               validator: (String? text) {
@@ -116,11 +123,13 @@ class _TabFormCompraState extends State<TabFormCompra> {
             ),
             const SizedBox(height: 15),
             DropdownButtonFormField(
+              focusNode: widget.controllerCompra.focus_tipo_compra,
               value: tipoCompraSelecionado,
               icon: const Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
               validator: (value) =>
                   value == null ? 'O campo é obrigatório' : null,
               onChanged: (value) {
+                FocusScope.of(context).requestFocus(widget.controllerCompra.focus_tipo_pagamento);
                 setState(() {
                   tipoCompraSelecionado = value!;
                 });
@@ -137,11 +146,13 @@ class _TabFormCompraState extends State<TabFormCompra> {
             ),
             const SizedBox(height: 15),
             DropdownButtonFormField(
+              focusNode: widget.controllerCompra.focus_tipo_pagamento,
               value: tipoPagamentoSelecionado,
               icon: const Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
               validator: (value) =>
                   value == null ? 'O campo é obrigatório' : null,
               onChanged: (value) {
+                FocusScope.of(context).requestFocus(widget.controllerCompra.focus_botao_cadastrar);
                 setState(() {
                   tipoPagamentoSelecionado = value!;
                 });
@@ -164,7 +175,8 @@ class _TabFormCompraState extends State<TabFormCompra> {
               enabled: false,
             ),
             const SizedBox(height: 20),
-            Botao("Salvar", onClick: () {
+            Botao("Salvar", marcadorFoco: widget.controllerCompra.focus_botao_cadastrar,
+                onClick: () {
               widget.controllerCompra.cadastrarCompra(widget.buildContext);
             }),
             const SizedBox(height: 15),

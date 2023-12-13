@@ -39,6 +39,16 @@ class ControllerCadastroCompra {
   final formkeyItem = GlobalKey<FormState>();
   late final List<Map<String, TextEditingController>> controleItens = [];
 
+  // Controladores de foco
+  final focus_descricao_compra = FocusNode();
+  final focus_data_compra = FocusNode();
+  final focus_tipo_compra = FocusNode();
+  final focus_tipo_pagamento = FocusNode();
+  final focus_botao_cadastrar = FocusNode();
+  final focus_descricao_item = FocusNode();
+  final focus_qtd_item = FocusNode();
+  final focus_preco_item = FocusNode();
+
   void cadastrarCompra(BuildContext context) {
     if (formkey.currentState!.validate()) {
       _salvarCompra();

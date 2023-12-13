@@ -23,7 +23,7 @@ class CampoForm extends StatelessWidget {
     if (text!.length < minLength) {
       return "Quantidade mínima é $minLength de caracteres";
     }
-    if (text!.length > maxLength) {
+    if (text.length > maxLength) {
       return "Quantidade máxima é $maxLength de caracteres";
     }
     return null;

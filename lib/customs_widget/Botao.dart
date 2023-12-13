@@ -7,16 +7,19 @@ class Botao extends StatelessWidget {
   final double fontSize;
   final Color fontColor;
   final Color backgroundColor;
+  FocusNode? marcadorFoco;
 
   Botao(this.label,
       {this.fontSize = 18,
       this.fontColor = Colors.white,
+      this.marcadorFoco,
       this.backgroundColor = Colors.blueAccent,
       required this.onClick});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
+        focusNode: marcadorFoco,
         onPressed: onClick,
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,
@@ -24,8 +27,6 @@ class Botao extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         ),
         child: Text(label,
-            style: TextStyle(
-                fontSize: fontSize,
-                color: fontColor)));
+            style: TextStyle(fontSize: fontSize, color: fontColor)));
   }
 }
