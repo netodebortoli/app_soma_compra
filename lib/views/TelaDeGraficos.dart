@@ -156,21 +156,9 @@ class _TelaDeGraficosState extends State<TelaDeGraficos> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.30,
-              width: MediaQuery.of(context).size.width * 0.95,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.40,
-                    width: 500,
-                    child: grafico),
-              ),
-            ),
+            SizedBox(child: grafico),
           ],
         ),
-        //
-        // )
       ],
     );
   }
