@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'CampoForm.dart';
 
 class CampoFormMaiorQueZero extends CampoForm {
-
   CampoFormMaiorQueZero(String label, TextEditingController controller,
       {String hint = "",
       int minLenght = 0,
@@ -11,6 +10,8 @@ class CampoFormMaiorQueZero extends CampoForm {
       bool password = false,
       bool formEnable = true,
       bool isFormRequired = true,
+      FocusNode? marcadorFoco,
+      FocusNode? passarFocoPara,
       FormFieldValidator<String>? validator})
       : super(label, controller,
             hint: hint,
@@ -19,6 +20,8 @@ class CampoFormMaiorQueZero extends CampoForm {
             password: password,
             formEnable: formEnable,
             isFormRequired: isFormRequired,
+            marcadorFoco: marcadorFoco,
+            passarFocoPara: passarFocoPara,
             validator: validator) {
     typeInput = TextInputType.number;
   }

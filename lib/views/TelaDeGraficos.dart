@@ -65,10 +65,13 @@ class _TelaDeGraficosState extends State<TelaDeGraficos> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.95,
                     child: DropdownButtonFormField(
+                      focusNode: _controllerGrafico.focusTipoFiltro,
                       value: opcaoSelecionada,
                       validator: (value) =>
                           value == null ? 'O campo é obrigatório' : null,
                       onChanged: (value) {
+                        FocusScope.of(context)
+                            .requestFocus(_controllerGrafico.focusAno);
                         setState(() {
                           opcaoSelecionada = value!;
                         });
@@ -96,6 +99,8 @@ class _TelaDeGraficosState extends State<TelaDeGraficos> {
                   SizedBox(
                       width: MediaQuery.of(context).size.width * 0.88,
                       child: CampoFormMaiorQueZero(
+                        marcadorFoco: _controllerGrafico.focusAno,
+                          passarFocoPara:  _controllerGrafico.focusBotao,
                           'Ano', _controllerGrafico.controlador_ano,
                           maxLength: 4)),
                 ],
@@ -108,30 +113,31 @@ class _TelaDeGraficosState extends State<TelaDeGraficos> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.3,
                   child: Botao(
+                    marcadorFoco: _controllerGrafico.focusBotao,
                     'Gerar',
                     onClick: () {
                       switch (opcaoSelecionada) {
                         case "Mês":
-                          grafico =
-                              _controllerGrafico.gerarGrafico(TipoGrafico.DATA, context);
+                          grafico = _controllerGrafico.gerarGrafico(
+                              TipoGrafico.DATA, context);
                           Future.delayed(const Duration(milliseconds: 500), () {
                             setState(() {});
                           });
                         case "Tipo de compra":
-                          grafico = _controllerGrafico
-                              .gerarGrafico(TipoGrafico.TIPO_COMPRA, context);
+                          grafico = _controllerGrafico.gerarGrafico(
+                              TipoGrafico.TIPO_COMPRA, context);
                           Future.delayed(const Duration(milliseconds: 500), () {
                             setState(() {});
                           });
                         case "Tipo de pagamento":
-                          grafico = _controllerGrafico
-                              .gerarGrafico(TipoGrafico.TIPO_PAGAMENTO, context);
+                          grafico = _controllerGrafico.gerarGrafico(
+                              TipoGrafico.TIPO_PAGAMENTO, context);
                           Future.delayed(const Duration(milliseconds: 500), () {
                             setState(() {});
                           });
                         default:
-                          grafico = _controllerGrafico
-                              .gerarGrafico(TipoGrafico.UNKNOWN, context);
+                          grafico = _controllerGrafico.gerarGrafico(
+                              TipoGrafico.UNKNOWN, context);
                           Future.delayed(const Duration(milliseconds: 10), () {
                             setState(() {});
                           });

@@ -25,6 +25,11 @@ class ControllerGrafico {
   final formkey = GlobalKey<FormState>();
   final controlador_ano = TextEditingController();
 
+  // Focus
+  final focusAno = FocusNode();
+  final focusTipoFiltro = FocusNode();
+  final focusBotao = FocusNode();
+
   void setarAnoAtual() {
     controlador_ano.text = DateTime.now().year.toString();
   }
