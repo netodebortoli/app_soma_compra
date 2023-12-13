@@ -1,6 +1,5 @@
 import 'package:app_soma_conta/domain/Objeto.dart';
 
-import '../customs_widget/Toast.dart';
 import '../utils/Formatacao.dart';
 import 'Grupo.dart';
 import 'ItemCompra.dart';
@@ -41,7 +40,7 @@ class Compra extends Objeto {
       tipo_pagamento = map["tipo_pagamento"];
       tipo_compra = map["tipo_compra"];
     } on Exception {
-      ToastErroSimples("Erro ao converter data.");
+      print("Erro ao converter dados da compra");
     }
   }
 

@@ -1,7 +1,6 @@
 import 'package:cherry_toast/cherry_toast.dart';
 import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 void ToastSucesso(String mensagem, BuildContext context){
   CherryToast.success(
@@ -29,14 +28,4 @@ void ToastErro(String mensagem, BuildContext context){
       animationDuration: const Duration(milliseconds: 1000),
       autoDismiss: true,
   ).show(context);
-}
-
-void ToastErroSimples(String mensagem) {
-  Fluttertoast.showToast(
-      msg: mensagem,
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.CENTER,
-      timeInSecForIosWeb: 3,
-      textColor: Colors.black,
-      fontSize: 22.0);
 }
