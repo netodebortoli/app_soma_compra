@@ -149,7 +149,7 @@ class ControllerCadastroCompra {
   }
 
   void calcularTotal(BuildContext context) {
-    if(formkeyItem.currentState != null){
+    if (formkeyItem.currentState != null){
       itensCompra?.clear();
       for (int i = 0; i < controleItens.length; i++) {
         _addItemCompra(i);
@@ -180,7 +180,6 @@ class ControllerCadastroCompra {
       valorTotalAntigo = compra!.valor_total!;
       controleDescricao.text = compra!.descricao;
       controleData.text = formatarDateTimeToString(compra!.data_compra);
-      controleValorTotal.text = compra!.valor_total.toString();
       tipoCompraSelecionado = compra!.tipo_compra;
       tipoPagamentoSelecionado = compra!.tipo_pagamento;
       controleValorTotal.text = compra!.valor_total.toString();
@@ -194,6 +193,11 @@ class ControllerCadastroCompra {
           'descricao': TextEditingController(text: itensCompra![i].descricao),
           'preco': TextEditingController(text: itensCompra![i].valor.toString().replaceAll(".", ",")),
           'qtd':TextEditingController(text: itensCompra![i].quantidade.toString())
+        });
+        focusItens.add({
+          'descricao': FocusNode(),
+          'preco': FocusNode(),
+          'qtd': FocusNode()
         });
       }
     }
